@@ -1,0 +1,35 @@
+  <div id="cookie-banner" class="hidden fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-md z-50 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-lg">
+    <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+      We use only essential cookies to remember your theme and unit preferences. No tracking until you accept.
+      <a href="/cookies.html" class="text-brand-600 dark:text-brand-400 hover:underline">Learn more</a>
+    </p>
+    <div class="flex flex-wrap items-center gap-2 mt-3">
+      <button id="consent-essential" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors">Essential only</button>
+      <button id="consent-all" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-brand-500 text-white hover:bg-brand-600 transition-colors">Accept all</button>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    function init() {
+      if (localStorage.getItem('vd_consent')) return;
+      var banner = document.getElementById('cookie-banner');
+      if (!banner) return;
+      banner.classList.remove('hidden');
+      var essential = document.getElementById('consent-essential');
+      var all = document.getElementById('consent-all');
+      if (essential) essential.addEventListener('click', function () {
+        localStorage.setItem('vd_consent', 'essential');
+        banner.classList.add('hidden');
+      });
+      if (all) all.addEventListener('click', function () {
+        localStorage.setItem('vd_consent', 'all');
+        banner.classList.add('hidden');
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
+  </script>
+</body>
+</html>

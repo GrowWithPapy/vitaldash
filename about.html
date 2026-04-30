@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0ea5e9" />
 
-  <title>Privacy Policy - VitalDash</title>
-  <meta name="description" content="VitalDash privacy policy. We don't collect your data on any server. Everything stays on your device." />
-  <link rel="canonical" href="https://vitaldash.io/privacy.html" />
+  <title>About VitalDash - Why this exists</title>
+  <meta name="description" content="VitalDash was built by Gaston to be the cleanest, most honest health calculator on the web." />
+  <link rel="canonical" href="https://vitaldash.io/about.html" />
   <meta name="robots" content="index,follow" />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230ea5e9'/%3E%3Cpath d='M30 55 L42 67 L72 37' stroke='white' stroke-width='10' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
@@ -45,26 +45,16 @@
     .legal h1 { font-size: 2rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem; }
     .legal h2 { font-size: 1.25rem; font-weight: 600; margin-top: 1.75rem; margin-bottom: 0.5rem; color: #0f172a; }
     .dark .legal h2 { color: #f1f5f9; }
-    .legal h3 { font-size: 1.05rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.4rem; color: #0f172a; }
-    .dark .legal h3 { color: #f1f5f9; }
     .legal p { margin-bottom: 0.75rem; line-height: 1.65; }
     .legal ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
-    .legal ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 0.75rem; }
     .legal li { margin-bottom: 0.3rem; line-height: 1.55; }
     .legal a { color: #0284c7; }
     .dark .legal a { color: #38bdf8; }
     .legal a:hover { text-decoration: underline; }
-    .legal table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
-    .legal th, .legal td { border: 1px solid #e2e8f0; padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
-    .dark .legal th, .dark .legal td { border-color: #334155; }
-    .legal th { background: #f1f5f9; font-weight: 600; }
-    .dark .legal th { background: #1e293b; }
-    .legal code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85em; padding: 0.05em 0.3em; border-radius: 4px; background: rgba(15,23,42,0.06); }
-    .dark .legal code { background: rgba(255,255,255,0.08); }
     .legal strong { font-weight: 600; color: #0f172a; }
     .dark .legal strong { color: #f1f5f9; }
-    .updated { color: #64748b; font-style: italic; font-size: 0.875rem; margin-bottom: 1.5rem; }
-    .dark .updated { color: #94a3b8; }
+    .signature { margin-top: 2rem; font-style: italic; color: #475569; }
+    .dark .signature { color: #cbd5e1; }
   </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-full transition-colors">
@@ -94,61 +84,50 @@
 
   <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
     <article class="legal">
-      <h1>Privacy Policy</h1>
-      <p class="updated">Last updated: April 30, 2026</p>
+      <h1>About VitalDash</h1>
 
-      <h2>Who we are</h2>
-      <p>VitalDash is run by Gaston, a private individual based in Belgium. We are not a registered company. You can reach us via the contact form at <a href="/contact.html">/contact.html</a>.</p>
-
-      <h2>What data we collect</h2>
-      <p>None. Seriously. VitalDash runs entirely in your browser. We do not have a server that stores your information. We do not track you. We do not have an account system.</p>
-      <p>The only data that exists is what your browser saves locally on your own device through localStorage:</p>
+      <h2>Why this exists</h2>
+      <p>Hi, I'm <strong>Gaston</strong>. I'm a software builder based in Belgium. I built VitalDash because every health calculator I tried online felt either ugly, cluttered, or vague.</p>
+      <p>The big ones (Calculator.net, BMI websites that have been around since 2005) work but feel like they were designed in 2008 and never updated. They throw a number at you and walk away. They don't tell you what it means, where you stand compared to others your age, or what to do next.</p>
+      <p>I wanted something that:</p>
       <ul>
-        <li>Theme preference (light or dark)</li>
-        <li>Unit preference (metric or imperial)</li>
-        <li>Cookie consent choice</li>
-        <li>Saved profiles you create</li>
-        <li>Weight log entries you make</li>
+        <li>Looks like a tool you'd actually want to use</li>
+        <li>Shows the formulas openly with sources</li>
+        <li>Goes beyond "your BMI is X" to give context</li>
+        <li>Doesn't track you, doesn't require signup, doesn't sell your data</li>
       </ul>
-      <p>This data never leaves your device. We cannot see it. Clearing your browser storage deletes it permanently.</p>
+      <p>So I built it.</p>
 
-      <h2>Cookies and similar technologies</h2>
-      <p>See our <a href="/cookies.html">Cookie Policy</a> for details. In short: we use only essential localStorage entries for the features above. No tracking cookies, no analytics until you consent.</p>
-
-      <h2>Third-party services</h2>
-      <p>The site loads some resources from external CDNs to function:</p>
+      <h2>What's different about VitalDash</h2>
       <ul>
-        <li><strong>Tailwind CSS</strong> (cdn.tailwindcss.com), styling library</li>
-        <li><strong>Chart.js</strong> (cdnjs.cloudflare.com), chart rendering</li>
-        <li><strong>Google Fonts</strong> (fonts.googleapis.com), the Inter typeface</li>
-        <li><strong>Unsplash images</strong> (images.unsplash.com), product photos in the recommendations section</li>
+        <li><strong>Real CDC NHANES data</strong> powers our percentile rankings. When we say "your weight is higher than 68% of men your age," it's based on the actual National Health and Nutrition Examination Survey, not a guess.</li>
+        <li><strong>A goal projection</strong> that updates live as you change inputs. You can see your timeline, not just your daily calorie target.</li>
+        <li><strong>A reality check</strong> that flags mismatches between BMI and body composition. BMI labels people with a lot of muscle as "overweight" all the time. We catch that.</li>
+        <li><strong>A simple 7-day plan</strong> built from your numbers, so the calculator doesn't end at "good luck."</li>
+        <li><strong>Past-self comparison</strong> so you can log weights over time and see where you came from.</li>
       </ul>
-      <p>When your browser loads these, the providers see standard request data: your IP address, browser type, and the time of the request. We have no control over their data practices. Review their privacy policies if needed.</p>
-      <p>When you click an Amazon affiliate link, you are sent to amazon.com. Amazon's privacy policy applies from that moment.</p>
-      <p>If we add Google AdSense, this section will be updated and the cookie banner will offer a real choice.</p>
 
-      <h2>Your rights under GDPR</h2>
-      <p>As an EU resident, you have rights including:</p>
+      <h2>What VitalDash isn't</h2>
+      <p>It isn't medical advice. It isn't a fitness tracker. It isn't trying to compete with MyFitnessPal or Cronometer. It's a calculator that respects your time and tells you the truth.</p>
+
+      <h2>Privacy promise</h2>
+      <p>Everything runs in your browser. I don't have a server that knows you exist. The only "account" is your browser's localStorage. You can wipe it anytime. See the full <a href="/privacy.html">Privacy Policy</a>.</p>
+
+      <h2>Future plans</h2>
+      <p>Things I might add if people use the site:</p>
       <ul>
-        <li><strong>Access</strong> the data we hold about you</li>
-        <li><strong>Rectify</strong> incorrect data</li>
-        <li><strong>Erase</strong> your data</li>
-        <li><strong>Restrict</strong> processing</li>
-        <li><strong>Portability</strong> of your data</li>
-        <li><strong>Object</strong> to processing</li>
+        <li>More demographic-specific landing pages with localized percentile data</li>
+        <li>A weekly check-in so you can track weight and activity together</li>
+        <li>Translations beyond English</li>
       </ul>
-      <p>Since we don't store your data on our servers, most of these are exercised directly through your browser.</p>
-      <p><strong>To delete all VitalDash data</strong>, open your browser's developer tools (F12), go to Application &gt; Storage &gt; Local Storage, find "vitaldash.io" and delete everything. Or clear cookies and site data for this domain through your browser settings.</p>
-      <p>If you have questions or believe we've handled something wrongly, contact us. You also have the right to lodge a complaint with the Belgian Data Protection Authority (<a href="https://www.autoriteprotectiondonnees.be" target="_blank" rel="noopener">autoriteprotectiondonnees.be</a>).</p>
 
-      <h2>Children</h2>
-      <p>This site is not directed at children under 16. Health and weight calculations for minors should involve a parent, guardian, or healthcare provider. We do not knowingly collect any data from children.</p>
-
-      <h2>Changes to this policy</h2>
-      <p>If we materially change how we handle data, the date at the top updates and the cookie banner re-prompts where appropriate.</p>
+      <h2>Funding</h2>
+      <p>The site is free. The Amazon affiliate links and (eventually) AdSense ads cover the domain and hosting costs. If those generate more than that, great. If not, the site stays anyway because it's cheap to run.</p>
 
       <h2>Contact</h2>
-      <p>Questions about privacy: use the form at <a href="/contact.html">/contact.html</a>.</p>
+      <p>Bug reports, feature requests, or just hello: use the form at <a href="/contact.html">/contact.html</a>.</p>
+
+      <p class="signature">Gaston</p>
     </article>
   </main>
 

@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0ea5e9" />
 
-  <title>Privacy Policy - VitalDash</title>
-  <meta name="description" content="VitalDash privacy policy. We don't collect your data on any server. Everything stays on your device." />
-  <link rel="canonical" href="https://vitaldash.io/privacy.html" />
+  <title>Contact VitalDash</title>
+  <meta name="description" content="Get in touch with VitalDash. Bug reports, feature requests, questions." />
+  <link rel="canonical" href="https://vitaldash.io/contact.html" />
   <meta name="robots" content="index,follow" />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230ea5e9'/%3E%3Cpath d='M30 55 L42 67 L72 37' stroke='white' stroke-width='10' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
@@ -43,28 +43,10 @@
   <style>
     body { font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
     .legal h1 { font-size: 2rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem; }
-    .legal h2 { font-size: 1.25rem; font-weight: 600; margin-top: 1.75rem; margin-bottom: 0.5rem; color: #0f172a; }
-    .dark .legal h2 { color: #f1f5f9; }
-    .legal h3 { font-size: 1.05rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.4rem; color: #0f172a; }
-    .dark .legal h3 { color: #f1f5f9; }
     .legal p { margin-bottom: 0.75rem; line-height: 1.65; }
-    .legal ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
-    .legal ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 0.75rem; }
-    .legal li { margin-bottom: 0.3rem; line-height: 1.55; }
     .legal a { color: #0284c7; }
     .dark .legal a { color: #38bdf8; }
     .legal a:hover { text-decoration: underline; }
-    .legal table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
-    .legal th, .legal td { border: 1px solid #e2e8f0; padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
-    .dark .legal th, .dark .legal td { border-color: #334155; }
-    .legal th { background: #f1f5f9; font-weight: 600; }
-    .dark .legal th { background: #1e293b; }
-    .legal code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85em; padding: 0.05em 0.3em; border-radius: 4px; background: rgba(15,23,42,0.06); }
-    .dark .legal code { background: rgba(255,255,255,0.08); }
-    .legal strong { font-weight: 600; color: #0f172a; }
-    .dark .legal strong { color: #f1f5f9; }
-    .updated { color: #64748b; font-style: italic; font-size: 0.875rem; margin-bottom: 1.5rem; }
-    .dark .updated { color: #94a3b8; }
   </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-full transition-colors">
@@ -93,63 +75,40 @@
   </header>
 
   <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
-    <article class="legal">
-      <h1>Privacy Policy</h1>
-      <p class="updated">Last updated: April 30, 2026</p>
+    <div class="legal">
+      <h1>Contact</h1>
+      <p>Got a bug to report? A feature idea? Just want to say hi? Use the form below.</p>
 
-      <h2>Who we are</h2>
-      <p>VitalDash is run by Gaston, a private individual based in Belgium. We are not a registered company. You can reach us via the contact form at <a href="/contact.html">/contact.html</a>.</p>
+      <div class="border-2 border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4 my-5">
+        <p class="text-sm text-amber-900 dark:text-amber-100"><strong>⚠️ Setup required:</strong> Form delivery uses <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a>. Replace <code>YOUR_WEB3FORMS_ACCESS_KEY</code> in <code>contact.html</code> with a real access key (sign up at web3forms.com with growwithpassive@gmail.com). Until then, the form posts but won't deliver.</p>
+      </div>
 
-      <h2>What data we collect</h2>
-      <p>None. Seriously. VitalDash runs entirely in your browser. We do not have a server that stores your information. We do not track you. We do not have an account system.</p>
-      <p>The only data that exists is what your browser saves locally on your own device through localStorage:</p>
-      <ul>
-        <li>Theme preference (light or dark)</li>
-        <li>Unit preference (metric or imperial)</li>
-        <li>Cookie consent choice</li>
-        <li>Saved profiles you create</li>
-        <li>Weight log entries you make</li>
-      </ul>
-      <p>This data never leaves your device. We cannot see it. Clearing your browser storage deletes it permanently.</p>
+      <form action="https://api.web3forms.com/submit" method="POST" class="space-y-4 mt-6 max-w-xl">
+        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+        <input type="hidden" name="subject" value="VitalDash contact form">
+        <input type="hidden" name="from_name" value="VitalDash visitor">
+        <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-      <h2>Cookies and similar technologies</h2>
-      <p>See our <a href="/cookies.html">Cookie Policy</a> for details. In short: we use only essential localStorage entries for the features above. No tracking cookies, no analytics until you consent.</p>
+        <div>
+          <label for="name" class="block text-sm font-medium mb-1.5">Name</label>
+          <input type="text" id="name" name="name" required class="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+        </div>
 
-      <h2>Third-party services</h2>
-      <p>The site loads some resources from external CDNs to function:</p>
-      <ul>
-        <li><strong>Tailwind CSS</strong> (cdn.tailwindcss.com), styling library</li>
-        <li><strong>Chart.js</strong> (cdnjs.cloudflare.com), chart rendering</li>
-        <li><strong>Google Fonts</strong> (fonts.googleapis.com), the Inter typeface</li>
-        <li><strong>Unsplash images</strong> (images.unsplash.com), product photos in the recommendations section</li>
-      </ul>
-      <p>When your browser loads these, the providers see standard request data: your IP address, browser type, and the time of the request. We have no control over their data practices. Review their privacy policies if needed.</p>
-      <p>When you click an Amazon affiliate link, you are sent to amazon.com. Amazon's privacy policy applies from that moment.</p>
-      <p>If we add Google AdSense, this section will be updated and the cookie banner will offer a real choice.</p>
+        <div>
+          <label for="email" class="block text-sm font-medium mb-1.5">Email (optional, only if you want a reply)</label>
+          <input type="email" id="email" name="email" class="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+        </div>
 
-      <h2>Your rights under GDPR</h2>
-      <p>As an EU resident, you have rights including:</p>
-      <ul>
-        <li><strong>Access</strong> the data we hold about you</li>
-        <li><strong>Rectify</strong> incorrect data</li>
-        <li><strong>Erase</strong> your data</li>
-        <li><strong>Restrict</strong> processing</li>
-        <li><strong>Portability</strong> of your data</li>
-        <li><strong>Object</strong> to processing</li>
-      </ul>
-      <p>Since we don't store your data on our servers, most of these are exercised directly through your browser.</p>
-      <p><strong>To delete all VitalDash data</strong>, open your browser's developer tools (F12), go to Application &gt; Storage &gt; Local Storage, find "vitaldash.io" and delete everything. Or clear cookies and site data for this domain through your browser settings.</p>
-      <p>If you have questions or believe we've handled something wrongly, contact us. You also have the right to lodge a complaint with the Belgian Data Protection Authority (<a href="https://www.autoriteprotectiondonnees.be" target="_blank" rel="noopener">autoriteprotectiondonnees.be</a>).</p>
+        <div>
+          <label for="message" class="block text-sm font-medium mb-1.5">Message</label>
+          <textarea id="message" name="message" rows="5" required class="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
+        </div>
 
-      <h2>Children</h2>
-      <p>This site is not directed at children under 16. Health and weight calculations for minors should involve a parent, guardian, or healthcare provider. We do not knowingly collect any data from children.</p>
+        <button type="submit" class="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-lg transition-colors">Send</button>
 
-      <h2>Changes to this policy</h2>
-      <p>If we materially change how we handle data, the date at the top updates and the cookie banner re-prompts where appropriate.</p>
-
-      <h2>Contact</h2>
-      <p>Questions about privacy: use the form at <a href="/contact.html">/contact.html</a>.</p>
-    </article>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-3">Your message goes directly to my inbox. I read everything. Reply time: usually within a couple of days. Don't include sensitive personal info.</p>
+      </form>
+    </div>
   </main>
 
   <footer class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">

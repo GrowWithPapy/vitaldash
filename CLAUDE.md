@@ -15,9 +15,20 @@
 - Original info beats rephrased common knowledge. Our percentile chips, BMI reality check, and goal projection are the moat.
 
 ## Code rules
-- Keep the 5-file src/ structure. Rebuild index.html with: cat src/01-head.html src/02-form.html src/03-results.html src/04-script-calc.js src/05-script-render.js > index.html
+- Homepage is built from src/ snippets. Rebuild index.html with: cat src/01-head.html src/02-form.html src/03-results.html src/04-script-calc.js src/05-script-render.js src/page-footer.html src/cookie-banner.html > index.html
+- Secondary pages (privacy, terms, cookies, about, methodology, contact) are written as standalone HTML files in the project root. They inline the same head, header, footer, and cookie-banner markup. Don't refactor to a build step until repetition pain demands it.
+- src/page-header.html, src/page-footer.html, src/cookie-banner.html are the canonical snippets. When a snippet changes, propagate it across the secondary pages by hand.
 - All calculations stay client-side. No backend calls without explicit approval.
 - Comments in code only when logic is non-obvious.
+
+## Top-level pages
+- index.html (homepage, the calculator)
+- privacy.html
+- terms.html
+- cookies.html
+- about.html
+- methodology.html
+- contact.html (form delivery uses Web3Forms; replace YOUR_WEB3FORMS_ACCESS_KEY before deploying)
 
 ## Data sources
 - Percentile tables (BMI and weight, by sex and age band) come from CDC NHANES 2015-2018, published as Vital Health Stat 3(46), 2021. URL: https://www.cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf

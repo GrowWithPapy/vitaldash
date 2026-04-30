@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0ea5e9" />
 
-  <title>Privacy Policy - VitalDash</title>
-  <meta name="description" content="VitalDash privacy policy. We don't collect your data on any server. Everything stays on your device." />
-  <link rel="canonical" href="https://vitaldash.io/privacy.html" />
+  <title>Methodology - All the formulas behind VitalDash</title>
+  <meta name="description" content="Every formula VitalDash uses, with source citations. WHO, CDC, Mifflin-St Jeor, Deurenberg, and more." />
+  <link rel="canonical" href="https://vitaldash.io/methodology.html" />
   <meta name="robots" content="index,follow" />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230ea5e9'/%3E%3Cpath d='M30 55 L42 67 L72 37' stroke='white' stroke-width='10' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Methodology - All the formulas behind VitalDash","description":"Every formula VitalDash uses, with source citations.","author":{"@type":"Person","name":"Gaston"},"publisher":{"@type":"Organization","name":"VitalDash"},"datePublished":"2026-04-30","dateModified":"2026-04-30"}
+  </script>
 
   <script>
     (function () {
@@ -43,13 +47,13 @@
   <style>
     body { font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
     .legal h1 { font-size: 2rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem; }
-    .legal h2 { font-size: 1.25rem; font-weight: 600; margin-top: 1.75rem; margin-bottom: 0.5rem; color: #0f172a; }
-    .dark .legal h2 { color: #f1f5f9; }
+    .legal h2 { font-size: 1.35rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.5rem; color: #0f172a; padding-top: 0.5rem; border-top: 1px solid #e2e8f0; }
+    .legal h2:first-of-type { border-top: 0; padding-top: 0; }
+    .dark .legal h2 { color: #f1f5f9; border-color: #334155; }
     .legal h3 { font-size: 1.05rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.4rem; color: #0f172a; }
     .dark .legal h3 { color: #f1f5f9; }
     .legal p { margin-bottom: 0.75rem; line-height: 1.65; }
     .legal ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
-    .legal ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 0.75rem; }
     .legal li { margin-bottom: 0.3rem; line-height: 1.55; }
     .legal a { color: #0284c7; }
     .dark .legal a { color: #38bdf8; }
@@ -63,8 +67,10 @@
     .dark .legal code { background: rgba(255,255,255,0.08); }
     .legal strong { font-weight: 600; color: #0f172a; }
     .dark .legal strong { color: #f1f5f9; }
-    .updated { color: #64748b; font-style: italic; font-size: 0.875rem; margin-bottom: 1.5rem; }
-    .dark .updated { color: #94a3b8; }
+    .formula { background: #f8fafc; border-left: 3px solid #0ea5e9; padding: 0.75rem 1rem; margin: 0.5rem 0 1rem; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9rem; }
+    .dark .formula { background: #1e293b; }
+    .citation { font-size: 0.85rem; color: #475569; margin-bottom: 0.5rem; }
+    .dark .citation { color: #94a3b8; }
   </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-full transition-colors">
@@ -94,61 +100,110 @@
 
   <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
     <article class="legal">
-      <h1>Privacy Policy</h1>
-      <p class="updated">Last updated: April 30, 2026</p>
+      <h1>Methodology</h1>
+      <p>Every number on VitalDash comes from a published, peer-reviewed source. Here's the full list, with the original citations and the actual formulas.</p>
 
-      <h2>Who we are</h2>
-      <p>VitalDash is run by Gaston, a private individual based in Belgium. We are not a registered company. You can reach us via the contact form at <a href="/contact.html">/contact.html</a>.</p>
-
-      <h2>What data we collect</h2>
-      <p>None. Seriously. VitalDash runs entirely in your browser. We do not have a server that stores your information. We do not track you. We do not have an account system.</p>
-      <p>The only data that exists is what your browser saves locally on your own device through localStorage:</p>
+      <h2>BMI (Body Mass Index)</h2>
+      <p><strong>Formula:</strong></p>
+      <div class="formula">BMI = weight (kg) ÷ height (m)²</div>
+      <p><strong>Categories</strong> (World Health Organization):</p>
       <ul>
-        <li>Theme preference (light or dark)</li>
-        <li>Unit preference (metric or imperial)</li>
-        <li>Cookie consent choice</li>
-        <li>Saved profiles you create</li>
-        <li>Weight log entries you make</li>
+        <li>Under 18.5: Underweight</li>
+        <li>18.5 to 24.9: Normal</li>
+        <li>25.0 to 29.9: Overweight</li>
+        <li>30.0 and above: Obese</li>
       </ul>
-      <p>This data never leaves your device. We cannot see it. Clearing your browser storage deletes it permanently.</p>
+      <p class="citation"><strong>Source:</strong> World Health Organization, "Obesity: Preventing and Managing the Global Epidemic," 2000.</p>
+      <p><strong>Limitations:</strong> BMI doesn't distinguish muscle from fat. It can mislabel athletic people as "overweight" and people with low muscle mass but normal weight as "healthy." See our <a href="/">BMI Reality Check</a> for the workaround.</p>
 
-      <h2>Cookies and similar technologies</h2>
-      <p>See our <a href="/cookies.html">Cookie Policy</a> for details. In short: we use only essential localStorage entries for the features above. No tracking cookies, no analytics until you consent.</p>
+      <h2>BMR (Basal Metabolic Rate)</h2>
+      <p><strong>Formula:</strong> Mifflin-St Jeor equation (1990)</p>
+      <div class="formula">
+        Male: BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5<br>
+        Female: BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age − 161
+      </div>
+      <p class="citation"><strong>Source:</strong> Mifflin MD, St Jeor ST, Hill LA, et al. "A new predictive equation for resting energy expenditure in healthy individuals." American Journal of Clinical Nutrition. 1990;51(2):241-247.</p>
+      <p><strong>Why this and not Harris-Benedict?</strong> Mifflin-St Jeor was developed on a more diverse modern sample and is roughly 5% more accurate for most adults. The American Dietetic Association recommended it as the standard in 2005.</p>
 
-      <h2>Third-party services</h2>
-      <p>The site loads some resources from external CDNs to function:</p>
+      <h2>TDEE (Total Daily Energy Expenditure)</h2>
+      <p><strong>Formula:</strong></p>
+      <div class="formula">TDEE = BMR × activity multiplier</div>
+      <p><strong>Multipliers used:</strong></p>
       <ul>
-        <li><strong>Tailwind CSS</strong> (cdn.tailwindcss.com), styling library</li>
-        <li><strong>Chart.js</strong> (cdnjs.cloudflare.com), chart rendering</li>
-        <li><strong>Google Fonts</strong> (fonts.googleapis.com), the Inter typeface</li>
-        <li><strong>Unsplash images</strong> (images.unsplash.com), product photos in the recommendations section</li>
+        <li>Sedentary (desk job, no exercise): 1.2</li>
+        <li>Light (exercise 1 to 3 days/week): 1.375</li>
+        <li>Moderate (exercise 3 to 5 days/week): 1.55</li>
+        <li>Active (exercise 6 to 7 days/week): 1.725</li>
+        <li>Athlete (twice-daily training): 1.9</li>
       </ul>
-      <p>When your browser loads these, the providers see standard request data: your IP address, browser type, and the time of the request. We have no control over their data practices. Review their privacy policies if needed.</p>
-      <p>When you click an Amazon affiliate link, you are sent to amazon.com. Amazon's privacy policy applies from that moment.</p>
-      <p>If we add Google AdSense, this section will be updated and the cookie banner will offer a real choice.</p>
+      <p class="citation"><strong>Source:</strong> Frankenfield D, Roth-Yousey L, Compher C. "Comparison of predictive equations for resting metabolic rate." Journal of the American Dietetic Association. 2005;105(5):775-789.</p>
 
-      <h2>Your rights under GDPR</h2>
-      <p>As an EU resident, you have rights including:</p>
+      <h2>Body Fat Percentage (estimate)</h2>
+      <p>When you don't enter your measured body fat, we estimate using the <strong>Deurenberg formula (1991)</strong>:</p>
+      <div class="formula">Body Fat % = 1.20 × BMI + 0.23 × age − 10.8 × sex − 5.4</div>
+      <p>(sex: male = 1, female = 0; "other" gender uses an average)</p>
+      <p class="citation"><strong>Source:</strong> Deurenberg P, Weststrate JA, Seidell JC. "Body mass index as a measure of body fatness: age- and sex-specific prediction formulas." British Journal of Nutrition. 1991;65(2):105-114.</p>
+      <p><strong>Limitations:</strong> This is an approximation with a typical error of ±4% body fat. For accuracy use:</p>
       <ul>
-        <li><strong>Access</strong> the data we hold about you</li>
-        <li><strong>Rectify</strong> incorrect data</li>
-        <li><strong>Erase</strong> your data</li>
-        <li><strong>Restrict</strong> processing</li>
-        <li><strong>Portability</strong> of your data</li>
-        <li><strong>Object</strong> to processing</li>
+        <li>DEXA scan (gold standard)</li>
+        <li>Bioelectrical impedance (BIA), reasonable accuracy</li>
+        <li>Skinfold calipers with a trained operator</li>
+        <li>Hydrostatic weighing</li>
       </ul>
-      <p>Since we don't store your data on our servers, most of these are exercised directly through your browser.</p>
-      <p><strong>To delete all VitalDash data</strong>, open your browser's developer tools (F12), go to Application &gt; Storage &gt; Local Storage, find "vitaldash.io" and delete everything. Or clear cookies and site data for this domain through your browser settings.</p>
-      <p>If you have questions or believe we've handled something wrongly, contact us. You also have the right to lodge a complaint with the Belgian Data Protection Authority (<a href="https://www.autoriteprotectiondonnees.be" target="_blank" rel="noopener">autoriteprotectiondonnees.be</a>).</p>
+      <p><strong>Body fat ranges</strong> (American Council on Exercise):</p>
+      <table>
+        <thead>
+          <tr><th>Category</th><th>Men</th><th>Women</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Essential</td><td>2 to 5%</td><td>10 to 13%</td></tr>
+          <tr><td>Athletes</td><td>6 to 13%</td><td>14 to 20%</td></tr>
+          <tr><td>Fitness</td><td>14 to 17%</td><td>21 to 24%</td></tr>
+          <tr><td>Average</td><td>18 to 24%</td><td>25 to 31%</td></tr>
+          <tr><td>Obese</td><td>25%+</td><td>32%+</td></tr>
+        </tbody>
+      </table>
 
-      <h2>Children</h2>
-      <p>This site is not directed at children under 16. Health and weight calculations for minors should involve a parent, guardian, or healthcare provider. We do not knowingly collect any data from children.</p>
+      <h2>Ideal Weight Range</h2>
+      <p><strong>Formula:</strong> weight at BMI 18.5 to 24.9 for the user's height.</p>
+      <div class="formula">
+        Min = 18.5 × height(m)²<br>
+        Max = 24.9 × height(m)²
+      </div>
+      <p class="citation"><strong>Source:</strong> Same WHO BMI categories above.</p>
 
-      <h2>Changes to this policy</h2>
-      <p>If we materially change how we handle data, the date at the top updates and the cookie banner re-prompts where appropriate.</p>
+      <h2>Daily Calorie Targets</h2>
+      <ul>
+        <li><strong>Lose fat:</strong> TDEE − 500 kcal/day. This produces roughly 0.45 kg (1 lb) of fat loss per week, the rate considered safely sustainable by most clinical guidelines.</li>
+        <li><strong>Maintain:</strong> TDEE</li>
+        <li><strong>Build muscle:</strong> TDEE + 300 kcal/day. A "lean bulk" surplus that minimizes fat gain while supporting muscle synthesis.</li>
+      </ul>
+      <p class="citation"><strong>Source:</strong> Helms ER, Aragon AA, Fitschen PJ. "Evidence-based recommendations for natural bodybuilding contest preparation: nutrition and supplementation." Journal of the International Society of Sports Nutrition. 2014;11:20.</p>
 
-      <h2>Contact</h2>
-      <p>Questions about privacy: use the form at <a href="/contact.html">/contact.html</a>.</p>
+      <h2>Macro Splits</h2>
+      <p>Goal-adjusted, with a hard floor of 1.6 g/kg bodyweight for protein.</p>
+      <table>
+        <thead>
+          <tr><th>Goal</th><th>Protein</th><th>Carbs</th><th>Fat</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Lose fat</td><td>40%</td><td>35%</td><td>25%</td></tr>
+          <tr><td>Maintain</td><td>30%</td><td>40%</td><td>30%</td></tr>
+          <tr><td>Build muscle</td><td>30%</td><td>45%</td><td>25%</td></tr>
+        </tbody>
+      </table>
+      <p class="citation"><strong>Protein floor source:</strong> Jäger R, Kerksick CM, Campbell BI, et al. "International Society of Sports Nutrition Position Stand: protein and exercise." Journal of the International Society of Sports Nutrition. 2017;14:20.</p>
+
+      <h2>Goal Projection</h2>
+      <p><strong>Formula:</strong></p>
+      <div class="formula">Weeks to goal = (current weight − goal weight) ÷ ((daily calorie target − total daily burn) × 7 ÷ 7700)</div>
+      <p>Where 7,700 kcal is approximately 1 kg of body fat (a refinement of the original Wishnofsky 1958 estimate).</p>
+      <p><strong>Limitations:</strong> This assumes linear weight loss, which doesn't happen in reality. Water weight fluctuates. Metabolic adaptation slows progress over months. Plateaus are normal. Use the projection as a planning estimate, not a guarantee.</p>
+
+      <h2>Percentile Rankings</h2>
+      <p class="citation"><strong>Source:</strong> CDC Vital and Health Statistics Series 3, Number 46 (2021): "Anthropometric Reference Data for Children and Adults: United States, 2015-2018."</p>
+      <p>We use the published percentile tables for BMI and weight by sex and three age bands (20 to 39, 40 to 59, 60+), then interpolate linearly between table points to get any specific value. Available at: <a href="https://www.cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf" target="_blank" rel="noopener">cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf</a></p>
+      <p><strong>Limitation:</strong> The dataset is US-only. International users will see slightly skewed percentiles relative to their own country.</p>
     </article>
   </main>
 
