@@ -21,8 +21,8 @@
 
         <!-- BMI card with reality check inline -->
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
-          <div class="flex items-start justify-between mb-4">
-            <div>
+          <div class="flex items-start justify-between mb-4 gap-4">
+            <div class="flex-1 min-w-0">
               <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Body Mass Index</p>
               <div class="flex items-baseline gap-2 mt-1">
                 <span id="bmi-value" class="text-4xl font-bold tabular-nums">22.9</span>
@@ -30,10 +30,22 @@
               </div>
               <p id="bmi-explainer" class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 max-w-md">You're in the healthy range.</p>
             </div>
-            <span class="tooltip">
-              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              <span class="tooltip-content">BMI = weight (kg) ÷ height (m)². WHO standard. Doesn't distinguish muscle from fat.</span>
-            </span>
+            <div class="flex items-start gap-2 shrink-0">
+              <svg id="body-silhouette" viewBox="0 0 50 100" class="w-12 h-20 transition-colors text-emerald-400" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Body silhouette visual representation" role="img">
+                <circle cx="25" cy="9" r="5"/>
+                <g id="silhouette-body">
+                  <path id="silhouette-torso" d="M17 18 Q14 30 15 38 Q14 48 18 55 L32 55 Q36 48 35 38 Q36 30 33 18 Z" fill="currentColor" fill-opacity="0.14"/>
+                  <path d="M17 19 Q11 38 13 56"/>
+                  <path d="M33 19 Q39 38 37 56"/>
+                  <path d="M20 55 L19 95"/>
+                  <path d="M30 55 L31 95"/>
+                </g>
+              </svg>
+              <span class="tooltip">
+                <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span class="tooltip-content">BMI = weight (kg) ÷ height (m)². WHO standard. Doesn't distinguish muscle from fat.</span>
+              </span>
+            </div>
           </div>
           <div class="relative pt-6 pb-1">
             <div class="h-2 rounded-full overflow-hidden flex">

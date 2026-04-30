@@ -101,6 +101,19 @@
     }).join('');
   }
 
+  // ============= BODY SILHOUETTE =============
+  const SILHOUETTE_COLORS = { blue:'#60a5fa', emerald:'#34d399', amber:'#fbbf24', red:'#f87171' };
+
+  // Body fat thresholds differ by sex; 'other' uses male thresholds.
+  function silhouetteScale(bf, gender) {
+    const female = gender === 'female';
+    const lowThresh = female ? 22 : 15;
+    const highThresh = female ? 32 : 25;
+    if (bf < lowThresh) return 0.85;
+    if (bf <= highThresh) return 1.0;
+    return Math.min(1.5, 1.0 + (bf - highThresh) * 0.025);
+  }
+
   // ============= MAIN RENDER =============
   function render() {
     // Slider fills + input displays
@@ -152,6 +165,16 @@
     $('bmi-marker').style.left = `${Math.max(0, Math.min(100, ((bmi - 15) / 25) * 100))}%`;
 
     renderRealityCheck(bmi, cat, bf, bfCat, state.gender, hasUserBf);
+
+    // Body silhouette
+    const torsoEl = $('silhouette-torso');
+    const silhouetteEl = $('body-silhouette');
+    if (torsoEl && silhouetteEl) {
+      torsoEl.style.transformOrigin = '25px 50px';
+      torsoEl.style.transition = 'transform 0.4s ease';
+      torsoEl.style.transform = `scaleX(${silhouetteScale(bf, state.gender)})`;
+      silhouetteEl.style.color = SILHOUETTE_COLORS[cat.color] || SILHOUETTE_COLORS.emerald;
+    }
 
     // Stat cards
     $('bmr-value').textContent  = Math.round(bmr).toLocaleString();
