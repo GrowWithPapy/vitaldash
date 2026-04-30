@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0ea5e9" />
+
+  <title>VitalDash — Health Calculator</title>
+  <meta name="description" content="The only health calculator that goes beyond numbers. Get instant BMI, BMR, TDEE, body-fat-adjusted reality check, percentile context, and a personalized 7-day plan. Free, private, no signup." />
+  <meta name="keywords" content="BMI calculator, BMR calculator, TDEE calculator, macro calculator, goal projection, body fat calculator" />
+  <link rel="canonical" href="https://vitaldash.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="VitalDash — Health Calculator with Goal Projection & Reality Check" />
+  <meta property="og:description" content="Beyond BMI. See where you rank, when you'll hit your goal, and what to do today." />
+  <meta property="og:url" content="https://vitaldash.app/" />
+  <meta property="og:image" content="https://vitaldash.app/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"VitalDash","applicationCategory":"HealthApplication","operatingSystem":"Any","description":"All-in-one health calculator with goal projection, percentile context, BMI reality check, and personalized 7-day plan.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230ea5e9'/%3E%3Cpath d='M30 55 L42 67 L72 37' stroke='white' stroke-width='10' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      safelist: [
+        'bg-blue-100','text-blue-700','dark:bg-blue-900/40','dark:text-blue-300',
+        'bg-emerald-100','text-emerald-700','dark:bg-emerald-900/40','dark:text-emerald-300',
+        'bg-amber-100','text-amber-700','dark:bg-amber-900/40','dark:text-amber-300',
+        'bg-red-100','text-red-700','dark:bg-red-900/40','dark:text-red-300',
+      ],
+      theme: {
+        extend: {
+          colors: { brand: { 50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e' } },
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','Segoe UI','sans-serif'] },
+          animation: { 'fade-in':'fadeIn 0.4s ease-out', 'slide-up':'slideUp 0.5s cubic-bezier(0.16,1,0.3,1)' },
+          keyframes: {
+            fadeIn:{'0%':{opacity:'0'},'100%':{opacity:'1'}},
+            slideUp:{'0%':{opacity:'0',transform:'translateY(12px)'},'100%':{opacity:'1',transform:'translateY(0)'}}
+          }
+        }
+      }
+    };
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
+    input[type="range"] { -webkit-appearance:none; appearance:none; background:transparent; cursor:pointer; width:100%; }
+    input[type="range"]::-webkit-slider-runnable-track { height:6px; background:linear-gradient(to right,#0ea5e9 var(--pct,50%),#e2e8f0 var(--pct,50%)); border-radius:999px; }
+    .dark input[type="range"]::-webkit-slider-runnable-track { background:linear-gradient(to right,#0ea5e9 var(--pct,50%),#334155 var(--pct,50%)); }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; height:18px; width:18px; border-radius:50%; background:white; border:2px solid #0ea5e9; margin-top:-6px; box-shadow:0 1px 3px rgba(0,0,0,0.15); transition:transform 0.15s; }
+    input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.15); }
+    input[type="range"]::-moz-range-track { height:6px; background:#e2e8f0; border-radius:999px; }
+    input[type="range"]::-moz-range-thumb { height:18px; width:18px; border-radius:50%; background:white; border:2px solid #0ea5e9; box-shadow:0 1px 3px rgba(0,0,0,0.15); }
+    input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+    input[type="number"] { -moz-appearance:textfield; }
+
+    ::-webkit-scrollbar { width:8px; height:8px; }
+    ::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:4px; }
+    .dark ::-webkit-scrollbar-thumb { background:#475569; }
+
+    .tooltip { position:relative; display:inline-flex; }
+    .tooltip-content { visibility:hidden; opacity:0; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:#0f172a; color:white; padding:8px 12px; border-radius:8px; font-size:12px; line-height:1.4; font-weight:400; white-space:normal; width:max-content; max-width:240px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:50; transition:opacity 0.15s; pointer-events:none; }
+    .tooltip:hover .tooltip-content, .tooltip:focus-within .tooltip-content { visibility:visible; opacity:1; }
+    .tooltip-content::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:#0f172a; }
+
+    .aff-card { transition: transform 0.2s, border-color 0.2s; }
+    .aff-card:hover { transform: translateY(-2px); border-color: #0ea5e9; }
+    .plan-day { transition: background 0.15s; }
+    .plan-day:hover { background: rgba(14,165,233,0.04); }
+    .dark .plan-day:hover { background: rgba(14,165,233,0.08); }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-full transition-colors">
+  <header class="sticky top-0 z-40 backdrop-blur-lg bg-white/70 dark:bg-slate-950/70 border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-sm">
+          <svg viewBox="0 0 24 24" class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg leading-none">VitalDash</h1>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-none mt-0.5">Beyond the numbers</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="hidden sm:flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-0.5 text-xs font-medium">
+          <button id="unit-metric" class="px-3 py-1.5 rounded-md transition-all" aria-pressed="true">Metric</button>
+          <button id="unit-imperial" class="px-3 py-1.5 rounded-md transition-all" aria-pressed="false">Imperial</button>
+        </div>
+        <button id="share-btn" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share
+        </button>
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors" aria-label="Toggle dark mode">
+          <svg class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <svg class="w-4 h-4 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+    <section class="mb-8 sm:mb-10 animate-fade-in">
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-2">Beyond the numbers.</h2>
+      <p class="text-slate-600 dark:text-slate-400 max-w-xl">
+        Every other calculator gives you BMI and walks away. We tell you where you rank, when you'll hit your goal, and what to do tomorrow morning.
+      </p>
+    </section>
+
+    <div class="grid lg:grid-cols-[380px_1fr] gap-6 lg:gap-8">
+
+      <aside class="lg:sticky lg:top-20 lg:self-start space-y-4">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+          <h3 class="font-semibold mb-5 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>Your details</h3>
+
+          <div class="space-y-4">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="age" class="text-sm font-medium">Age</label>
+                <span id="age-out" class="text-sm font-semibold text-brand-600 dark:text-brand-400">30</span>
+              </div>
+              <input type="range" id="age" min="15" max="90" value="30" step="1" />
+            </div>
+
+            <div>
+              <label class="text-sm font-medium mb-1.5 block">Gender</label>
+              <div class="grid grid-cols-3 gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg text-xs font-medium">
+                <button data-gender="male"   class="gender-btn px-2 py-2 rounded-md transition-all">Male</button>
+                <button data-gender="female" class="gender-btn px-2 py-2 rounded-md transition-all">Female</button>
+                <button data-gender="other"  class="gender-btn px-2 py-2 rounded-md transition-all">Other</button>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="text-sm font-medium">Height</label>
+                <span id="height-out" class="text-sm font-semibold text-brand-600 dark:text-brand-400">175 cm</span>
+              </div>
+              <div id="height-metric"><input type="range" id="height-cm" min="120" max="220" value="175" step="1" /></div>
+              <div id="height-imperial" class="hidden grid grid-cols-2 gap-2">
+                <div>
+                  <input type="number" id="height-ft" min="3" max="8" value="5" class="w-full px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none" />
+                  <span class="text-xs text-slate-500 mt-0.5 block">feet</span>
+                </div>
+                <div>
+                  <input type="number" id="height-in" min="0" max="11" value="9" class="w-full px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none" />
+                  <span class="text-xs text-slate-500 mt-0.5 block">inches</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="weight" class="text-sm font-medium">Weight</label>
+                <span id="weight-out" class="text-sm font-semibold text-brand-600 dark:text-brand-400">70 kg</span>
+              </div>
+              <input type="range" id="weight" min="35" max="200" value="70" step="0.5" />
+            </div>
+
+            <div>
+              <label for="activity" class="text-sm font-medium mb-1.5 block">Activity level</label>
+              <select id="activity" class="w-full px-3 py-2.5 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                <option value="1.2">Sedentary — desk job, no exercise</option>
+                <option value="1.375">Light — exercise 1–3 days/week</option>
+                <option value="1.55" selected>Moderate — exercise 3–5 days/week</option>
+                <option value="1.725">Active — exercise 6–7 days/week</option>
+                <option value="1.9">Athlete — twice-daily training</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="text-sm font-medium mb-1.5 block">Goal</label>
+              <div class="grid grid-cols-3 gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg text-xs font-medium">
+                <button data-goal="lose"     class="goal-btn px-2 py-2 rounded-md transition-all">Lose fat</button>
+                <button data-goal="maintain" class="goal-btn px-2 py-2 rounded-md transition-all">Maintain</button>
+                <button data-goal="build"    class="goal-btn px-2 py-2 rounded-md transition-all">Build</button>
+              </div>
+            </div>
+
+            <details class="group">
+              <summary class="cursor-pointer text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 flex items-center gap-1 select-none">
+                <svg class="w-3.5 h-3.5 transition-transform group-open:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                Body fat % (optional, improves accuracy)
+              </summary>
+              <div class="mt-3">
+                <div class="flex items-center justify-between mb-1.5">
+                  <label class="text-xs text-slate-500">Set if measured (DEXA, calipers, BIA)</label>
+                  <span id="bf-out" class="text-sm font-semibold text-brand-600 dark:text-brand-400">auto</span>
+                </div>
+                <input type="range" id="bodyfat" min="0" max="50" value="0" step="0.5" />
+                <p class="text-[11px] text-slate-500 mt-1">Set to 0 to use auto-estimate. Knowing your real body fat unlocks the BMI Reality Check.</p>
+              </div>
+            </details>
+
+            <details class="group">
+              <summary class="cursor-pointer text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 flex items-center gap-1 select-none">
+                <svg class="w-3.5 h-3.5 transition-transform group-open:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                Goal weight (for projection)
+              </summary>
+              <div class="mt-3">
+                <div class="flex items-center justify-between mb-1.5">
+                  <label class="text-xs text-slate-500">Target weight</label>
+                  <span id="goal-weight-out" class="text-sm font-semibold text-brand-600 dark:text-brand-400">— kg</span>
+                </div>
+                <input type="range" id="goal-weight" min="35" max="200" value="65" step="0.5" />
+                <p class="text-[11px] text-slate-500 mt-1">We'll show when you'll hit it at your current target.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-semibold text-sm">Profiles</h3>
+            <button id="save-profile" class="text-xs font-medium text-brand-600 dark:text-brand-400 hover:underline">+ Save current</button>
+          </div>
+          <div id="profiles-list" class="space-y-1.5 text-xs">
+            <p class="text-slate-500 dark:text-slate-400 italic">No saved profiles yet.</p>
+          </div>
+        </div>
+
+        <div class="hidden lg:block">
+          <div class="bg-slate-100 dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-4 text-center">
+            <p class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Advertisement</p>
+            <div class="h-32 flex items-center justify-center text-slate-400 text-xs">Ad slot 300×250</div>
+          </div>
+        </div>
+      </aside>
+      <section class="space-y-5">
+
+        <!-- DIFFERENTIATOR #1 — GOAL PROJECTION HERO -->
+        <div class="bg-gradient-to-br from-brand-500 to-brand-700 dark:from-brand-600 dark:to-brand-800 rounded-2xl p-5 sm:p-6 text-white shadow-sm relative overflow-hidden animate-slide-up">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <p class="text-xs font-medium uppercase tracking-wider opacity-90">Your projection</p>
+              <p id="projection-headline" class="text-2xl sm:text-3xl font-bold mt-1 leading-tight">Set a goal weight to see your timeline</p>
+            </div>
+            <span class="tooltip">
+              <svg class="w-4 h-4 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <span class="tooltip-content">Based on 7,700 kcal ≈ 1 kg fat. Real progress varies — water weight, adherence, metabolic adaptation.</span>
+            </span>
+          </div>
+          <div class="grid grid-cols-3 gap-3 sm:gap-4 mt-5 text-sm">
+            <div><p class="text-[10px] uppercase tracking-wider opacity-75">Weekly rate</p><p class="text-lg sm:text-xl font-bold tabular-nums" id="proj-rate">—</p></div>
+            <div><p class="text-[10px] uppercase tracking-wider opacity-75">Time to goal</p><p class="text-lg sm:text-xl font-bold tabular-nums" id="proj-time">—</p></div>
+            <div><p class="text-[10px] uppercase tracking-wider opacity-75">Goal date</p><p class="text-lg sm:text-xl font-bold tabular-nums" id="proj-date">—</p></div>
+          </div>
+        </div>
+
+        <!-- BMI card with reality check inline -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Body Mass Index</p>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span id="bmi-value" class="text-4xl font-bold tabular-nums">22.9</span>
+                <span id="bmi-category" class="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Normal</span>
+              </div>
+              <p id="bmi-explainer" class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 max-w-md">You're in the healthy range.</p>
+            </div>
+            <span class="tooltip">
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span class="tooltip-content">BMI = weight (kg) ÷ height (m)². WHO standard. Doesn't distinguish muscle from fat.</span>
+            </span>
+          </div>
+          <div class="relative pt-6 pb-1">
+            <div class="h-2 rounded-full overflow-hidden flex">
+              <div class="bg-blue-400 flex-1"></div><div class="bg-emerald-400 flex-[1.6]"></div><div class="bg-amber-400 flex-1"></div><div class="bg-red-400 flex-1"></div>
+            </div>
+            <div id="bmi-marker" class="absolute top-3 -translate-x-1/2 transition-all duration-500 ease-out" style="left:45%;">
+              <svg class="w-3 h-3 text-slate-900 dark:text-white" viewBox="0 0 12 12"><polygon points="6,12 0,0 12,0" fill="currentColor"/></svg>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-500 mt-1.5 font-medium tabular-nums">
+              <span>15</span><span>18.5</span><span>25</span><span>30</span><span>40</span>
+            </div>
+          </div>
+          <!-- DIFFERENTIATOR #2 — REALITY CHECK -->
+          <div id="reality-check" class="mt-5 hidden"></div>
+        </div>
+
+        <!-- Stat grid with percentile chips (DIFFERENTIATOR #3) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+            <div class="flex items-center gap-1.5 mb-1">
+              <svg class="w-3.5 h-3.5 text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400">BMR</p>
+              <span class="tooltip ml-auto">
+                <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span class="tooltip-content">Calories burned at rest. Mifflin-St Jeor (1990).</span>
+              </span>
+            </div>
+            <p class="text-2xl font-bold tabular-nums" id="bmr-value">1,650</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">kcal/day at rest</p>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1.5" id="bmr-percentile"></p>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+            <div class="flex items-center gap-1.5 mb-1">
+              <svg class="w-3.5 h-3.5 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 13 10 21 10"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/></svg>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400">TDEE</p>
+              <span class="tooltip ml-auto">
+                <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span class="tooltip-content">Total daily calorie burn — BMR × activity.</span>
+              </span>
+            </div>
+            <p class="text-2xl font-bold tabular-nums" id="tdee-value">2,558</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">kcal/day total</p>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1.5" id="tdee-percentile"></p>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+            <div class="flex items-center gap-1.5 mb-1">
+              <svg class="w-3.5 h-3.5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Body fat</p>
+              <span class="tooltip ml-auto">
+                <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span class="tooltip-content">Estimated using Deurenberg (1991).</span>
+              </span>
+            </div>
+            <p class="text-2xl font-bold tabular-nums"><span id="bf-value">18.2</span><span class="text-base text-slate-500 font-medium">%</span></p>
+            <p class="text-[11px] text-slate-500 mt-0.5" id="bf-source">est. (Deurenberg)</p>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1.5" id="bf-category"></p>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+            <div class="flex items-center gap-1.5 mb-1">
+              <svg class="w-3.5 h-3.5 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Ideal range</p>
+            </div>
+            <p class="text-2xl font-bold tabular-nums" id="ideal-value">57–77</p>
+            <p class="text-[11px] text-slate-500 mt-0.5" id="ideal-unit">kg</p>
+          </div>
+        </div>
+
+        <!-- Daily target + macros -->
+        <div class="grid md:grid-cols-2 gap-5">
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+            <p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Daily target</p>
+            <p class="text-xs text-slate-500 mt-0.5" id="goal-label">to maintain weight</p>
+            <p class="text-4xl sm:text-5xl font-bold tabular-nums mt-2 text-brand-600 dark:text-brand-400" id="target-value">2,558</p>
+            <p class="text-sm text-slate-500 mt-1">kcal per day</p>
+            <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 space-y-1" id="target-detail">
+              <p>Maintenance level — same as TDEE.</p>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Macro split</p>
+              <span class="tooltip">
+                <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span class="tooltip-content">Goal-adjusted. Protein floor: 1.6 g/kg (ISSN 2017).</span>
+              </span>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="relative w-24 h-24 shrink-0"><canvas id="macro-chart" aria-label="Macronutrient breakdown"></canvas></div>
+              <div class="flex-1 space-y-2 text-sm">
+                <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-rose-500"></span>Protein</span><span class="tabular-nums font-semibold"><span id="macro-p-g">192</span>g <span class="text-slate-400 text-xs">(<span id="macro-p-pct">30</span>%)</span></span></div>
+                <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500"></span>Carbs</span><span class="tabular-nums font-semibold"><span id="macro-c-g">256</span>g <span class="text-slate-400 text-xs">(<span id="macro-c-pct">40</span>%)</span></span></div>
+                <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-sky-500"></span>Fat</span><span class="tabular-nums font-semibold"><span id="macro-f-g">85</span>g <span class="text-slate-400 text-xs">(<span id="macro-f-pct">30</span>%)</span></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weight vs ideal -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-sm">Weight vs ideal range</h3>
+            <span id="weight-delta" class="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">on target</span>
+          </div>
+          <div class="relative h-12">
+            <div id="ideal-bar" class="absolute top-1/2 -translate-y-1/2 h-3 bg-emerald-200 dark:bg-emerald-900/50 rounded-full" style="left:30%;width:30%;"></div>
+            <div class="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-3 border-t border-b border-slate-200 dark:border-slate-700 rounded-full"></div>
+            <div id="weight-marker" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-500 ease-out" style="left:50%;">
+              <div class="w-4 h-4 rounded-full bg-brand-500 border-2 border-white dark:border-slate-900 shadow-md"></div>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 flex justify-between text-[10px] text-slate-500 tabular-nums">
+              <span id="scale-min">35</span><span id="scale-max">200</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIFFERENTIATOR #4 — 7-DAY PLAN -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <details open>
+            <summary class="cursor-pointer p-5 sm:p-6 list-none flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-brand-600 dark:text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-sm">Your 7-day starter plan</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" id="plan-subtitle">Built around your numbers</p>
+                </div>
+              </div>
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-slate-100 dark:border-slate-800">
+              <div id="plan-days" class="divide-y divide-slate-100 dark:divide-slate-800"></div>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 italic mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">A starter framework, not medical advice. Adjust to your schedule.</p>
+            </div>
+          </details>
+        </div>
+
+        <!-- AFFILIATE ROW -->
+        <div class="bg-slate-100 dark:bg-slate-900/50 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800">
+          <div class="mb-4">
+            <h3 class="font-semibold text-sm">Recommended for your goal</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Hand-picked, no fluff. <span class="text-slate-400">Affiliate links — we earn a small commission at no cost to you.</span></p>
+          </div>
+          <div id="affiliate-row" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+        </div>
+
+        <!-- What-if + history -->
+        <div class="grid md:grid-cols-2 gap-5">
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+            <h3 class="font-semibold text-sm mb-1">What if?</h3>
+            <p class="text-xs text-slate-500 mb-4">Simulate a weight change.</p>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-medium">Hypothetical weight</label>
+              <span id="whatif-weight-out" class="text-xs font-semibold text-brand-600 dark:text-brand-400">70 kg</span>
+            </div>
+            <input type="range" id="whatif-weight" min="35" max="200" value="70" step="0.5" />
+            <div class="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 text-sm">
+              <div><p class="text-[10px] text-slate-500 uppercase tracking-wider">New TDEE</p><p id="whatif-tdee" class="font-bold tabular-nums">2,558 kcal</p></div>
+              <div><p class="text-[10px] text-slate-500 uppercase tracking-wider">vs current</p><p id="whatif-delta" class="font-bold tabular-nums">±0 kcal</p></div>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-semibold text-sm">Weight log</h3>
+              <button id="log-weight" class="text-xs font-medium text-brand-600 dark:text-brand-400 hover:underline">+ Log today</button>
+            </div>
+            <div class="relative h-32"><canvas id="history-chart" aria-label="Weight history"></canvas></div>
+            <p id="log-empty" class="text-xs text-slate-500 italic mt-2">No entries yet. Log today to start tracking.</p>
+          </div>
+        </div>
+
+        <!-- Educational footer -->
+        <div class="bg-slate-100 dark:bg-slate-900/50 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800">
+          <h3 class="font-semibold text-sm mb-3">How VitalDash works</h3>
+          <div class="grid sm:grid-cols-2 gap-x-6 gap-y-3 text-xs text-slate-600 dark:text-slate-400">
+            <p><strong class="text-slate-900 dark:text-slate-200">BMI</strong> follows the WHO standard. Screening tool, not diagnostic.</p>
+            <p><strong class="text-slate-900 dark:text-slate-200">BMR</strong> uses Mifflin-St Jeor (1990).</p>
+            <p><strong class="text-slate-900 dark:text-slate-200">Percentile</strong> data from CDC NHANES adult population norms.</p>
+            <p><strong class="text-slate-900 dark:text-slate-200">Body fat</strong> via Deurenberg (1991) when not provided.</p>
+            <p><strong class="text-slate-900 dark:text-slate-200">Projection</strong> assumes 7,700 kcal ≈ 1 kg fat.</p>
+            <p><strong class="text-slate-900 dark:text-slate-200">Macros</strong> use 1.6 g/kg protein floor (ISSN 2017).</p>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-4 italic">All calculations run in your browser. Nothing is sent to any server.</p>
+        </div>
+      </section>
+    </div>
+
+    <footer class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500">
+      <p>VitalDash © <span id="year"></span> · Educational use only · Not medical advice</p>
+      <p class="mt-1">Sources: WHO · CDC NHANES · Mifflin-St Jeor (1990) · Deurenberg (1991) · ISSN (2017)</p>
+      <p class="mt-2 text-[10px]">As an Amazon Associate we earn from qualifying purchases.</p>
+    </footer>
+  </main>
+
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2.5 bg-slate-900 dark:bg-white dark:text-slate-900 text-white text-sm rounded-lg shadow-xl opacity-0 pointer-events-none transition-opacity z-50 font-medium">Saved!</div>
+  <script>
+  // ============= STATE =============
+  const state = {
+    age: 30, gender: 'male',
+    heightCm: 175, weightKg: 70,
+    bodyFat: 0, activity: 1.55,
+    goal: 'maintain', units: 'metric',
+    whatIfWeight: 70, goalWeight: 0,
+  };
+
+  // ============= CALCULATIONS =============
+  function calcBMI(kg, cm) { const m = cm / 100; return kg / (m * m); }
+
+  function bmiCategory(bmi) {
+    if (bmi < 18.5) return { label:'Underweight', color:'blue',    note:'Below the healthy range. Consider a balanced caloric surplus and strength training.' };
+    if (bmi < 25)   return { label:'Normal',      color:'emerald', note:"You're in the healthy range. Maintain your current habits." };
+    if (bmi < 30)   return { label:'Overweight',  color:'amber',   note:'Slightly above the healthy range. A modest calorie deficit can help.' };
+    return            { label:'Obese',       color:'red',     note:'Significantly above the healthy range. Consult a doctor for personalised guidance.' };
+  }
+
+  function calcBMR(kg, cm, age, gender) {
+    const base = 10 * kg + 6.25 * cm - 5 * age;
+    if (gender === 'male')   return base + 5;
+    if (gender === 'female') return base - 161;
+    return base + (5 - 161) / 2;
+  }
+  function calcTDEE(bmr, activity) { return bmr * activity; }
+
+  function estimateBodyFat(bmi, age, gender) {
+    if (gender === 'other') {
+      const m = 1.20 * bmi + 0.23 * age - 10.8 - 5.4;
+      const f = 1.20 * bmi + 0.23 * age - 5.4;
+      return (m + f) / 2;
+    }
+    const sex = gender === 'male' ? 1 : 0;
+    return 1.20 * bmi + 0.23 * age - 10.8 * sex - 5.4;
+  }
+
+  function bodyFatCategory(bf, gender) {
+    const ranges = gender === 'female'
+      ? [{max:14,label:'Essential'},{max:21,label:'Athletic'},{max:25,label:'Fit'},{max:32,label:'Average'},{max:100,label:'High'}]
+      : [{max:6, label:'Essential'},{max:14,label:'Athletic'},{max:18,label:'Fit'},{max:25,label:'Average'},{max:100,label:'High'}];
+    return ranges.find(r => bf <= r.max).label;
+  }
+
+  function idealWeightRange(cm) { const m = cm / 100; return { min: 18.5*m*m, max: 24.9*m*m }; }
+
+  function calcTarget(tdee, goal) {
+    if (goal === 'lose')  return { value:tdee-500, label:'to lose ~0.45 kg / 1 lb per week', detail:'500 kcal deficit. Sustainable rate of fat loss.' };
+    if (goal === 'build') return { value:tdee+300, label:'to build lean muscle',           detail:'300 kcal surplus. Lean bulk minimises fat gain.' };
+    return                  { value:tdee,            label:'to maintain weight',              detail:'Maintenance level — same as TDEE.' };
+  }
+
+  function macroSplit(goal) {
+    if (goal === 'lose')  return { p:0.40, c:0.35, f:0.25 };
+    if (goal === 'build') return { p:0.30, c:0.45, f:0.25 };
+    return                  { p:0.30, c:0.40, f:0.30 };
+  }
+
+  function macroGrams(targetKcal, split, weightKg) {
+    let pPct = split.p, cPct = split.c, fPct = split.f;
+    let pGrams = (targetKcal * pPct) / 4;
+    const proteinFloor = 1.6 * weightKg;
+    if (pGrams < proteinFloor) {
+      pGrams = proteinFloor;
+      const newPctP = (pGrams * 4) / targetKcal;
+      const remaining = 1 - newPctP;
+      const cfTotal = cPct + fPct;
+      cPct = (cPct / cfTotal) * remaining;
+      fPct = (fPct / cfTotal) * remaining;
+      pPct = newPctP;
+    }
+    return {
+      protein: { g: Math.round(pGrams),                  pct: Math.round(pPct * 100) },
+      carbs:   { g: Math.round((targetKcal * cPct) / 4), pct: Math.round(cPct * 100) },
+      fat:     { g: Math.round((targetKcal * fPct) / 9), pct: Math.round(fPct * 100) },
+    };
+  }
+
+  // ============= DIFFERENTIATOR #1 — GOAL PROJECTION =============
+  function projectGoal(currentKg, goalKg, tdee, target) {
+    if (!goalKg || goalKg === currentKg) return null;
+    const dailyDelta = target - tdee;
+    if (dailyDelta === 0) return null;
+    const weeklyKg = (dailyDelta * 7) / 7700;
+    const totalKg = goalKg - currentKg;
+    if (Math.sign(weeklyKg) !== Math.sign(totalKg)) return { possible: false };
+    const weeks = Math.abs(totalKg / weeklyKg);
+    const date = new Date();
+    date.setDate(date.getDate() + Math.round(weeks * 7));
+    return { possible: true, weeklyKg, weeks, date, totalKg };
+  }
+
+  // ============= DIFFERENTIATOR #3 — PERCENTILE LOOKUP =============
+  // CDC NHANES adult median TDEE estimates (moderately active)
+  const NHANES = { medianTDEE: { male: 2700, female: 2050 } };
+
+  function erf(x) {
+    const sign = Math.sign(x); x = Math.abs(x);
+    const a1=0.254829592, a2=-0.284496736, a3=1.421413741, a4=-1.453152027, a5=1.061405429, p=0.3275911;
+    const t = 1 / (1 + p * x);
+    const y = 1 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1) * t * Math.exp(-x*x);
+    return sign * y;
+  }
+  function percentile(value, median, sd) {
+    const z = (value - median) / sd;
+    return Math.round(50 * (1 + erf(z / Math.SQRT2)));
+  }
+  function tdeePercentile(tdee, gender) { return percentile(tdee, NHANES.medianTDEE[gender], 400); }
+  function bmrPercentile(bmr, gender) { return percentile(bmr, NHANES.medianTDEE[gender] / 1.55, 250); }
+
+  // ============= DIFFERENTIATOR #4 — 7-DAY PLAN =============
+  function buildPlan(goal, macros, activity, tdee) {
+    const proteinG = macros.protein.g;
+    const proteinPerMeal = Math.round(proteinG / 4);
+    const cardio = activity < 1.4 ? '20 min brisk walk' : activity < 1.6 ? '25 min run/cycle' : '35 min run/cycle';
+    const lifting = goal === 'build' ? 'Heavy compound lifts' : 'Full-body strength circuit';
+    const blurb = {
+      lose:     `Hit ${proteinG}g protein daily. Walk ${activity < 1.4 ? '8,000' : '10,000'} steps. Sleep 7+ hrs.`,
+      maintain: `Stay around ${Math.round(tdee)} kcal. Mix strength + cardio. Sleep matters.`,
+      build:    `${proteinG}g protein, ~${macros.carbs.g}g carbs. Lift heavy. Recover hard.`,
+    }[goal];
+    return {
+      blurb,
+      days: [
+        { day:'Mon', focus:'Upper body strength',    food:`${proteinPerMeal}g protein per meal`, action: lifting + ' — 45 min' },
+        { day:'Tue', focus:'Cardio + steps',          food:'High-fiber, lower carbs',             action: cardio },
+        { day:'Wed', focus:'Lower body strength',     food:'Whole-grain carbs around training',    action: lifting + ' (legs) — 45 min' },
+        { day:'Thu', focus:'Active recovery',         food:'Hydrate. Veg with every meal.',        action: '30 min walk + mobility' },
+        { day:'Fri', focus:'Full-body strength',      food:`${proteinPerMeal}g protein per meal`,  action: lifting + ' — 45 min' },
+        { day:'Sat', focus:'Long cardio + free meal', food:'1 planned indulgence — guilt-free',    action: '45–60 min walk/hike/cycle' },
+        { day:'Sun', focus:'Rest + meal prep',        food:'Cook 3 meals for the week ahead',      action: 'Full rest. Stretch 15 min.' },
+      ]
+    };
+  }
+
+  // ============= AFFILIATES =============
+  // Replace YOUR_TAG with your Amazon Associates tracking ID
+  const AMAZON_TAG = 'YOUR_TAG';
+  const a = (q) => `https://www.amazon.com/s?k=${encodeURIComponent(q)}&tag=${AMAZON_TAG}`;
+
+  const AFFILIATES = {
+    lose: [
+      { title:'Smart body-fat scale', desc:'Track weight + body composition trends.',  url:a('smart bathroom scale body fat') },
+      { title:'Whey protein powder',  desc:'Hit your protein floor without effort.',   url:a('whey protein powder') },
+      { title:'Resistance bands set', desc:'Cheap home strength training, anywhere.',  url:a('resistance bands set') },
+    ],
+    maintain: [
+      { title:'Smart bathroom scale', desc:'Catch trends before they become problems.',url:a('smart bathroom scale body fat') },
+      { title:'Daily multivitamin',   desc:'Cover micronutrient gaps in any diet.',     url:a('daily multivitamin') },
+      { title:'Adjustable kettlebell',desc:'One tool, full-body strength.',             url:a('adjustable kettlebell') },
+    ],
+    build: [
+      { title:'Whey protein powder',  desc:'__PROTEIN__ per day, easily.',              url:a('whey protein isolate 5lb') },
+      { title:'Creatine monohydrate', desc:'Cheapest proven muscle/strength supplement.',url:a('creatine monohydrate') },
+      { title:'Adjustable dumbbells', desc:'Progressive overload at home.',             url:a('adjustable dumbbells') },
+    ],
+  };
+
+  // ============= UNIT CONVERSIONS =============
+  const cmToFtIn = (cm) => { const t = cm/2.54; return { ft: Math.floor(t/12), in: Math.round(t%12) }; };
+  const ftInToCm = (ft, inch) => (ft*12 + inch) * 2.54;
+  const kgToLb = (kg) => kg * 2.20462;
+  const lbToKg = (lb) => lb / 2.20462;
+
+  // ============= PERSISTENCE =============
+  const STORAGE = { prefs:'vd_prefs', profiles:'vd_profiles', history:'vd_history' };
+  function loadPrefs() {
+    try {
+      const p = JSON.parse(localStorage.getItem(STORAGE.prefs)) || {};
+      if (p.units) state.units = p.units;
+      if (p.theme === 'dark') document.documentElement.classList.add('dark');
+      else if (p.theme === 'light') document.documentElement.classList.remove('dark');
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
+    } catch {}
+  }
+  function savePrefs() {
+    localStorage.setItem(STORAGE.prefs, JSON.stringify({
+      units: state.units,
+      theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
+    }));
+  }
+  const loadProfiles = () => { try { return JSON.parse(localStorage.getItem(STORAGE.profiles)) || []; } catch { return []; } };
+  const saveProfiles = (list) => localStorage.setItem(STORAGE.profiles, JSON.stringify(list));
+  const loadHistory  = () => { try { return JSON.parse(localStorage.getItem(STORAGE.history))  || []; } catch { return []; } };
+  const saveHistory  = (list) => localStorage.setItem(STORAGE.history, JSON.stringify(list));
+  // ============= DOM HELPERS =============
+  const $ = (id) => document.getElementById(id);
+  function toast(msg) {
+    const el = $('toast'); el.textContent = msg; el.style.opacity = '1';
+    clearTimeout(el._t); el._t = setTimeout(() => { el.style.opacity = '0'; }, 2000);
+  }
+  function setSliderFill(slider) {
+    if (!slider) return;
+    const min = parseFloat(slider.min), max = parseFloat(slider.max);
+    const pct = ((parseFloat(slider.value) - min) / (max - min)) * 100;
+    slider.style.setProperty('--pct', pct + '%');
+  }
+
+  // ============= CHARTS =============
+  let macroChart, historyChart;
+  function initCharts() {
+    macroChart = new Chart($('macro-chart'), {
+      type: 'doughnut',
+      data: { labels:['Protein','Carbs','Fat'], datasets:[{ data:[30,40,30], backgroundColor:['#f43f5e','#f59e0b','#0ea5e9'], borderWidth:0 }] },
+      options: { responsive:true, maintainAspectRatio:true, cutout:'70%', plugins:{ legend:{display:false}, tooltip:{enabled:false} } },
+    });
+    historyChart = new Chart($('history-chart'), {
+      type: 'line',
+      data: { labels:[], datasets:[{ data:[], borderColor:'#0ea5e9', backgroundColor:'rgba(14,165,233,0.12)', tension:0.35, fill:true, pointRadius:3, pointBackgroundColor:'#0ea5e9', borderWidth:2 }] },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{ mode:'index', intersect:false } }, scales:{ x:{display:false}, y:{display:false, beginAtZero:false} } },
+    });
+  }
+  function updateMacroChart(macros) {
+    macroChart.data.datasets[0].data = [macros.protein.pct, macros.carbs.pct, macros.fat.pct];
+    macroChart.update('none');
+  }
+  function updateHistoryChart() {
+    const history = loadHistory();
+    historyChart.data.labels = history.map(h => h.date);
+    historyChart.data.datasets[0].data = history.map(h => h.weight);
+    historyChart.update('none');
+    $('log-empty').style.display = history.length ? 'none' : 'block';
+  }
+
+  // ============= RENDER PARTIALS =============
+  function renderRealityCheck(bmi, bmiCat, bf, bfCat, gender, hasUserBf) {
+    const el = $('reality-check');
+    let payload = null;
+    const lowBf = gender === 'female' ? 25 : 18;
+    const highBf = gender === 'female' ? 32 : 25;
+
+    if (bmi >= 25 && bf <= lowBf) {
+      payload = { tone:'positive', title:'BMI says overweight, body says athletic.',
+        body:`Your BMI of ${bmi.toFixed(1)} flags you as "${bmiCat.label}", but with ${bf.toFixed(1)}% body fat (${bfCat}), you're carrying lean mass — not fat. BMI can't tell muscle from fat.` };
+    } else if (bmi < 25 && bmi >= 18.5 && bf >= highBf) {
+      payload = { tone:'caution', title:'"Normal" BMI, but high body fat.',
+        body:`Your BMI of ${bmi.toFixed(1)} sits in the healthy range, but ${bf.toFixed(1)}% body fat is in the "${bfCat}" zone. Sometimes called "skinny fat" — strength training can rebalance it.` };
+    } else if (bmi < 18.5 && bf <= lowBf) {
+      payload = { tone:'neutral', title:'Low BMI, lean composition.',
+        body:`Your BMI flags as underweight, but your body fat is in the "${bfCat}" range. If you have visible muscle, you're likely just lean-built.` };
+    }
+
+    if (!payload) { el.classList.add('hidden'); el.innerHTML = ''; return; }
+
+    const c = {
+      positive: { bg:'bg-emerald-50 dark:bg-emerald-900/20', border:'border-emerald-200 dark:border-emerald-800', icon:'text-emerald-600 dark:text-emerald-400', title:'text-emerald-900 dark:text-emerald-200' },
+      caution:  { bg:'bg-amber-50 dark:bg-amber-900/20',     border:'border-amber-200 dark:border-amber-800',     icon:'text-amber-600 dark:text-amber-400',     title:'text-amber-900 dark:text-amber-200' },
+      neutral:  { bg:'bg-blue-50 dark:bg-blue-900/20',       border:'border-blue-200 dark:border-blue-800',       icon:'text-blue-600 dark:text-blue-400',       title:'text-blue-900 dark:text-blue-200' },
+    }[payload.tone];
+
+    const note = hasUserBf ? 'Based on the body fat % you provided.' : 'Based on Deurenberg estimate — measure with calipers/BIA/DEXA for confidence.';
+
+    el.classList.remove('hidden');
+    el.innerHTML = `
+      <div class="${c.bg} ${c.border} border rounded-xl p-4">
+        <div class="flex items-start gap-3">
+          <svg class="w-5 h-5 ${c.icon} shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div class="flex-1">
+            <p class="text-xs font-semibold uppercase tracking-wider ${c.icon} mb-1">Reality check</p>
+            <p class="font-semibold ${c.title} text-sm leading-snug">${payload.title}</p>
+            <p class="text-xs text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed">${payload.body}</p>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 italic mt-2">${note}</p>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderAffiliates(goal, proteinG) {
+    const list = AFFILIATES[goal];
+    $('affiliate-row').innerHTML = list.map(item => {
+      const desc = item.desc.replace('__PROTEIN__', `Hit ${proteinG}g protein`);
+      return `<a href="${item.url}" target="_blank" rel="sponsored noopener" class="aff-card group block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-sm">
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-lg bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 text-brand-600 dark:text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold leading-tight group-hover:text-brand-600 dark:group-hover:text-brand-400">${item.title}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">${desc}</p>
+            <p class="text-[10px] text-slate-400 mt-1.5 inline-flex items-center gap-1">View on Amazon
+              <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </p>
+          </div>
+        </div>
+      </a>`;
+    }).join('');
+  }
+
+  // ============= MAIN RENDER =============
+  function render() {
+    // Slider fills + input displays
+    $('age-out').textContent = state.age;
+    setSliderFill($('age')); setSliderFill($('weight')); setSliderFill($('whatif-weight'));
+    setSliderFill($('bodyfat')); setSliderFill($('goal-weight'));
+    if (state.units === 'metric') setSliderFill($('height-cm'));
+
+    if (state.units === 'metric') $('weight-out').textContent = `${state.weightKg.toFixed(state.weightKg % 1 ? 1 : 0)} kg`;
+    else                          $('weight-out').textContent = `${kgToLb(state.weightKg).toFixed(1)} lb`;
+
+    if (state.units === 'metric') $('height-out').textContent = `${state.heightCm} cm`;
+    else { const {ft,in:inch} = cmToFtIn(state.heightCm); $('height-out').textContent = `${ft}′ ${inch}″`; }
+
+    $('bf-out').textContent = state.bodyFat > 0 ? `${state.bodyFat}%` : 'auto';
+    $('goal-weight-out').textContent = state.goalWeight > 0
+      ? (state.units === 'metric' ? `${state.goalWeight} kg` : `${kgToLb(state.goalWeight).toFixed(1)} lb`)
+      : '— ' + (state.units === 'metric' ? 'kg' : 'lb');
+
+    // Active button states
+    document.querySelectorAll('.gender-btn').forEach(b => {
+      const a = b.dataset.gender === state.gender;
+      b.className = `gender-btn px-2 py-2 rounded-md transition-all ${a ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700'}`;
+    });
+    document.querySelectorAll('.goal-btn').forEach(b => {
+      const a = b.dataset.goal === state.goal;
+      b.className = `goal-btn px-2 py-2 rounded-md transition-all ${a ? 'bg-white dark:bg-slate-700 shadow-sm text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700'}`;
+    });
+
+    // Calculations
+    const bmi    = calcBMI(state.weightKg, state.heightCm);
+    const cat    = bmiCategory(bmi);
+    const bmr    = calcBMR(state.weightKg, state.heightCm, state.age, state.gender);
+    const tdee   = calcTDEE(bmr, state.activity);
+    const hasUserBf = state.bodyFat > 0;
+    const bf     = hasUserBf ? state.bodyFat : estimateBodyFat(bmi, state.age, state.gender);
+    const bfCat  = bodyFatCategory(bf, state.gender);
+    const ideal  = idealWeightRange(state.heightCm);
+    const target = calcTarget(tdee, state.goal);
+    const split  = macroSplit(state.goal);
+    const macros = macroGrams(target.value, split, state.weightKg);
+
+    // BMI card
+    $('bmi-value').textContent = bmi.toFixed(1);
+    const cBadge = $('bmi-category');
+    cBadge.textContent = cat.label;
+    cBadge.className = `px-2 py-0.5 text-xs font-semibold rounded-full bg-${cat.color}-100 text-${cat.color}-700 dark:bg-${cat.color}-900/40 dark:text-${cat.color}-300`;
+    $('bmi-explainer').textContent = cat.note;
+    $('bmi-marker').style.left = `${Math.max(0, Math.min(100, ((bmi - 15) / 25) * 100))}%`;
+
+    renderRealityCheck(bmi, cat, bf, bfCat, state.gender, hasUserBf);
+
+    // Stat cards
+    $('bmr-value').textContent  = Math.round(bmr).toLocaleString();
+    $('tdee-value').textContent = Math.round(tdee).toLocaleString();
+    $('bf-value').textContent   = bf.toFixed(1);
+    $('bf-source').textContent  = hasUserBf ? 'user-provided' : 'est. (Deurenberg)';
+    $('bf-category').textContent = bfCat;
+
+    // Percentile chips
+    if (state.gender !== 'other') {
+      const label = state.gender === 'male' ? 'men' : 'women';
+      $('bmr-percentile').textContent  = `Higher than ${bmrPercentile(bmr, state.gender)}% of ${label}`;
+      $('tdee-percentile').textContent = `Higher than ${tdeePercentile(tdee, state.gender)}% of ${label}`;
+    } else {
+      $('bmr-percentile').textContent = '';
+      $('tdee-percentile').textContent = '';
+    }
+
+    if (state.units === 'metric') {
+      $('ideal-value').textContent = `${ideal.min.toFixed(0)}–${ideal.max.toFixed(0)}`;
+      $('ideal-unit').textContent  = 'kg';
+    } else {
+      $('ideal-value').textContent = `${kgToLb(ideal.min).toFixed(0)}–${kgToLb(ideal.max).toFixed(0)}`;
+      $('ideal-unit').textContent  = 'lb';
+    }
+
+    // Daily target & macros
+    $('target-value').textContent = Math.round(target.value).toLocaleString();
+    $('goal-label').textContent   = target.label;
+    $('target-detail').innerHTML  = `<p>${target.detail}</p><p class="opacity-75">${macros.protein.g}P · ${macros.carbs.g}C · ${macros.fat.g}F (grams)</p>`;
+    $('macro-p-g').textContent   = macros.protein.g;
+    $('macro-p-pct').textContent = macros.protein.pct;
+    $('macro-c-g').textContent   = macros.carbs.g;
+    $('macro-c-pct').textContent = macros.carbs.pct;
+    $('macro-f-g').textContent   = macros.fat.g;
+    $('macro-f-pct').textContent = macros.fat.pct;
+    if (macroChart) updateMacroChart(macros);
+
+    // Weight vs ideal
+    const scaleMin = state.units === 'metric' ? 35 : 80;
+    const scaleMax = state.units === 'metric' ? 200 : 440;
+    const w  = state.units === 'metric' ? state.weightKg : kgToLb(state.weightKg);
+    const lo = state.units === 'metric' ? ideal.min      : kgToLb(ideal.min);
+    const hi = state.units === 'metric' ? ideal.max      : kgToLb(ideal.max);
+    const pct = (v) => Math.max(0, Math.min(100, ((v - scaleMin) / (scaleMax - scaleMin)) * 100));
+    $('ideal-bar').style.left  = pct(lo) + '%';
+    $('ideal-bar').style.width = (pct(hi) - pct(lo)) + '%';
+    $('weight-marker').style.left = pct(w) + '%';
+    $('scale-min').textContent = `${Math.round(scaleMin)} ${state.units === 'metric' ? 'kg' : 'lb'}`;
+    $('scale-max').textContent = `${Math.round(scaleMax)} ${state.units === 'metric' ? 'kg' : 'lb'}`;
+    const delta = $('weight-delta');
+    if (w < lo)      { delta.textContent = `${(lo - w).toFixed(1)} below`; delta.className = 'text-xs font-medium px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300'; }
+    else if (w > hi) { delta.textContent = `${(w - hi).toFixed(1)} over`;  delta.className = 'text-xs font-medium px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'; }
+    else             { delta.textContent = 'on target';                    delta.className = 'text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'; }
+
+    // What-if
+    const wiBmr  = calcBMR(state.whatIfWeight, state.heightCm, state.age, state.gender);
+    const wiTdee = calcTDEE(wiBmr, state.activity);
+    const wiW = state.units === 'metric' ? state.whatIfWeight : kgToLb(state.whatIfWeight);
+    $('whatif-weight-out').textContent = `${wiW.toFixed(state.units === 'metric' && state.whatIfWeight % 1 ? 1 : 0)} ${state.units === 'metric' ? 'kg' : 'lb'}`;
+    $('whatif-tdee').textContent = `${Math.round(wiTdee).toLocaleString()} kcal`;
+    const diff = Math.round(wiTdee - tdee);
+    $('whatif-delta').textContent = `${diff > 0 ? '+' : ''}${diff} kcal`;
+    $('whatif-delta').className = `font-bold tabular-nums ${diff > 0 ? 'text-emerald-500' : diff < 0 ? 'text-rose-500' : ''}`;
+
+    // Goal projection (DIFFERENTIATOR #1)
+    const goalKg = state.goalWeight > 0 ? state.goalWeight : null;
+    const proj = goalKg ? projectGoal(state.weightKg, goalKg, tdee, target.value) : null;
+
+    if (!goalKg) {
+      $('projection-headline').textContent = `Set a goal weight to see your timeline`;
+      $('proj-rate').textContent = '—'; $('proj-time').textContent = '—'; $('proj-date').textContent = '—';
+    } else if (!proj) {
+      $('projection-headline').textContent = `You're already at your goal weight 🎯`;
+      $('proj-rate').textContent = '0'; $('proj-time').textContent = 'now'; $('proj-date').textContent = 'today';
+    } else if (!proj.possible) {
+      const correctGoal = goalKg < state.weightKg ? '"Lose fat"' : '"Build"';
+      $('projection-headline').textContent = `Switch goal to ${correctGoal} to reach this`;
+      $('proj-rate').textContent = '—'; $('proj-time').textContent = '—'; $('proj-date').textContent = '—';
+    } else {
+      const verb = proj.totalKg < 0 ? 'lose' : 'gain';
+      const amt = Math.abs(proj.totalKg);
+      const amtDisplay = state.units === 'metric' ? `${amt.toFixed(1)} kg` : `${kgToLb(amt).toFixed(1)} lb`;
+      const weeks = proj.weeks;
+      const timeDisplay = weeks < 1 ? `${Math.round(weeks*7)} days` : weeks < 8 ? `${weeks.toFixed(1)} weeks` : `${(weeks/4.345).toFixed(1)} months`;
+      $('projection-headline').textContent = `You'll ${verb} ${amtDisplay} in about ${timeDisplay}`;
+      const rate = Math.abs(proj.weeklyKg);
+      $('proj-rate').textContent = state.units === 'metric' ? `${rate.toFixed(2)} kg/wk` : `${kgToLb(rate).toFixed(2)} lb/wk`;
+      $('proj-time').textContent = timeDisplay;
+      $('proj-date').textContent = proj.date.toLocaleDateString(undefined, { month:'short', day:'numeric', year:'numeric' });
+    }
+
+    // 7-day plan (DIFFERENTIATOR #4)
+    const plan = buildPlan(state.goal, macros, state.activity, tdee);
+    $('plan-subtitle').textContent = plan.blurb;
+    $('plan-days').innerHTML = plan.days.map(d => `
+      <div class="plan-day flex items-start gap-3 py-2.5 first:pt-3">
+        <div class="w-9 text-xs font-bold text-brand-600 dark:text-brand-400 pt-0.5">${d.day}</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold leading-tight">${d.focus}</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${d.action} · ${d.food}</p>
+        </div>
+      </div>`).join('');
+
+    renderAffiliates(state.goal, macros.protein.g);
+  }
+
+  // ============= UNIT TOGGLE =============
+  function setUnits(units) {
+    state.units = units;
+    const isMetric = units === 'metric';
+    $('unit-metric').className   = `px-3 py-1.5 rounded-md transition-all ${isMetric ? 'bg-white dark:bg-slate-700 shadow-sm' : 'text-slate-500'}`;
+    $('unit-imperial').className = `px-3 py-1.5 rounded-md transition-all ${!isMetric ? 'bg-white dark:bg-slate-700 shadow-sm' : 'text-slate-500'}`;
+    $('height-metric').classList.toggle('hidden', !isMetric);
+    $('height-imperial').classList.toggle('hidden', isMetric);
+    $('height-imperial').classList.toggle('grid', !isMetric);
+
+    [['weight','weightKg', 70], ['whatif-weight','whatIfWeight', 70], ['goal-weight','goalWeight', 65]].forEach(([id, key, fallback]) => {
+      const s = $(id);
+      const v = state[key] || fallback;
+      if (isMetric) { s.min = 35; s.max = 200; s.step = 0.5; s.value = v; }
+      else          { s.min = 77; s.max = 440; s.step = 1;   s.value = Math.round(kgToLb(v)); }
+    });
+    savePrefs(); render();
+  }
+
+  // ============= EVENTS =============
+  function bindEvents() {
+    $('age').addEventListener('input', e => { state.age = +e.target.value; render(); });
+
+    let lastWeight = state.weightKg;
+    $('weight').addEventListener('input', e => {
+      const v = +e.target.value;
+      state.weightKg = state.units === 'metric' ? v : lbToKg(v);
+      if (Math.abs(state.whatIfWeight - lastWeight) < 0.1) {
+        state.whatIfWeight = state.weightKg;
+        $('whatif-weight').value = state.units === 'metric' ? state.weightKg : Math.round(kgToLb(state.weightKg));
+      }
+      lastWeight = state.weightKg;
+      render();
+    });
+
+    $('whatif-weight').addEventListener('input', e => {
+      const v = +e.target.value;
+      state.whatIfWeight = state.units === 'metric' ? v : lbToKg(v);
+      render();
+    });
+    $('goal-weight').addEventListener('input', e => {
+      const v = +e.target.value;
+      state.goalWeight = state.units === 'metric' ? v : lbToKg(v);
+      render();
+    });
+    $('height-cm').addEventListener('input', e => { state.heightCm = +e.target.value; render(); });
+    const updateImperialH = () => { state.heightCm = ftInToCm(+$('height-ft').value || 0, +$('height-in').value || 0); render(); };
+    $('height-ft').addEventListener('input', updateImperialH);
+    $('height-in').addEventListener('input', updateImperialH);
+    $('bodyfat').addEventListener('input', e => { state.bodyFat = +e.target.value; render(); });
+    $('activity').addEventListener('change', e => { state.activity = +e.target.value; render(); });
+
+    document.querySelectorAll('.gender-btn').forEach(b => b.addEventListener('click', () => { state.gender = b.dataset.gender; render(); }));
+    document.querySelectorAll('.goal-btn').forEach(b => b.addEventListener('click', () => { state.goal = b.dataset.goal; render(); }));
+
+    $('theme-toggle').addEventListener('click', () => { document.documentElement.classList.toggle('dark'); savePrefs(); });
+    $('unit-metric').addEventListener('click', () => setUnits('metric'));
+    $('unit-imperial').addEventListener('click', () => setUnits('imperial'));
+    $('save-profile').addEventListener('click', saveCurrentProfile);
+    $('log-weight').addEventListener('click', logTodayWeight);
+    $('share-btn').addEventListener('click', shareResults);
+  }
+
+  // ============= PROFILES =============
+  function saveCurrentProfile() {
+    const name = prompt('Profile name?', 'My profile');
+    if (!name) return;
+    const profiles = loadProfiles();
+    profiles.push({ id: Date.now(), name, ...state });
+    saveProfiles(profiles); renderProfiles(); toast('Profile saved');
+  }
+  function loadProfile(id) {
+    const profile = loadProfiles().find(p => p.id === id);
+    if (!profile) return;
+    Object.assign(state, {
+      age: profile.age, gender: profile.gender, heightCm: profile.heightCm,
+      weightKg: profile.weightKg, bodyFat: profile.bodyFat,
+      activity: profile.activity, goal: profile.goal,
+      whatIfWeight: profile.weightKg, goalWeight: profile.goalWeight || 0,
+    });
+    $('age').value = state.age;
+    $('weight').value = state.units === 'metric' ? state.weightKg : Math.round(kgToLb(state.weightKg));
+    $('whatif-weight').value = $('weight').value;
+    $('goal-weight').value = state.units === 'metric' ? (state.goalWeight || 65) : Math.round(kgToLb(state.goalWeight || 65));
+    $('bodyfat').value = state.bodyFat;
+    $('activity').value = state.activity;
+    if (state.units === 'metric') $('height-cm').value = state.heightCm;
+    else { const {ft,in:inch} = cmToFtIn(state.heightCm); $('height-ft').value = ft; $('height-in').value = inch; }
+    render(); toast(`Loaded: ${profile.name}`);
+  }
+  function deleteProfile(id) {
+    saveProfiles(loadProfiles().filter(p => p.id !== id));
+    renderProfiles(); toast('Profile deleted');
+  }
+  function renderProfiles() {
+    const list = loadProfiles();
+    const el = $('profiles-list');
+    if (!list.length) { el.innerHTML = '<p class="text-slate-500 dark:text-slate-400 italic">No saved profiles yet.</p>'; return; }
+    el.innerHTML = list.map(p => `
+      <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800">
+        <button data-load="${p.id}" class="flex-1 text-left truncate">${p.name}</button>
+        <span class="text-[10px] text-slate-400 tabular-nums">${p.weightKg}kg</span>
+        <button data-del="${p.id}" class="text-slate-400 hover:text-rose-500">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>`).join('');
+    el.querySelectorAll('[data-load]').forEach(b => b.addEventListener('click', () => loadProfile(+b.dataset.load)));
+    el.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => deleteProfile(+b.dataset.del)));
+  }
+
+  // ============= WEIGHT LOG & SHARE =============
+  function logTodayWeight() {
+    const history = loadHistory();
+    const today = new Date().toISOString().split('T')[0];
+    const idx = history.findIndex(h => h.date === today);
+    const entry = { date: today, weight: +state.weightKg.toFixed(1) };
+    if (idx >= 0) history[idx] = entry; else history.push(entry);
+    history.sort((a,b) => a.date.localeCompare(b.date));
+    while (history.length > 60) history.shift();
+    saveHistory(history); updateHistoryChart();
+    toast(`Logged ${entry.weight} kg`);
+  }
+  async function shareResults() {
+    const bmi = calcBMI(state.weightKg, state.heightCm);
+    const bmr = calcBMR(state.weightKg, state.heightCm, state.age, state.gender);
+    const tdee = calcTDEE(bmr, state.activity);
+    const target = calcTarget(tdee, state.goal);
+    const text = `My VitalDash:\nBMI: ${bmi.toFixed(1)} (${bmiCategory(bmi).label})\nBMR: ${Math.round(bmr)} kcal\nTDEE: ${Math.round(tdee)} kcal\nDaily target: ${Math.round(target.value)} kcal (${state.goal})\n\nCalculate yours: https://vitaldash.app`;
+    if (navigator.share) { try { await navigator.share({ title:'My VitalDash results', text }); } catch {} }
+    else { try { await navigator.clipboard.writeText(text); toast('Copied to clipboard'); } catch { toast('Could not copy'); } }
+  }
+
+  // ============= INIT =============
+  function init() {
+    loadPrefs(); initCharts(); bindEvents();
+    renderProfiles(); updateHistoryChart();
+    setUnits(state.units);
+    $('year').textContent = new Date().getFullYear();
+  }
+  document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

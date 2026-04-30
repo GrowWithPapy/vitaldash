@@ -1,0 +1,236 @@
+      <section class="space-y-5">
+
+        <!-- DIFFERENTIATOR #1 — GOAL PROJECTION HERO -->
+        <div class="bg-gradient-to-br from-brand-500 to-brand-700 dark:from-brand-600 dark:to-brand-800 rounded-2xl p-5 sm:p-6 text-white shadow-sm relative overflow-hidden animate-slide-up">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <p class="text-xs font-medium uppercase tracking-wider opacity-90">Your projection</p>
+              <p id="projection-headline" class="text-2xl sm:text-3xl font-bold mt-1 leading-tight">Set a goal weight to see your timeline</p>
+            </div>
+            <span class="tooltip">
+              <svg class="w-4 h-4 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <span class="tooltip-content">Based on 7,700 kcal ≈ 1 kg fat. Real progress varies — water weight, adherence, metabolic adaptation.</span>
+            </span>
+          </div>
+          <div class="grid grid-cols-3 gap-3 sm:gap-4 mt-5 text-sm">
+            <div><p class="text-[10px] uppercase tracking-wider opacity-75">Weekly rate</p><p class="text-lg sm:text-xl font-bold tabular-nums" id="proj-rate">—</p></div>
+            <div><p class="text-[10px] uppercase tracking-wider opacity-75">Time to goal</p><p class="text-lg sm:text-xl font-bold tabular-nums" id="proj-time">—</p></div>
+            <div><p class="text-[10px] uppercase tracking-wider opacity-75">Goal date</p><p class="text-lg sm:text-xl font-bold tabular-nums" id="proj-date">—</p></div>
+          </div>
+        </div>
+
+        <!-- BMI card with reality check inline -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Body Mass Index</p>
+              <div class="flex items-baseline gap-2 mt-1">
+                <span id="bmi-value" class="text-4xl font-bold tabular-nums">22.9</span>
+                <span id="bmi-category" class="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Normal</span>
+              </div>
+              <p id="bmi-explainer" class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 max-w-md">You're in the healthy range.</p>
+            </div>
+            <span class="tooltip">
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span class="tooltip-content">BMI = weight (kg) ÷ height (m)². WHO standard. Doesn't distinguish muscle from fat.</span>
+            </span>
+          </div>
+          <div class="relative pt-6 pb-1">
+            <div class="h-2 rounded-full overflow-hidden flex">
+              <div class="bg-blue-400 flex-1"></div><div class="bg-emerald-400 flex-[1.6]"></div><div class="bg-amber-400 flex-1"></div><div class="bg-red-400 flex-1"></div>
+            </div>
+            <div id="bmi-marker" class="absolute top-3 -translate-x-1/2 transition-all duration-500 ease-out" style="left:45%;">
+              <svg class="w-3 h-3 text-slate-900 dark:text-white" viewBox="0 0 12 12"><polygon points="6,12 0,0 12,0" fill="currentColor"/></svg>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-500 mt-1.5 font-medium tabular-nums">
+              <span>15</span><span>18.5</span><span>25</span><span>30</span><span>40</span>
+            </div>
+          </div>
+          <!-- DIFFERENTIATOR #2 — REALITY CHECK -->
+          <div id="reality-check" class="mt-5 hidden"></div>
+        </div>
+
+        <!-- Stat grid with percentile chips (DIFFERENTIATOR #3) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+            <div class="flex items-center gap-1.5 mb-1">
+              <svg class="w-3.5 h-3.5 text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400">BMR</p>
+              <span class="tooltip ml-auto">
+                <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span class="tooltip-content">Calories burned at rest. Mifflin-St Jeor (1990).</span>
+              </span>
+            </div>
+            <p class="text-2xl font-bold tabular-nums" id="bmr-value">1,650</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">kcal/day at rest</p>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1.5" id="bmr-percentile"></p>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+            <div class="flex items-center gap-1.5 mb-1">
+              <svg class="w-3.5 h-3.5 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 13 10 21 10"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/></svg>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400">TDEE</p>
+              <span class="tooltip ml-auto">
+                <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span class="tooltip-content">Total daily calorie burn — BMR × activity.</span>
+              </span>
+            </div>
+            <p class="text-2xl font-bold tabular-nums" id="tdee-value">2,558</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">kcal/day total</p>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1.5" id="tdee-percentile"></p>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+            <div class="flex items-center gap-1.5 mb-1">
+              <svg class="w-3.5 h-3.5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Body fat</p>
+              <span class="tooltip ml-auto">
+                <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span class="tooltip-content">Estimated using Deurenberg (1991).</span>
+              </span>
+            </div>
+            <p class="text-2xl font-bold tabular-nums"><span id="bf-value">18.2</span><span class="text-base text-slate-500 font-medium">%</span></p>
+            <p class="text-[11px] text-slate-500 mt-0.5" id="bf-source">est. (Deurenberg)</p>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1.5" id="bf-category"></p>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4">
+            <div class="flex items-center gap-1.5 mb-1">
+              <svg class="w-3.5 h-3.5 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Ideal range</p>
+            </div>
+            <p class="text-2xl font-bold tabular-nums" id="ideal-value">57–77</p>
+            <p class="text-[11px] text-slate-500 mt-0.5" id="ideal-unit">kg</p>
+          </div>
+        </div>
+
+        <!-- Daily target + macros -->
+        <div class="grid md:grid-cols-2 gap-5">
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+            <p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Daily target</p>
+            <p class="text-xs text-slate-500 mt-0.5" id="goal-label">to maintain weight</p>
+            <p class="text-4xl sm:text-5xl font-bold tabular-nums mt-2 text-brand-600 dark:text-brand-400" id="target-value">2,558</p>
+            <p class="text-sm text-slate-500 mt-1">kcal per day</p>
+            <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 space-y-1" id="target-detail">
+              <p>Maintenance level — same as TDEE.</p>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Macro split</p>
+              <span class="tooltip">
+                <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span class="tooltip-content">Goal-adjusted. Protein floor: 1.6 g/kg (ISSN 2017).</span>
+              </span>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="relative w-24 h-24 shrink-0"><canvas id="macro-chart" aria-label="Macronutrient breakdown"></canvas></div>
+              <div class="flex-1 space-y-2 text-sm">
+                <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-rose-500"></span>Protein</span><span class="tabular-nums font-semibold"><span id="macro-p-g">192</span>g <span class="text-slate-400 text-xs">(<span id="macro-p-pct">30</span>%)</span></span></div>
+                <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500"></span>Carbs</span><span class="tabular-nums font-semibold"><span id="macro-c-g">256</span>g <span class="text-slate-400 text-xs">(<span id="macro-c-pct">40</span>%)</span></span></div>
+                <div class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-sky-500"></span>Fat</span><span class="tabular-nums font-semibold"><span id="macro-f-g">85</span>g <span class="text-slate-400 text-xs">(<span id="macro-f-pct">30</span>%)</span></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weight vs ideal -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-sm">Weight vs ideal range</h3>
+            <span id="weight-delta" class="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">on target</span>
+          </div>
+          <div class="relative h-12">
+            <div id="ideal-bar" class="absolute top-1/2 -translate-y-1/2 h-3 bg-emerald-200 dark:bg-emerald-900/50 rounded-full" style="left:30%;width:30%;"></div>
+            <div class="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-3 border-t border-b border-slate-200 dark:border-slate-700 rounded-full"></div>
+            <div id="weight-marker" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-500 ease-out" style="left:50%;">
+              <div class="w-4 h-4 rounded-full bg-brand-500 border-2 border-white dark:border-slate-900 shadow-md"></div>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 flex justify-between text-[10px] text-slate-500 tabular-nums">
+              <span id="scale-min">35</span><span id="scale-max">200</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIFFERENTIATOR #4 — 7-DAY PLAN -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+          <details open>
+            <summary class="cursor-pointer p-5 sm:p-6 list-none flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-brand-600 dark:text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-sm">Your 7-day starter plan</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" id="plan-subtitle">Built around your numbers</p>
+                </div>
+              </div>
+              <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="px-5 sm:px-6 pb-5 sm:pb-6 border-t border-slate-100 dark:border-slate-800">
+              <div id="plan-days" class="divide-y divide-slate-100 dark:divide-slate-800"></div>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 italic mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">A starter framework, not medical advice. Adjust to your schedule.</p>
+            </div>
+          </details>
+        </div>
+
+        <!-- AFFILIATE ROW -->
+        <div class="bg-slate-100 dark:bg-slate-900/50 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800">
+          <div class="mb-4">
+            <h3 class="font-semibold text-sm">Recommended for your goal</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Hand-picked, no fluff. <span class="text-slate-400">Affiliate links — we earn a small commission at no cost to you.</span></p>
+          </div>
+          <div id="affiliate-row" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+        </div>
+
+        <!-- What-if + history -->
+        <div class="grid md:grid-cols-2 gap-5">
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+            <h3 class="font-semibold text-sm mb-1">What if?</h3>
+            <p class="text-xs text-slate-500 mb-4">Simulate a weight change.</p>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-medium">Hypothetical weight</label>
+              <span id="whatif-weight-out" class="text-xs font-semibold text-brand-600 dark:text-brand-400">70 kg</span>
+            </div>
+            <input type="range" id="whatif-weight" min="35" max="200" value="70" step="0.5" />
+            <div class="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 text-sm">
+              <div><p class="text-[10px] text-slate-500 uppercase tracking-wider">New TDEE</p><p id="whatif-tdee" class="font-bold tabular-nums">2,558 kcal</p></div>
+              <div><p class="text-[10px] text-slate-500 uppercase tracking-wider">vs current</p><p id="whatif-delta" class="font-bold tabular-nums">±0 kcal</p></div>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-semibold text-sm">Weight log</h3>
+              <button id="log-weight" class="text-xs font-medium text-brand-600 dark:text-brand-400 hover:underline">+ Log today</button>
+            </div>
+            <div class="relative h-32"><canvas id="history-chart" aria-label="Weight history"></canvas></div>
+            <p id="log-empty" class="text-xs text-slate-500 italic mt-2">No entries yet. Log today to start tracking.</p>
+          </div>
+        </div>
+
+        <!-- Educational footer -->
+        <div class="bg-slate-100 dark:bg-slate-900/50 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800">
+          <h3 class="font-semibold text-sm mb-3">How VitalDash works</h3>
+          <div class="grid sm:grid-cols-2 gap-x-6 gap-y-3 text-xs text-slate-600 dark:text-slate-400">
+            <p><strong class="text-slate-900 dark:text-slate-200">BMI</strong> follows the WHO standard. Screening tool, not diagnostic.</p>
+            <p><strong class="text-slate-900 dark:text-slate-200">BMR</strong> uses Mifflin-St Jeor (1990).</p>
+            <p><strong class="text-slate-900 dark:text-slate-200">Percentile</strong> data from CDC NHANES adult population norms.</p>
+            <p><strong class="text-slate-900 dark:text-slate-200">Body fat</strong> via Deurenberg (1991) when not provided.</p>
+            <p><strong class="text-slate-900 dark:text-slate-200">Projection</strong> assumes 7,700 kcal ≈ 1 kg fat.</p>
+            <p><strong class="text-slate-900 dark:text-slate-200">Macros</strong> use 1.6 g/kg protein floor (ISSN 2017).</p>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-4 italic">All calculations run in your browser. Nothing is sent to any server.</p>
+        </div>
+      </section>
+    </div>
+
+    <footer class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500">
+      <p>VitalDash © <span id="year"></span> · Educational use only · Not medical advice</p>
+      <p class="mt-1">Sources: WHO · CDC NHANES · Mifflin-St Jeor (1990) · Deurenberg (1991) · ISSN (2017)</p>
+      <p class="mt-2 text-[10px]">As an Amazon Associate we earn from qualifying purchases.</p>
+    </footer>
+  </main>
+
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2.5 bg-slate-900 dark:bg-white dark:text-slate-900 text-white text-sm rounded-lg shadow-xl opacity-0 pointer-events-none transition-opacity z-50 font-medium">Saved!</div>
