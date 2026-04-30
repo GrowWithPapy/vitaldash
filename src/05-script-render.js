@@ -160,11 +160,14 @@
     $('bf-source').textContent  = hasUserBf ? 'user-provided' : 'est. (Deurenberg)';
     $('bf-category').textContent = bfCat;
 
-    // Percentile chips
-    if (state.gender !== 'other') {
+    // Percentile chips (NHANES 2015-2018)
+    const bmiPct = bmiPercentile(bmi, state.age, state.gender);
+    const wPct = weightPercentile(state.weightKg, state.age, state.gender);
+    if (bmiPct !== null && wPct !== null) {
       const label = state.gender === 'male' ? 'men' : 'women';
-      $('bmr-percentile').textContent  = `Higher than ${bmrPercentile(bmr, state.gender)}% of ${label}`;
-      $('tdee-percentile').textContent = `Higher than ${tdeePercentile(tdee, state.gender)}% of ${label}`;
+      const band = ageBand(state.age);
+      $('bmr-percentile').textContent  = `BMI ranks higher than ${bmiPct}% of ${label} aged ${band}`;
+      $('tdee-percentile').textContent = `Weight ranks higher than ${wPct}% of ${label} aged ${band}`;
     } else {
       $('bmr-percentile').textContent = '';
       $('tdee-percentile').textContent = '';

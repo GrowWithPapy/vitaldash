@@ -18,3 +18,7 @@
 - Keep the 5-file src/ structure. Rebuild index.html with: cat src/01-head.html src/02-form.html src/03-results.html src/04-script-calc.js src/05-script-render.js > index.html
 - All calculations stay client-side. No backend calls without explicit approval.
 - Comments in code only when logic is non-obvious.
+
+## Data sources
+- Percentile tables (BMI and weight, by sex and age band) come from CDC NHANES 2015-2018, published as Vital Health Stat 3(46), 2021. URL: https://www.cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf
+- When updating these tables, cite the table number and the survey cycle in a comment next to the data so future edits can verify against the same source.
