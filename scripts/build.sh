@@ -26,11 +26,8 @@ BUILT_PAGES=("index.html")
 # Add a slug here once src/pages/{slug}-head.html, src/pages/{slug}-main.html,
 # and src/calcs/{slug}.js all exist. Output filename: {slug}-calculator.html
 # ============================================================================
-SLUGS=()
-# Example future entries:
-# SLUGS=("body-fat" "calorie-deficit" "macros" "protein-intake" "water-intake" \
-#        "1rm" "heart-rate-zones" "pace" "lean-body-mass" "pregnancy-weight" \
-#        "child-growth" "body-recomposition")
+SLUGS=("body-fat")
+# Add slugs as their pages and JS files land in src/pages/ and src/calcs/.
 
 for slug in "${SLUGS[@]}"; do
   head_file="src/pages/${slug}-head.html"

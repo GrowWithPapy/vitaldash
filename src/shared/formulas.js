@@ -8,6 +8,20 @@
   const ftInToCm = (ft, inch) => (ft*12 + inch) * 2.54;
   const kgToLb = (kg) => kg * 2.20462;
   const lbToKg = (lb) => lb / 2.20462;
+  const cmToIn = (cm) => cm / 2.54;
+  const inToCm = (inches) => inches * 2.54;
+
+  // ============= NAVY BODY FAT (Hodgdon-Beckett 1984) =============
+  // All measurements in inches. Returns null on invalid input.
+  function navyBodyFatMale(waistIn, neckIn, heightIn) {
+    if (waistIn <= neckIn) return null;
+    return 86.010 * Math.log10(waistIn - neckIn) - 70.041 * Math.log10(heightIn) + 36.76;
+  }
+
+  function navyBodyFatFemale(waistIn, hipIn, neckIn, heightIn) {
+    if ((waistIn + hipIn) <= neckIn) return null;
+    return 163.205 * Math.log10(waistIn + hipIn - neckIn) - 97.684 * Math.log10(heightIn) - 78.387;
+  }
 
   // ============= BMI =============
   function calcBMI(kg, cm) { const m = cm / 100; return kg / (m * m); }

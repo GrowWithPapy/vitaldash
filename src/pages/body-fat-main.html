@@ -1,0 +1,191 @@
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+
+    <section class="mb-8 animate-fade-in">
+      <p class="text-xs font-medium uppercase tracking-wider text-brand-600 dark:text-brand-400 mb-2">Body Fat Calculator</p>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3">US Navy Body Fat Calculator</h1>
+      <p class="text-slate-600 dark:text-slate-400 max-w-2xl">
+        Get your body fat percentage with just a tape measure. The US Navy method (Hodgdon-Beckett 1984) is accurate within ±3-4% of DEXA scans. No calipers, no scales, no special equipment.
+      </p>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-3">Last updated: April 30, 2026</p>
+    </section>
+
+    <section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-7 shadow-sm mb-8">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-0.5 text-xs font-medium w-fit">
+            <button id="bf-unit-imperial" class="px-3 py-1.5 rounded-md transition-all" aria-pressed="true">Imperial (in)</button>
+            <button id="bf-unit-metric" class="px-3 py-1.5 rounded-md transition-all" aria-pressed="false">Metric (cm)</button>
+          </div>
+
+          <div>
+            <label class="text-sm font-medium mb-1.5 block">Gender</label>
+            <div class="grid grid-cols-2 gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg text-xs font-medium">
+              <button data-bf-gender="male" class="bf-gender-btn px-2 py-2 rounded-md transition-all">Male</button>
+              <button data-bf-gender="female" class="bf-gender-btn px-2 py-2 rounded-md transition-all">Female</button>
+            </div>
+          </div>
+
+          <div>
+            <label for="bf-height" class="text-sm font-medium mb-1.5 block">Height <span id="bf-height-unit" class="text-slate-500 font-normal">(in)</span></label>
+            <input type="number" id="bf-height" class="w-full px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="69" />
+          </div>
+
+          <div>
+            <label for="bf-neck" class="text-sm font-medium mb-1.5 block">Neck circumference <span id="bf-neck-unit" class="text-slate-500 font-normal">(in)</span></label>
+            <input type="number" id="bf-neck" class="w-full px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="15" />
+            <p class="text-[11px] text-slate-500 mt-1">Just below the larynx (Adam's apple), tape level.</p>
+          </div>
+
+          <div>
+            <label for="bf-waist" class="text-sm font-medium mb-1.5 block">Waist circumference <span id="bf-waist-unit" class="text-slate-500 font-normal">(in)</span></label>
+            <input type="number" id="bf-waist" class="w-full px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="34" />
+            <p id="bf-waist-help" class="text-[11px] text-slate-500 mt-1">Men: at the navel. Women: at the narrowest point.</p>
+          </div>
+
+          <div id="bf-hip-row">
+            <label for="bf-hip" class="text-sm font-medium mb-1.5 block">Hip circumference <span id="bf-hip-unit" class="text-slate-500 font-normal">(in)</span></label>
+            <input type="number" id="bf-hip" class="w-full px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="38" />
+            <p class="text-[11px] text-slate-500 mt-1">Widest point of the buttocks/hips.</p>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-brand-500 to-brand-700 dark:from-brand-600 dark:to-brand-800 rounded-xl p-5 text-white relative">
+          <p class="text-xs font-medium uppercase tracking-wider opacity-90">Your body fat</p>
+          <div class="flex items-baseline gap-2 mt-2">
+            <span id="bf-result" class="text-5xl font-bold tabular-nums">—</span>
+            <span class="text-lg opacity-80">%</span>
+          </div>
+          <p id="bf-category" class="text-sm font-medium mt-1 opacity-90">Enter your measurements</p>
+
+          <div class="mt-4 pt-4 border-t border-white/20">
+            <p class="text-[10px] uppercase tracking-wider opacity-75 mb-1">Body fat mass</p>
+            <p id="bf-mass" class="text-lg font-bold tabular-nums">— lb</p>
+          </div>
+
+          <p id="bf-warning" class="hidden text-xs mt-3 bg-amber-200/30 rounded-md p-2 border border-amber-200/40">
+            ⚠️ The Navy method is less accurate at this body fat range. Consider DEXA or calipers for better precision.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-5 pt-5 border-t border-slate-200 dark:border-slate-800">
+        <label for="bf-weight" class="text-sm font-medium mb-1.5 block">Your weight <span id="bf-weight-unit" class="text-slate-500 font-normal">(lb)</span> <span class="text-slate-400 font-normal">(optional, for fat mass calculation)</span></label>
+        <input type="number" id="bf-weight" class="w-full max-w-xs px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="180" />
+      </div>
+    </section>
+
+    <section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-7 shadow-sm mb-8">
+      <h2 class="text-xl font-bold mb-4">Body fat percentage ranges</h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">American Council on Exercise (ACE) reference ranges for adults.</p>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-slate-200 dark:border-slate-800">
+              <th class="text-left py-2 font-semibold">Category</th>
+              <th class="text-left py-2 font-semibold">Men</th>
+              <th class="text-left py-2 font-semibold">Women</th>
+            </tr>
+          </thead>
+          <tbody class="text-slate-600 dark:text-slate-400">
+            <tr class="border-b border-slate-100 dark:border-slate-800/50">
+              <td class="py-2">Essential fat</td>
+              <td class="py-2">2-5%</td>
+              <td class="py-2">10-13%</td>
+            </tr>
+            <tr class="border-b border-slate-100 dark:border-slate-800/50">
+              <td class="py-2">Athletes</td>
+              <td class="py-2">6-13%</td>
+              <td class="py-2">14-20%</td>
+            </tr>
+            <tr class="border-b border-slate-100 dark:border-slate-800/50">
+              <td class="py-2">Fitness</td>
+              <td class="py-2">14-17%</td>
+              <td class="py-2">21-24%</td>
+            </tr>
+            <tr class="border-b border-slate-100 dark:border-slate-800/50">
+              <td class="py-2">Average</td>
+              <td class="py-2">18-24%</td>
+              <td class="py-2">25-31%</td>
+            </tr>
+            <tr>
+              <td class="py-2">Obese</td>
+              <td class="py-2">25%+</td>
+              <td class="py-2">32%+</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-7 shadow-sm mb-8">
+      <h2 class="text-xl font-bold mb-4">How this calculator works</h2>
+      <div class="text-sm text-slate-600 dark:text-slate-400 space-y-3">
+        <p>The US Navy body fat formula was developed by Hodgdon and Beckett at the Naval Health Research Center in 1984. It uses circumference measurements that correlate with body density, then converts density to body fat percentage.</p>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">Formulas (measurements in inches)</p>
+        <p><strong>Male:</strong> % Body Fat = 86.010 × log<sub>10</sub>(waist − neck) − 70.041 × log<sub>10</sub>(height) + 36.76</p>
+        <p><strong>Female:</strong> % Body Fat = 163.205 × log<sub>10</sub>(waist + hip − neck) − 97.684 × log<sub>10</sub>(height) − 78.387</p>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">How to measure correctly</p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li><strong>Neck:</strong> Just below the larynx (Adam's apple). Keep tape level, no slope. Don't flare your neck.</li>
+          <li><strong>Waist (men):</strong> At the level of your navel. Stand relaxed. Don't suck in your stomach.</li>
+          <li><strong>Waist (women):</strong> At the narrowest point of your torso (typically midway between lowest rib and top of hip bone).</li>
+          <li><strong>Hip (women only):</strong> At the widest point of your buttocks.</li>
+          <li><strong>Use a flexible tape measure.</strong> Take each measurement 2-3 times, use the average.</li>
+        </ul>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">Accuracy and limitations</p>
+        <p>±3-4% accurate vs DEXA scans for most adults with 15-30% body fat. Less accurate at extremes: lean athletes under 10% (men) or 18% (women) tend to be overestimated; severe obesity tends to be underestimated. The formula cannot distinguish muscle from fat at the waist, so heavily muscled individuals may get inflated readings.</p>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">Source</p>
+        <p>Hodgdon JA, Beckett MB. <em>Prediction of percent body fat for U.S. Navy men and women from body circumferences and height.</em> Naval Health Research Center, San Diego, 1984. Technical Report 84-11 and 84-29.</p>
+      </div>
+    </section>
+
+    <section class="bg-slate-100 dark:bg-slate-900/50 rounded-2xl p-5 sm:p-7 border border-slate-200 dark:border-slate-800 mb-8">
+      <h2 class="text-base font-bold mb-3">Try our other calculators</h2>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <a href="/" class="block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-sm transition-all">
+          <p class="text-sm font-semibold">VitalDash full dashboard</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">BMI, BMR, TDEE, macros, projection, percentile rankings</p>
+        </a>
+        <a href="/methodology.html" class="block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-sm transition-all">
+          <p class="text-sm font-semibold">All formulas explained</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Methodology page with sources for every calculation</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h2 class="text-2xl font-bold mb-4">Frequently asked questions</h2>
+      <div class="space-y-3">
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">How accurate is the US Navy body fat calculator?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">The US Navy method is accurate within ±3-4% of DEXA scans for most adults with 15-30% body fat. Lean athletes under 10% body fat (men) or 18% (women) often see overestimates, and severe obesity tends to be underestimated. For tracking trends over time with consistent measurement technique, it's reliable enough for most fitness goals.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">How do I measure my waist for the body fat calculator?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">For men, measure horizontally at the level of your navel without sucking in your stomach. For women, measure at the narrowest point of your torso, typically between your lowest rib and the top of your hip bone. Take the measurement on bare skin with a flexible tape, level all the way around, and take 2-3 readings to average them.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">Why is body fat percentage better than BMI?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">BMI uses only height and weight, so it can't tell muscle from fat. A bodybuilder and a sedentary person of the same height and weight get the same BMI despite very different body compositions. Body fat percentage measures composition directly, making it a better health and fitness indicator for most people.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">What is a healthy body fat percentage by age?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">For men, the American Council on Exercise considers 14-24% healthy depending on fitness level. For women, the healthy range is 21-31%. These ranges shift slightly with age: people over 40 typically carry 2-5% more body fat than younger adults at the same fitness level, and this is normal.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">Can I use this calculator if I'm very muscular?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">The Navy method tends to overestimate body fat for very muscular people because it can't distinguish a thick waist from muscle versus a thick waist from fat. If your waist circumference is unusually large for your visible leanness, expect this calculator to read 2-5% higher than reality. DEXA scans or skinfold calipers are more accurate for muscular individuals.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">How often should I measure my body fat percentage?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Once every 2-4 weeks is enough for most people. Daily fluctuations from water retention, food, and digestion make day-to-day comparisons meaningless. For trend tracking, take measurements at the same time of day, in the same conditions (typically morning, fasted), and compare the rolling average over weeks.</p>
+        </details>
+      </div>
+    </section>
+
+  </main>

@@ -12,6 +12,7 @@
 ## Pages
 
 - [Calculator (homepage)](https://vitaldash.io/): The main interactive dashboard with all calculators
+- [Body Fat Calculator](https://vitaldash.io/body-fat-calculator): US Navy method body fat estimation with no calipers needed
 - [Methodology](https://vitaldash.io/methodology.html): Every formula used, with peer-reviewed citations
 - [About](https://vitaldash.io/about.html): Why VitalDash exists, what makes it different
 - [Privacy Policy](https://vitaldash.io/privacy.html): GDPR-compliant data practices
