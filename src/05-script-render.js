@@ -259,7 +259,8 @@
     const bf     = hasUserBf ? state.bodyFat : estimateBodyFat(bmi, state.age, state.gender);
     const bfCat  = bodyFatCategory(bf, state.gender);
     const ideal  = idealWeightRange(state.heightCm);
-    const target = calcTarget(tdeeAdjusted, state.goal);
+    // Intake target is anchored to baseline TDEE so extra activity widens the deficit instead of shifting the target.
+    const target = calcTarget(tdee, state.goal);
     const split  = macroSplit(state.goal);
     const macros = macroGrams(target.value, split, state.weightKg);
     $('extra-kcal-out').textContent = `+${state.extraKcal} kcal/day`;
@@ -359,13 +360,13 @@
     else if (w > hi) { delta.textContent = `${(w - hi).toFixed(1)} over`;  delta.className = 'text-xs font-medium px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'; }
     else             { delta.textContent = 'on target';                    delta.className = 'text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'; }
 
-    // What-if
+    // What-if uses raw TDEE on both sides so the delta reflects body change only, not extra activity.
     const wiBmr  = calcBMR(state.whatIfWeight, state.heightCm, state.age, state.gender);
-    const wiTdee = calcTDEE(wiBmr, state.activity) + state.extraKcal;
+    const wiTdee = calcTDEE(wiBmr, state.activity);
     const wiW = state.units === 'metric' ? state.whatIfWeight : kgToLb(state.whatIfWeight);
     $('whatif-weight-out').textContent = `${wiW.toFixed(state.units === 'metric' && state.whatIfWeight % 1 ? 1 : 0)} ${state.units === 'metric' ? 'kg' : 'lb'}`;
     $('whatif-tdee').textContent = `${Math.round(wiTdee).toLocaleString()} kcal`;
-    const diff = Math.round(wiTdee - tdeeAdjusted);
+    const diff = Math.round(wiTdee - tdee);
     $('whatif-delta').textContent = `${diff > 0 ? '+' : ''}${diff} kcal`;
     $('whatif-delta').className = `font-bold tabular-nums ${diff > 0 ? 'text-emerald-500' : diff < 0 ? 'text-rose-500' : ''}`;
 
