@@ -8,12 +8,12 @@
   <title>VitalDash — Health Calculator</title>
   <meta name="description" content="The only health calculator that goes beyond numbers. Get instant BMI, BMR, TDEE, body-fat-adjusted reality check, percentile context, and a personalized 7-day plan. Free, private, no signup." />
   <meta name="keywords" content="BMI calculator, BMR calculator, TDEE calculator, macro calculator, goal projection, body fat calculator" />
-  <link rel="canonical" href="https://vitaldash.app/" />
+  <link rel="canonical" href="https://vitaldash.io/" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="VitalDash — Health Calculator with Goal Projection & Reality Check" />
   <meta property="og:description" content="Beyond BMI. See where you rank, when you'll hit your goal, and what to do today." />
-  <meta property="og:url" content="https://vitaldash.app/" />
-  <meta property="og:image" content="https://vitaldash.app/og.png" />
+  <meta property="og:url" content="https://vitaldash.io/" />
+  <meta property="og:image" content="https://vitaldash.io/og.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <script type="application/ld+json">
@@ -1131,7 +1131,7 @@
     const bmr = calcBMR(state.weightKg, state.heightCm, state.age, state.gender);
     const tdee = calcTDEE(bmr, state.activity);
     const target = calcTarget(tdee, state.goal);
-    const text = `My VitalDash:\nBMI: ${bmi.toFixed(1)} (${bmiCategory(bmi).label})\nBMR: ${Math.round(bmr)} kcal\nTDEE: ${Math.round(tdee)} kcal\nDaily target: ${Math.round(target.value)} kcal (${state.goal})\n\nCalculate yours: https://vitaldash.app`;
+    const text = `My VitalDash:\nBMI: ${bmi.toFixed(1)} (${bmiCategory(bmi).label})\nBMR: ${Math.round(bmr)} kcal\nTDEE: ${Math.round(tdee)} kcal\nDaily target: ${Math.round(target.value)} kcal (${state.goal})\n\nCalculate yours: https://vitaldash.io`;
     if (navigator.share) { try { await navigator.share({ title:'My VitalDash results', text }); } catch {} }
     else { try { await navigator.clipboard.writeText(text); toast('Copied to clipboard'); } catch { toast('Could not copy'); } }
   }

@@ -412,7 +412,7 @@
     const bmr = calcBMR(state.weightKg, state.heightCm, state.age, state.gender);
     const tdee = calcTDEE(bmr, state.activity);
     const target = calcTarget(tdee, state.goal);
-    const text = `My VitalDash:\nBMI: ${bmi.toFixed(1)} (${bmiCategory(bmi).label})\nBMR: ${Math.round(bmr)} kcal\nTDEE: ${Math.round(tdee)} kcal\nDaily target: ${Math.round(target.value)} kcal (${state.goal})\n\nCalculate yours: https://vitaldash.app`;
+    const text = `My VitalDash:\nBMI: ${bmi.toFixed(1)} (${bmiCategory(bmi).label})\nBMR: ${Math.round(bmr)} kcal\nTDEE: ${Math.round(tdee)} kcal\nDaily target: ${Math.round(target.value)} kcal (${state.goal})\n\nCalculate yours: https://vitaldash.io`;
     if (navigator.share) { try { await navigator.share({ title:'My VitalDash results', text }); } catch {} }
     else { try { await navigator.clipboard.writeText(text); toast('Copied to clipboard'); } catch { toast('Could not copy'); } }
   }
