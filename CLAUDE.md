@@ -28,7 +28,7 @@
 - cookies.html
 - about.html
 - methodology.html
-- contact.html (form delivery uses Web3Forms; replace YOUR_WEB3FORMS_ACCESS_KEY before deploying)
+- contact.html (form delivery via Web3Forms; access key configured)
 
 ## Data sources
 - Percentile tables (BMI and weight, by sex and age band) come from CDC NHANES 2015-2018, published as Vital Health Stat 3(46), 2021. URL: https://www.cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf
