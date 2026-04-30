@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0ea5e9" />
+
+  <title>Cookie Policy - VitalDash</title>
+  <meta name="description" content="What VitalDash stores in your browser, why, and how to clear it." />
+  <link rel="canonical" href="https://vitaldash.io/cookies.html" />
+  <meta name="robots" content="index,follow" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230ea5e9'/%3E%3Cpath d='M30 55 L42 67 L72 37' stroke='white' stroke-width='10' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script>
+    (function () {
+      try {
+        var p = JSON.parse(localStorage.getItem('vd_prefs')) || {};
+        if (p.theme === 'dark') document.documentElement.classList.add('dark');
+        else if (p.theme === 'light') document.documentElement.classList.remove('dark');
+        else if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { brand: { 50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e' } },
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','Segoe UI','sans-serif'] }
+        }
+      }
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    body { font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    .legal h2 { font-size: 1.125rem; font-weight: 600; margin-top: 1.75rem; margin-bottom: 0.5rem; color: #0f172a; }
+    .dark .legal h2 { color: #f1f5f9; }
+    .legal p { margin-bottom: 0.75rem; }
+    .legal ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+    .legal li { margin-bottom: 0.25rem; }
+    .legal a { color: #0284c7; }
+    .dark .legal a { color: #38bdf8; }
+    .legal a:hover { text-decoration: underline; }
+    .legal code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85em; padding: 0 0.25rem; border-radius: 4px; background: rgba(15,23,42,0.06); }
+    .dark .legal code { background: rgba(255,255,255,0.08); }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (localStorage.getItem('vd_consent')) return;
+      var banner = document.createElement('div');
+      banner.id = 'cookie-banner';
+      banner.style.cssText = 'position:fixed;bottom:1rem;left:1rem;right:1rem;max-width:480px;margin:0 auto;z-index:60';
+      banner.className = 'bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-xl';
+      banner.innerHTML =
+        '<p class="text-sm text-slate-700 dark:text-slate-200 leading-snug">We use only essential cookies for theme and unit preferences. No tracking cookies until you accept.</p>' +
+        '<div class="flex flex-wrap items-center gap-2 mt-3">' +
+        '<button id="vd-c-essential" class="text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700">Essential only</button>' +
+        '<button id="vd-c-all" class="text-xs font-medium px-3 py-1.5 rounded-lg bg-brand-500 hover:bg-brand-600 text-white">Accept all</button>' +
+        '<a href="/cookies.html" class="text-xs text-slate-500 dark:text-slate-400 hover:underline ml-auto">Learn more</a>' +
+        '</div>';
+      document.body.appendChild(banner);
+      function decide(v) { localStorage.setItem('vd_consent', v); banner.remove(); }
+      banner.querySelector('#vd-c-essential').addEventListener('click', function () { decide('essential'); });
+      banner.querySelector('#vd-c-all').addEventListener('click', function () { decide('all'); });
+    });
+  </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-full transition-colors">
+  <header class="sticky top-0 z-40 backdrop-blur-lg bg-white/70 dark:bg-slate-950/70 border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2.5 hover:opacity-80 transition-opacity" aria-label="VitalDash home">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-sm">
+          <svg viewBox="0 0 24 24" class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div>
+          <p class="font-bold text-lg leading-none">VitalDash</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-none mt-0.5">Beyond the numbers</p>
+        </div>
+      </a>
+      <div class="flex items-center gap-2">
+        <div class="hidden sm:flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-0.5 text-xs font-medium" aria-hidden="true">
+          <button class="px-3 py-1.5 rounded-md transition-all bg-white dark:bg-slate-700 shadow-sm" tabindex="-1">Metric</button>
+          <button class="px-3 py-1.5 rounded-md transition-all text-slate-500" tabindex="-1">Imperial</button>
+        </div>
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors" aria-label="Toggle dark mode">
+          <svg class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <svg class="w-4 h-4 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <a href="/" class="text-xs text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 inline-flex items-center gap-1 mb-4">
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to calculator
+    </a>
+    <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Last updated: April 30, 2026</p>
+    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-6">Cookie Policy</h1>
+
+    <div class="legal text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+      <h2>What cookies are</h2>
+      <p>"Cookies" is a loose term for small bits of data a website stores in your browser. We use the term broadly here to also cover localStorage, which works similarly. Together they let a site remember things between visits.</p>
+
+      <h2>What we currently use (essential, always on)</h2>
+      <p>These keep the site working and remember your choices. They are not used for tracking and never leave your device.</p>
+      <ul>
+        <li><code>vd_prefs</code>: your theme (light or dark) and units (metric or imperial). Without this the site forgets your preferences every visit.</li>
+        <li><code>vd_profiles</code>: profiles you saved inside the app.</li>
+        <li><code>vd_history</code>: weights you logged manually.</li>
+        <li><code>vd_consent</code>: your cookie consent choice, so we don't show the banner every time.</li>
+      </ul>
+
+      <h2>What we may use after consent</h2>
+      <ul>
+        <li><strong>Google AdSense advertising cookies</strong>, if and when we enable ads. These set cookies for ad personalization and frequency capping. We will only enable AdSense after you give consent through the banner. You can change your mind any time by clearing the <code>vd_consent</code> value in your browser, which brings the banner back.</li>
+      </ul>
+
+      <h2>Third-party cookies</h2>
+      <p>When parts of the page load from another company (Tailwind CDN, Chart.js CDN, Google Fonts), or when you click an Amazon affiliate link, those companies may set their own cookies under their own privacy policies. We do not control them. The links below open the relevant policies if you want to read them:</p>
+      <ul>
+        <li><a href="https://policies.google.com/privacy" rel="noopener">Google (Fonts, AdSense)</a></li>
+        <li><a href="https://www.amazon.com/gp/help/customer/display.html?nodeId=GX7NJQ4ZB8MHFRNJ" rel="noopener">Amazon</a></li>
+        <li><a href="https://www.cloudflare.com/privacypolicy/" rel="noopener">Cloudflare (cdnjs)</a></li>
+      </ul>
+
+      <h2>How to manage</h2>
+      <p>You can clear cookies and localStorage through your browser settings. Doing so will reset your VitalDash preferences and remove any saved profiles or weight log entries. Step-by-step instructions for the major browsers are in the <a href="/privacy.html">Privacy Policy</a>.</p>
+      <p>If you only want to revisit the consent banner, clear the <code>vd_consent</code> value (or all vitaldash.io storage) in your browser's developer tools or settings, then reload the page.</p>
+
+      <h2>Consent</h2>
+      <p>On your first visit you will see a small banner. You can choose:</p>
+      <ul>
+        <li><strong>Essential only</strong>: only the storage required for the site to function.</li>
+        <li><strong>Accept all</strong>: also allows advertising cookies once we enable them. Today this is identical to "Essential only" because no ads are running yet.</li>
+      </ul>
+      <p>You can change your mind any time. See "How to manage" above.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about this policy: <a href="mailto:growwithpassive@gmail.com">growwithpassive@gmail.com</a>.</p>
+    </div>
+
+    <footer class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500">
+      <nav class="flex flex-wrap justify-center gap-x-2 gap-y-1 mb-3" aria-label="Footer">
+        <a href="/" class="hover:text-brand-600 dark:hover:text-brand-400">Home</a>
+        <span aria-hidden="true">·</span>
+        <a href="/about.html" class="hover:text-brand-600 dark:hover:text-brand-400">About</a>
+        <span aria-hidden="true">·</span>
+        <a href="/methodology.html" class="hover:text-brand-600 dark:hover:text-brand-400">Methodology</a>
+        <span aria-hidden="true">·</span>
+        <a href="/privacy.html" class="hover:text-brand-600 dark:hover:text-brand-400">Privacy</a>
+        <span aria-hidden="true">·</span>
+        <a href="/terms.html" class="hover:text-brand-600 dark:hover:text-brand-400">Terms</a>
+        <span aria-hidden="true">·</span>
+        <a href="/cookies.html" class="hover:text-brand-600 dark:hover:text-brand-400">Cookies</a>
+        <span aria-hidden="true">·</span>
+        <a href="/contact.html" class="hover:text-brand-600 dark:hover:text-brand-400">Contact</a>
+      </nav>
+      <p>VitalDash © <span id="year"></span> · Educational use only · Not medical advice</p>
+      <p class="mt-1">Sources: WHO · CDC NHANES · Mifflin-St Jeor (1990) · Deurenberg (1991) · ISSN (2017)</p>
+      <p class="mt-2 text-[10px]">As an Amazon Associate we earn from qualifying purchases.</p>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      var y = document.getElementById('year');
+      if (y) y.textContent = new Date().getFullYear();
+      var btn = document.getElementById('theme-toggle');
+      if (btn) btn.addEventListener('click', function () {
+        document.documentElement.classList.toggle('dark');
+        var p = {};
+        try { p = JSON.parse(localStorage.getItem('vd_prefs')) || {}; } catch (e) {}
+        p.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        localStorage.setItem('vd_prefs', JSON.stringify(p));
+      });
+    })();
+  </script>
+</body>
+</html>

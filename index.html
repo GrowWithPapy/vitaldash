@@ -80,6 +80,27 @@
     .plan-day:hover { background: rgba(14,165,233,0.04); }
     .dark .plan-day:hover { background: rgba(14,165,233,0.08); }
   </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (localStorage.getItem('vd_consent')) return;
+      var banner = document.createElement('div');
+      banner.id = 'cookie-banner';
+      banner.style.cssText = 'position:fixed;bottom:1rem;left:1rem;right:1rem;max-width:480px;margin:0 auto;z-index:60';
+      banner.className = 'bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-xl';
+      banner.innerHTML =
+        '<p class="text-sm text-slate-700 dark:text-slate-200 leading-snug">We use only essential cookies for theme and unit preferences. No tracking cookies until you accept.</p>' +
+        '<div class="flex flex-wrap items-center gap-2 mt-3">' +
+        '<button id="vd-c-essential" class="text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700">Essential only</button>' +
+        '<button id="vd-c-all" class="text-xs font-medium px-3 py-1.5 rounded-lg bg-brand-500 hover:bg-brand-600 text-white">Accept all</button>' +
+        '<a href="/cookies.html" class="text-xs text-slate-500 dark:text-slate-400 hover:underline ml-auto">Learn more</a>' +
+        '</div>';
+      document.body.appendChild(banner);
+      function decide(v) { localStorage.setItem('vd_consent', v); banner.remove(); }
+      banner.querySelector('#vd-c-essential').addEventListener('click', function () { decide('essential'); });
+      banner.querySelector('#vd-c-all').addEventListener('click', function () { decide('all'); });
+    });
+  </script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-full transition-colors">
   <header class="sticky top-0 z-40 backdrop-blur-lg bg-white/70 dark:bg-slate-950/70 border-b border-slate-200 dark:border-slate-800">
@@ -485,6 +506,21 @@
     </div>
 
     <footer class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500">
+      <nav class="flex flex-wrap justify-center gap-x-2 gap-y-1 mb-3" aria-label="Footer">
+        <a href="/" class="hover:text-brand-600 dark:hover:text-brand-400">Home</a>
+        <span aria-hidden="true">·</span>
+        <a href="/about.html" class="hover:text-brand-600 dark:hover:text-brand-400">About</a>
+        <span aria-hidden="true">·</span>
+        <a href="/methodology.html" class="hover:text-brand-600 dark:hover:text-brand-400">Methodology</a>
+        <span aria-hidden="true">·</span>
+        <a href="/privacy.html" class="hover:text-brand-600 dark:hover:text-brand-400">Privacy</a>
+        <span aria-hidden="true">·</span>
+        <a href="/terms.html" class="hover:text-brand-600 dark:hover:text-brand-400">Terms</a>
+        <span aria-hidden="true">·</span>
+        <a href="/cookies.html" class="hover:text-brand-600 dark:hover:text-brand-400">Cookies</a>
+        <span aria-hidden="true">·</span>
+        <a href="/contact.html" class="hover:text-brand-600 dark:hover:text-brand-400">Contact</a>
+      </nav>
       <p>VitalDash © <span id="year"></span> · Educational use only · Not medical advice</p>
       <p class="mt-1">Sources: WHO · CDC NHANES · Mifflin-St Jeor (1990) · Deurenberg (1991) · ISSN (2017)</p>
       <p class="mt-2 text-[10px]">As an Amazon Associate we earn from qualifying purchases.</p>
