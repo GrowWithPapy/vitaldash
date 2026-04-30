@@ -7,13 +7,21 @@
 
   <title>Methodology - All the formulas behind VitalDash</title>
   <meta name="description" content="Every formula VitalDash uses, with source citations. WHO, CDC, Mifflin-St Jeor, Deurenberg, and more." />
+  <meta name="author" content="Gaston" />
+  <meta name="article:author" content="Gaston" />
+  <meta name="article:published_time" content="2026-04-30T00:00:00+01:00" />
+  <meta name="article:modified_time" content="2026-04-30T00:00:00+01:00" />
   <link rel="canonical" href="https://vitaldash.io/methodology.html" />
   <meta name="robots" content="index,follow" />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230ea5e9'/%3E%3Cpath d='M30 55 L42 67 L72 37' stroke='white' stroke-width='10' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
 
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Article","headline":"Methodology - All the formulas behind VitalDash","description":"Every formula VitalDash uses, with source citations.","author":{"@type":"Person","name":"Gaston"},"publisher":{"@type":"Organization","name":"VitalDash"},"datePublished":"2026-04-30","dateModified":"2026-04-30"}
+  {"@context":"https://schema.org","@type":"Article","headline":"Methodology - All the formulas behind VitalDash","description":"Every formula VitalDash uses, with source citations.","author":{"@type":"Person","name":"Gaston","url":"https://vitaldash.io/about.html"},"publisher":{"@type":"Organization","name":"VitalDash"},"datePublished":"2026-04-30","dateModified":"2026-04-30"}
+  </script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What formula does VitalDash use for BMR?","acceptedAnswer":{"@type":"Answer","text":"VitalDash uses the Mifflin-St Jeor equation, published in 1990 in the American Journal of Clinical Nutrition. For men: BMR = 10 × weight(kg) + 6.25 × height(cm) - 5 × age + 5. For women, subtract 161 instead of adding 5. The formula is roughly 5% more accurate than Harris-Benedict for modern populations."}},{"@type":"Question","name":"Is Mifflin-St Jeor more accurate than Harris-Benedict?","acceptedAnswer":{"@type":"Answer","text":"Yes. A 2005 review in the Journal of the American Dietetic Association found Mifflin-St Jeor predicted resting metabolic rate within 10% of measured values more often than Harris-Benedict. The American Dietetic Association recommended Mifflin-St Jeor as the standard equation that same year."}},{"@type":"Question","name":"How accurate is the body fat percentage estimate?","acceptedAnswer":{"@type":"Answer","text":"The Deurenberg (1991) formula has a typical error of about ±4 percentage points. It uses BMI, age, and sex as inputs. For better accuracy, use a DEXA scan, bioelectrical impedance scale, or skinfold calipers with a trained operator. The estimate is fine for tracking trends, less reliable for absolute values."}},{"@type":"Question","name":"What does my BMI percentile mean?","acceptedAnswer":{"@type":"Answer","text":"A BMI percentile shows how your BMI compares to other adults of your sex and age band in the United States. A percentile of 60 means your BMI is higher than 60% of that reference group. The data comes from CDC NHANES 2015-2018, which sampled around 5,000 adults across US demographics."}},{"@type":"Question","name":"Why does the projection assume 7,700 kcal per kg?","acceptedAnswer":{"@type":"Answer","text":"7,700 kcal per kg is the energy density of body fat, refined from the original Wishnofsky 1958 estimate of 3,500 kcal per pound. Real weight loss includes water, glycogen, and some lean tissue, so the figure is an idealized average. The projection is a planning estimate, not a guarantee."}},{"@type":"Question","name":"How is the daily calorie target calculated for fat loss?","acceptedAnswer":{"@type":"Answer","text":"VitalDash subtracts 500 kcal per day from your TDEE for fat loss. This produces roughly 0.45 kg (1 lb) of fat loss per week, the rate considered safely sustainable by most clinical guidelines. Larger deficits speed loss but raise risks of muscle loss, hunger, and adherence issues."}},{"@type":"Question","name":"What's the protein recommendation per kg of bodyweight?","acceptedAnswer":{"@type":"Answer","text":"VitalDash uses a floor of 1.6 g of protein per kg of bodyweight, based on the International Society of Sports Nutrition 2017 position stand. For a 70 kg person that's 112 g of protein per day. Higher intakes (up to 2.2 g/kg) are sometimes recommended during aggressive cuts to preserve muscle."}},{"@type":"Question","name":"Where does the percentile data come from?","acceptedAnswer":{"@type":"Answer","text":"All percentile rankings use the CDC's Vital and Health Statistics Series 3, Number 46 (2021), which published anthropometric data from NHANES 2015-2018. The dataset covers around 5,000 US adults grouped by sex and age band (20 to 39, 40 to 59, 60+). VitalDash interpolates linearly between published table points."}}]}
   </script>
 
   <script>
@@ -101,6 +109,14 @@
   <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
     <article class="legal">
       <h1>Methodology</h1>
+
+      <div class="bg-brand-50 dark:bg-brand-900/20 border border-brand-200 dark:border-brand-800 rounded-xl p-5 mb-8 mt-4">
+        <p class="text-xs font-semibold uppercase tracking-wider text-brand-700 dark:text-brand-300 mb-2">TL;DR</p>
+        <p class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+          VitalDash uses Mifflin-St Jeor (1990) for BMR, the WHO standard for BMI, Deurenberg (1991) for body fat estimates, ISSN (2017) protein guidelines, and CDC NHANES 2015-2018 data for percentile rankings. Every number is sourced. Every formula is published.
+        </p>
+      </div>
+
       <p>Every number on VitalDash comes from a published, peer-reviewed source. Here's the full list, with the original citations and the actual formulas.</p>
 
       <h2>BMI (Body Mass Index)</h2>
@@ -205,6 +221,44 @@
       <p>We use the published percentile tables for BMI and weight by sex and three age bands (20 to 39, 40 to 59, 60+), then interpolate linearly between table points to get any specific value. Available at: <a href="https://www.cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf" target="_blank" rel="noopener">cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf</a></p>
       <p><strong>Limitation:</strong> The dataset is US-only. International users will see slightly skewed percentiles relative to their own country.</p>
     </article>
+
+    <section class="mt-12">
+      <h2 class="text-2xl font-bold mb-4">Frequently asked questions</h2>
+      <div class="space-y-4">
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">What formula does VitalDash use for BMR?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">VitalDash uses the Mifflin-St Jeor equation, published in 1990 in the American Journal of Clinical Nutrition. For men: BMR = 10 × weight(kg) + 6.25 × height(cm) - 5 × age + 5. For women, subtract 161 instead of adding 5. The formula is roughly 5% more accurate than Harris-Benedict for modern populations.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">Is Mifflin-St Jeor more accurate than Harris-Benedict?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Yes. A 2005 review in the Journal of the American Dietetic Association found Mifflin-St Jeor predicted resting metabolic rate within 10% of measured values more often than Harris-Benedict. The American Dietetic Association recommended Mifflin-St Jeor as the standard equation that same year.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">How accurate is the body fat percentage estimate?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">The Deurenberg (1991) formula has a typical error of about ±4 percentage points. It uses BMI, age, and sex as inputs. For better accuracy, use a DEXA scan, bioelectrical impedance scale, or skinfold calipers with a trained operator. The estimate is fine for tracking trends, less reliable for absolute values.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">What does my BMI percentile mean?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">A BMI percentile shows how your BMI compares to other adults of your sex and age band in the United States. A percentile of 60 means your BMI is higher than 60% of that reference group. The data comes from CDC NHANES 2015-2018, which sampled around 5,000 adults across US demographics.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">Why does the projection assume 7,700 kcal per kg?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">7,700 kcal per kg is the energy density of body fat, refined from the original Wishnofsky 1958 estimate of 3,500 kcal per pound. Real weight loss includes water, glycogen, and some lean tissue, so the figure is an idealized average. The projection is a planning estimate, not a guarantee.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">How is the daily calorie target calculated for fat loss?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">VitalDash subtracts 500 kcal per day from your TDEE for fat loss. This produces roughly 0.45 kg (1 lb) of fat loss per week, the rate considered safely sustainable by most clinical guidelines. Larger deficits speed loss but raise risks of muscle loss, hunger, and adherence issues.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">What's the protein recommendation per kg of bodyweight?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">VitalDash uses a floor of 1.6 g of protein per kg of bodyweight, based on the International Society of Sports Nutrition 2017 position stand. For a 70 kg person that's 112 g of protein per day. Higher intakes (up to 2.2 g/kg) are sometimes recommended during aggressive cuts to preserve muscle.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+          <summary class="font-semibold cursor-pointer">Where does the percentile data come from?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">All percentile rankings use the CDC's Vital and Health Statistics Series 3, Number 46 (2021), which published anthropometric data from NHANES 2015-2018. The dataset covers around 5,000 US adults grouped by sex and age band (20 to 39, 40 to 59, 60+). VitalDash interpolates linearly between published table points.</p>
+        </details>
+      </div>
+    </section>
   </main>
 
   <footer class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">

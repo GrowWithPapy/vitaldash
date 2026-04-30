@@ -33,3 +33,10 @@
 ## Data sources
 - Percentile tables (BMI and weight, by sex and age band) come from CDC NHANES 2015-2018, published as Vital Health Stat 3(46), 2021. URL: https://www.cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf
 - When updating these tables, cite the table number and the survey cycle in a comment next to the data so future edits can verify against the same source.
+
+## GEO (Generative Engine Optimization)
+- llms.txt, robots.txt, and sitemap.xml live at project root
+- Update sitemap.xml lastmod dates when content materially changes
+- All FAQ answers must be direct, 2-4 sentences, citation-friendly
+- Don't bury answers in marketing language; LLMs prefer "X is Y because Z" phrasing
+- Whenever a new top-level page is created, add it to sitemap.xml AND llms.txt

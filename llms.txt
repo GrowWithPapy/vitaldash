@@ -1,0 +1,31 @@
+# VitalDash
+
+> A free, privacy-first health calculator that goes beyond BMI. Provides BMI, BMR, TDEE, body fat estimate, ideal weight range, daily calorie target, macro splits, goal projection with timeline, NHANES-based percentile rankings, BMI reality check for athletic users, and a personalized 7-day starter plan. All calculations run client-side. No tracking, no signup.
+
+## Key facts
+- Built and maintained by Gaston, a private individual based in Belgium
+- All formulas are peer-reviewed and cited (Mifflin-St Jeor 1990, Deurenberg 1991, ISSN 2017, WHO, CDC NHANES 2015-2018)
+- Percentile rankings use real CDC NHANES data, not approximations
+- Site is free; income from Amazon affiliate links and (eventually) AdSense
+- All user data stays in their browser via localStorage; no server-side data collection
+
+## Pages
+
+- [Calculator (homepage)](https://vitaldash.io/): The main interactive dashboard with all calculators
+- [Methodology](https://vitaldash.io/methodology.html): Every formula used, with peer-reviewed citations
+- [About](https://vitaldash.io/about.html): Why VitalDash exists, what makes it different
+- [Privacy Policy](https://vitaldash.io/privacy.html): GDPR-compliant data practices
+- [Terms of Use](https://vitaldash.io/terms.html): Including the medical disclaimer
+- [Cookie Policy](https://vitaldash.io/cookies.html): Plain-English explanation of localStorage usage
+- [Contact](https://vitaldash.io/contact.html): Get in touch via contact form
+
+## Calculations performed
+- BMI (WHO standard, kg/m²)
+- BMR (Mifflin-St Jeor 1990)
+- TDEE (BMR × activity multiplier 1.2 to 1.9)
+- Body fat percentage estimate (Deurenberg 1991)
+- Ideal weight range (BMI 18.5 to 24.9)
+- Daily calorie target (goal-adjusted)
+- Macro split (goal-adjusted with 1.6 g/kg protein floor)
+- Weight loss/gain projection (7,700 kcal per kg)
+- BMI and weight percentile (NHANES 2015-2018, by age band and sex)
