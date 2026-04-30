@@ -1,0 +1,209 @@
+<!--
+  ============================================================================
+  CALCULATOR PAGE TEMPLATE
+  ============================================================================
+  Reference for adding a new standalone calculator. Do NOT build this file
+  directly. Instead, split its sections across:
+    src/pages/{slug}-head.html   ... section 1 below
+    src/pages/{slug}-main.html   ... section 4 below
+    src/calcs/{slug}.js          ... section 6 below
+  Then add the slug to the SLUGS array in scripts/build.sh and run the script.
+
+  Concatenation order (handled by scripts/build.sh):
+    src/pages/{slug}-head.html
+    src/shared/calc-page-head.html
+    src/shared/page-header.html
+    src/pages/{slug}-main.html
+    src/shared/calc-page-footer.html
+    src/shared/formulas.js          (shared functions FIRST so page JS can call them)
+    src/calcs/{slug}.js             (page-specific JS)
+    src/shared/cookie-banner.html   (closes </body></html>)
+
+  STYLE RULES (CLAUDE.md):
+    - No em dashes
+    - No banned phrases
+    - FAQ answers: 2-4 sentences, fact-first
+============================================================================ -->
+
+
+<!-- ===========================================================================
+  SECTION 1: src/pages/{slug}-head.html
+  Page-specific <head>: title, meta, canonical, JSON-LD schemas.
+  Ends right before <body> (the shared calc-page-head.html supplies the body
+  open tag plus Tailwind, fonts, base styles, and theme-bootstrap script).
+============================================================================ -->
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0ea5e9" />
+
+  <title>{Calculator Name} - VitalDash</title>
+  <meta name="description" content="{One-sentence description targeting the long-tail keyword for this calculator.}" />
+  <meta name="keywords" content="{calculator}, {related keyword}, {related keyword}" />
+  <meta name="author" content="Gaston" />
+  <meta name="article:author" content="Gaston" />
+  <meta name="article:published_time" content="2026-05-01T00:00:00+01:00" />
+  <meta name="article:modified_time" content="2026-05-01T00:00:00+01:00" />
+  <link rel="canonical" href="https://vitaldash.io/{slug}-calculator.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{Calculator Name}" />
+  <meta property="og:description" content="{Short OG description}" />
+  <meta property="og:url" content="https://vitaldash.io/{slug}-calculator.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- FAQ schema: must mirror the visible FAQ section in section 4 -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"{Question 1}","acceptedAnswer":{"@type":"Answer","text":"{2-4 sentence answer.}"}},
+    {"@type":"Question","name":"{Question 2}","acceptedAnswer":{"@type":"Answer","text":"{2-4 sentence answer.}"}}
+  ]}
+  </script>
+
+  <!-- Breadcrumb schema for AI Overview / SERP visibility -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://vitaldash.io/"},
+    {"@type":"ListItem","position":2,"name":"{Calculator Name}","item":"https://vitaldash.io/{slug}-calculator.html"}
+  ]}
+  </script>
+
+  <!-- WebApplication schema describing the calculator itself -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"{Calculator Name}","applicationCategory":"HealthApplication","operatingSystem":"Any","description":"{Short description}","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Gaston","url":"https://vitaldash.io/about.html"}}
+  </script>
+
+
+<!-- ===========================================================================
+  SECTION 2 (shared, do not write): src/shared/calc-page-head.html
+  Supplies favicon, theme-bootstrap script, Tailwind, Chart.js, fonts, base
+  styles. Closes </head> and opens <body>.
+============================================================================ -->
+
+
+<!-- ===========================================================================
+  SECTION 3 (shared, do not write): src/shared/page-header.html
+  Sticky header with logo, "Back to calculator" link, theme toggle.
+============================================================================ -->
+
+
+<!-- ===========================================================================
+  SECTION 4: src/pages/{slug}-main.html
+  The page body. Convention:
+    a) Hero (H1, subtitle, last-updated date)
+    b) Calculator UI (inputs + results card)
+    c) Methodology section (formula + sources)
+    d) Related calculators block
+    e) FAQ accordion (must match the FAQ schema in section 1)
+============================================================================ -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+
+    <!-- (a) Hero -->
+    <section class="mb-8 animate-fade-in">
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">{Exact long-tail keyword as H1}</h1>
+      <p class="text-slate-600 dark:text-slate-400 mt-2 max-w-2xl">{One-sentence value prop.}</p>
+      <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">Last updated: 2026-05-01</p>
+    </section>
+
+    <!-- (b) Calculator UI -->
+    <section class="grid lg:grid-cols-[380px_1fr] gap-6 lg:gap-8 mb-12">
+      <aside class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+        <h2 class="font-semibold mb-5">Inputs</h2>
+        <!-- Form fields here. IDs go in src/calcs/{slug}.js -->
+      </aside>
+
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
+        <h2 class="font-semibold mb-4">Result</h2>
+        <!-- Result display here -->
+      </div>
+    </section>
+
+    <!-- (c) Methodology -->
+    <section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm mb-8">
+      <h2 class="text-xl font-bold mb-3">How it's calculated</h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">{Plain-English description of the formula.}</p>
+      <pre class="bg-slate-50 dark:bg-slate-800 p-3 rounded-lg text-sm overflow-x-auto"><code>{Formula in code form}</code></pre>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-3"><strong>Source:</strong> {Citation, year, journal}.</p>
+    </section>
+
+    <!-- (d) Related calculators (3-5 links) -->
+    <section class="bg-slate-100 dark:bg-slate-900/50 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 mb-8">
+      <h2 class="font-semibold text-sm mb-3">Try also</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <a href="/{related-slug}-calculator.html" class="block p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-brand-400 transition-colors">
+          <p class="font-semibold text-sm">{Related calculator name}</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{Why a user of this calc would want it}</p>
+        </a>
+        <!-- Repeat 2-4 more times -->
+      </div>
+    </section>
+
+    <!-- (e) FAQ accordion. Must mirror the FAQPage schema in section 1. -->
+    <section>
+      <h2 class="text-xl font-bold mb-4">Frequently asked questions</h2>
+      <div class="space-y-3">
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+          <summary class="font-semibold text-sm cursor-pointer">{Question 1}</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{2-4 sentence answer matching schema verbatim.}</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+          <summary class="font-semibold text-sm cursor-pointer">{Question 2}</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{2-4 sentence answer.}</p>
+        </details>
+      </div>
+    </section>
+
+  </main>
+
+
+<!-- ===========================================================================
+  SECTION 5 (shared, do not write): src/shared/calc-page-footer.html
+  Standard footer with nav, sources, Amazon disclosure.
+============================================================================ -->
+
+
+<!-- ===========================================================================
+  SECTION 6: src/calcs/{slug}.js
+  Page-specific JS. Wrap in <script>...</script>. May call any function from
+  src/shared/formulas.js (loaded just before this file by the build script).
+
+  Pattern:
+    1. State object
+    2. DOM helpers ($, etc.)
+    3. render() function (reads state, writes DOM)
+    4. Event listeners (input, click, change)
+    5. Init: read localStorage prefs, set #year, attach listeners, run render()
+============================================================================ -->
+<!--
+<script>
+  const state = { /* ... */ };
+  const $ = (id) => document.getElementById(id);
+
+  function render() {
+    // const result = calcBMI(state.weightKg, state.heightCm);  // shared function
+    // $('result').textContent = result.toFixed(1);
+  }
+
+  function init() {
+    document.getElementById('year').textContent = new Date().getFullYear();
+    // attach listeners, set initial values, then render()
+    render();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+</script>
+-->
+
+
+<!-- ===========================================================================
+  SECTION 7 (shared, do not write): src/shared/formulas.js
+  Loaded before section 6 so page JS can call its functions.
+============================================================================ -->
+
+
+<!-- ===========================================================================
+  SECTION 8 (shared, do not write): src/shared/cookie-banner.html
+  Banner markup, banner script, and the closing </body></html> tags.
+============================================================================ -->

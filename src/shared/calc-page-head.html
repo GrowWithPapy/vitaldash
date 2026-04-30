@@ -1,0 +1,68 @@
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230ea5e9'/%3E%3Cpath d='M30 55 L42 67 L72 37' stroke='white' stroke-width='10' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script>
+    (function () {
+      try {
+        var p = JSON.parse(localStorage.getItem('vd_prefs')) || {};
+        if (p.theme === 'dark') document.documentElement.classList.add('dark');
+        else if (p.theme === 'light') document.documentElement.classList.remove('dark');
+        else if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      safelist: [
+        'bg-blue-100','text-blue-700','dark:bg-blue-900/40','dark:text-blue-300',
+        'bg-emerald-100','text-emerald-700','dark:bg-emerald-900/40','dark:text-emerald-300',
+        'bg-amber-100','text-amber-700','dark:bg-amber-900/40','dark:text-amber-300',
+        'bg-red-100','text-red-700','dark:bg-red-900/40','dark:text-red-300',
+      ],
+      theme: {
+        extend: {
+          colors: { brand: { 50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e' } },
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','Segoe UI','sans-serif'] },
+          animation: { 'fade-in':'fadeIn 0.4s ease-out', 'slide-up':'slideUp 0.5s cubic-bezier(0.16,1,0.3,1)' },
+          keyframes: {
+            fadeIn:{'0%':{opacity:'0'},'100%':{opacity:'1'}},
+            slideUp:{'0%':{opacity:'0',transform:'translateY(12px)'},'100%':{opacity:'1',transform:'translateY(0)'}}
+          }
+        }
+      }
+    };
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
+    input[type="range"] { -webkit-appearance:none; appearance:none; background:transparent; cursor:pointer; width:100%; }
+    input[type="range"]::-webkit-slider-runnable-track { height:6px; background:linear-gradient(to right,var(--pct-bg-1,#0ea5e9) var(--pct,50%),var(--pct-bg-2,#e2e8f0) var(--pct,50%)); border-radius:999px; }
+    .dark input[type="range"]::-webkit-slider-runnable-track { background:linear-gradient(to right,var(--pct-bg-1,#0ea5e9) var(--pct,50%),var(--pct-bg-2,#334155) var(--pct,50%)); }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; height:18px; width:18px; border-radius:50%; background:white; border:2px solid #0ea5e9; margin-top:-6px; box-shadow:0 1px 3px rgba(0,0,0,0.15); transition:transform 0.15s; }
+    input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.15); }
+    input[type="range"]::-moz-range-track { height:6px; background:#e2e8f0; border-radius:999px; }
+    input[type="range"]::-moz-range-thumb { height:18px; width:18px; border-radius:50%; background:white; border:2px solid #0ea5e9; box-shadow:0 1px 3px rgba(0,0,0,0.15); }
+    input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+    input[type="number"] { -moz-appearance:textfield; }
+
+    ::-webkit-scrollbar { width:8px; height:8px; }
+    ::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:4px; }
+    .dark ::-webkit-scrollbar-thumb { background:#475569; }
+
+    .tooltip { position:relative; display:inline-flex; }
+    .tooltip-content { visibility:hidden; opacity:0; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:#0f172a; color:white; padding:8px 12px; border-radius:8px; font-size:12px; line-height:1.4; font-weight:400; white-space:normal; width:max-content; max-width:240px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:50; transition:opacity 0.15s; pointer-events:none; }
+    .tooltip:hover .tooltip-content, .tooltip:focus-within .tooltip-content { visibility:visible; opacity:1; }
+    .tooltip-content::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:#0f172a; }
+  </style>
+
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-full transition-colors">

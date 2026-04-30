@@ -15,11 +15,25 @@
 - Original info beats rephrased common knowledge. Our percentile chips, BMI reality check, and goal projection are the moat.
 
 ## Code rules
-- Homepage is built from src/ snippets. Rebuild index.html with: cat src/01-head.html src/02-form.html src/03-results.html src/04-script-calc.js src/05-script-render.js src/page-footer.html src/cookie-banner.html > index.html
-- Secondary pages (privacy, terms, cookies, about, methodology, contact) are written as standalone HTML files in the project root. They inline the same head, header, footer, and cookie-banner markup. Don't refactor to a build step until repetition pain demands it.
-- src/page-header.html, src/page-footer.html, src/cookie-banner.html are the canonical snippets. When a snippet changes, propagate it across the secondary pages by hand.
+- 5-file homepage src/ structure stays. Source of truth.
+- Calculator pages use the modular structure: src/pages/{slug}-head.html, src/pages/{slug}-main.html, src/calcs/{slug}.js
+- Shared code lives in src/shared/. Never duplicate formulas, footer, or cookie banner.
+- All calculations are pure functions in src/shared/formulas.js. New formulas go there.
+- Secondary pages (privacy, terms, cookies, about, methodology, contact) are still written as standalone HTML files in the project root. They inline the same head, header, footer, and cookie-banner markup. When a shared snippet in src/shared/ changes, propagate it across the secondary pages by hand.
 - All calculations stay client-side. No backend calls without explicit approval.
 - Comments in code only when logic is non-obvious.
+- To rebuild everything, run: bash scripts/build.sh
+- To add a new calculator: see scripts/calculator-template.html for the structure, then add the slug to SLUGS in scripts/build.sh.
+
+## Calculator slugs and conventions
+- Slug = kebab-case keyword (e.g., "body-fat", not "bodyfat")
+- Output filename: {slug}-calculator.html (e.g., body-fat-calculator.html)
+- URL: /{slug}-calculator (nginx try_files removes the .html)
+- Each calculator gets its own H1 matching the keyword exactly
+- Each calculator must have: methodology section with citations + FAQ section + FAQ JSON-LD schema + 3-5 related-calculator links
+
+## Git workflow
+- After modifying any src/ file, run `bash scripts/build.sh` before committing.
 
 ## Top-level pages
 - index.html (homepage, the calculator)
