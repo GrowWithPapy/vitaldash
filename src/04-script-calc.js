@@ -182,8 +182,7 @@
   }
 
   // ============= AFFILIATES =============
-  // Replace YOUR_TAG with your Amazon Associates tracking ID
-  const AMAZON_TAG = 'YOUR_TAG';
+  const AMAZON_TAG = 'growwithpas0e-20';
   const a = (q) => `https://www.amazon.com/s?k=${encodeURIComponent(q)}&tag=${AMAZON_TAG}`;
 
   const AFFILIATES = {
