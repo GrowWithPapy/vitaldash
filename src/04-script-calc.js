@@ -6,6 +6,7 @@
     bodyFat: 0, activity: 1.55,
     goal: 'maintain', units: 'metric',
     whatIfWeight: 70, goalWeight: 0,
+    extraKcal: 0,
   };
 
   // ============= CALCULATIONS =============
@@ -187,19 +188,19 @@
 
   const AFFILIATES = {
     lose: [
-      { title:'Smart body-fat scale', desc:'Track weight + body composition trends.',  url:a('smart bathroom scale body fat') },
-      { title:'Whey protein powder',  desc:'Hit your protein floor without effort.',   url:a('whey protein powder') },
-      { title:'Resistance bands set', desc:'Cheap home strength training, anywhere.',  url:a('resistance bands set') },
+      { title:'Smart body-fat scale', desc:'Track weight + body composition trends.',  url:a('smart bathroom scale body fat'), image:'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=300&q=80' },
+      { title:'Whey protein powder',  desc:'Hit your protein floor without effort.',   url:a('whey protein powder'),           image:'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=300&q=80' },
+      { title:'Resistance bands set', desc:'Cheap home strength training, anywhere.',  url:a('resistance bands set'),          image:'https://images.unsplash.com/photo-1599058917765-a780eda07a3e?w=300&q=80' },
     ],
     maintain: [
-      { title:'Smart bathroom scale', desc:'Catch trends before they become problems.',url:a('smart bathroom scale body fat') },
-      { title:'Daily multivitamin',   desc:'Cover micronutrient gaps in any diet.',     url:a('daily multivitamin') },
-      { title:'Adjustable kettlebell',desc:'One tool, full-body strength.',             url:a('adjustable kettlebell') },
+      { title:'Smart bathroom scale', desc:'Catch trends before they become problems.',url:a('smart bathroom scale body fat'), image:'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=300&q=80' },
+      { title:'Daily multivitamin',   desc:'Cover micronutrient gaps in any diet.',     url:a('daily multivitamin'),           image:'https://images.unsplash.com/photo-1550572017-edd951b55104?w=300&q=80' },
+      { title:'Adjustable kettlebell',desc:'One tool, full-body strength.',             url:a('adjustable kettlebell'),         image:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&q=80' },
     ],
     build: [
-      { title:'Whey protein powder',  desc:'__PROTEIN__ per day, easily.',              url:a('whey protein isolate 5lb') },
-      { title:'Creatine monohydrate', desc:'Cheapest proven muscle/strength supplement.',url:a('creatine monohydrate') },
-      { title:'Adjustable dumbbells', desc:'Progressive overload at home.',             url:a('adjustable dumbbells') },
+      { title:'Whey protein powder',  desc:'__PROTEIN__ per day, easily.',              url:a('whey protein isolate 5lb'),     image:'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=300&q=80' },
+      { title:'Creatine monohydrate', desc:'Cheapest proven muscle/strength supplement.',url:a('creatine monohydrate'),        image:'https://images.unsplash.com/photo-1579722821273-0f6c1b5d0bf5?w=300&q=80' },
+      { title:'Adjustable dumbbells', desc:'Progressive overload at home.',             url:a('adjustable dumbbells'),          image:'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=300&q=80' },
     ],
   };
 

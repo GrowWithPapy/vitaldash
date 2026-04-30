@@ -84,18 +84,16 @@
     const list = AFFILIATES[goal];
     $('affiliate-row').innerHTML = list.map(item => {
       const desc = item.desc.replace('__PROTEIN__', `Hit ${proteinG}g protein`);
-      return `<a href="${item.url}" target="_blank" rel="sponsored noopener" class="aff-card group block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-sm">
-        <div class="flex items-start gap-3">
-          <div class="w-9 h-9 rounded-lg bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center shrink-0">
-            <svg class="w-4 h-4 text-brand-600 dark:text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-          </div>
-          <div class="flex-1 min-w-0">
-            <p class="text-sm font-semibold leading-tight group-hover:text-brand-600 dark:group-hover:text-brand-400">${item.title}</p>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">${desc}</p>
-            <p class="text-[10px] text-slate-400 mt-1.5 inline-flex items-center gap-1">View on Amazon
-              <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
-            </p>
-          </div>
+      return `<a href="${item.url}" target="_blank" rel="sponsored noopener" class="aff-card group block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-sm">
+        <div class="aspect-[4/3] bg-slate-100 dark:bg-slate-800 overflow-hidden">
+          <img src="${item.image}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+        </div>
+        <div class="p-3">
+          <p class="text-sm font-semibold leading-tight group-hover:text-brand-600 dark:group-hover:text-brand-400">${item.title}</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">${desc}</p>
+          <p class="text-[10px] text-slate-400 mt-1.5 inline-flex items-center gap-1">View on Amazon
+            <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </p>
         </div>
       </a>`;
     }).join('');
@@ -106,12 +104,11 @@
 
   // Body fat thresholds differ by sex; 'other' uses male thresholds.
   function silhouetteScale(bf, gender) {
-    const female = gender === 'female';
-    const lowThresh = female ? 22 : 15;
-    const highThresh = female ? 32 : 25;
-    if (bf < lowThresh) return 0.85;
-    if (bf <= highThresh) return 1.0;
-    return Math.min(1.5, 1.0 + (bf - highThresh) * 0.025);
+    const lowThreshold = gender === 'female' ? 22 : 15;
+    const highThreshold = gender === 'female' ? 32 : 25;
+    if (bf <= lowThreshold) return 0.92;
+    if (bf <= highThreshold) return 1.0;
+    return Math.min(1.25, 1.0 + (bf - highThreshold) * 0.012);
   }
 
   // ============= COMPARE TO PAST SELF =============
@@ -155,12 +152,12 @@
 
     const pastBmi    = calcBMI(past.weight, state.heightCm);
     const pastBmr    = calcBMR(past.weight, state.heightCm, state.age, state.gender);
-    const pastTdee   = calcTDEE(pastBmr, state.activity);
+    const pastTdee   = calcTDEE(pastBmr, state.activity) + state.extraKcal;
     const pastTarget = calcTarget(pastTdee, state.goal).value;
 
     const curBmi    = calcBMI(state.weightKg, state.heightCm);
     const curBmr    = calcBMR(state.weightKg, state.heightCm, state.age, state.gender);
-    const curTdee   = calcTDEE(curBmr, state.activity);
+    const curTdee   = calcTDEE(curBmr, state.activity) + state.extraKcal;
     const curTarget = calcTarget(curTdee, state.goal).value;
 
     const days = Math.round((new Date(today) - new Date(past.date)) / 86400000);
@@ -220,7 +217,7 @@
     // Slider fills + input displays
     $('age-out').textContent = state.age;
     setSliderFill($('age')); setSliderFill($('weight')); setSliderFill($('whatif-weight'));
-    setSliderFill($('bodyfat')); setSliderFill($('goal-weight'));
+    setSliderFill($('bodyfat')); setSliderFill($('goal-weight')); setSliderFill($('extra-kcal'));
     if (state.units === 'metric') setSliderFill($('height-cm'));
 
     if (state.units === 'metric') $('weight-out').textContent = `${state.weightKg.toFixed(state.weightKg % 1 ? 1 : 0)} kg`;
@@ -249,13 +246,15 @@
     const cat    = bmiCategory(bmi);
     const bmr    = calcBMR(state.weightKg, state.heightCm, state.age, state.gender);
     const tdee   = calcTDEE(bmr, state.activity);
+    const tdeeAdjusted = tdee + state.extraKcal;
     const hasUserBf = state.bodyFat > 0;
     const bf     = hasUserBf ? state.bodyFat : estimateBodyFat(bmi, state.age, state.gender);
     const bfCat  = bodyFatCategory(bf, state.gender);
     const ideal  = idealWeightRange(state.heightCm);
-    const target = calcTarget(tdee, state.goal);
+    const target = calcTarget(tdeeAdjusted, state.goal);
     const split  = macroSplit(state.goal);
     const macros = macroGrams(target.value, split, state.weightKg);
+    $('extra-kcal-out').textContent = `+${state.extraKcal} kcal/day`;
 
     // BMI card
     $('bmi-value').textContent = bmi.toFixed(1);
@@ -267,19 +266,25 @@
 
     renderRealityCheck(bmi, cat, bf, bfCat, state.gender, hasUserBf);
 
-    // Body silhouette
-    const torsoEl = $('silhouette-torso');
+    // Body silhouette (anatomical, gender-aware)
     const silhouetteEl = $('body-silhouette');
-    if (torsoEl && silhouetteEl) {
-      torsoEl.style.transformOrigin = '25px 50px';
-      torsoEl.style.transition = 'transform 0.4s ease';
-      torsoEl.style.transform = `scaleX(${silhouetteScale(bf, state.gender)})`;
+    const maleG = $('silhouette-male');
+    const femaleG = $('silhouette-female');
+    if (silhouetteEl && maleG && femaleG) {
+      const isMale = state.gender === 'male' || state.gender === 'other';
+      maleG.style.opacity = isMale ? '1' : '0';
+      femaleG.style.opacity = isMale ? '0' : '1';
+      const targetBody = isMale ? $('silhouette-male-body') : $('silhouette-female-body');
+      const scale = silhouetteScale(bf, state.gender);
+      targetBody.style.transformOrigin = '40px 100px';
+      targetBody.style.transition = 'transform 0.4s ease';
+      targetBody.style.transform = `scaleX(${scale})`;
       silhouetteEl.style.color = SILHOUETTE_COLORS[cat.color] || SILHOUETTE_COLORS.emerald;
     }
 
     // Stat cards
     $('bmr-value').textContent  = Math.round(bmr).toLocaleString();
-    $('tdee-value').textContent = Math.round(tdee).toLocaleString();
+    $('tdee-value').textContent = Math.round(tdeeAdjusted).toLocaleString();
     $('bf-value').textContent   = bf.toFixed(1);
     $('bf-source').textContent  = hasUserBf ? 'user-provided' : 'est. (Deurenberg)';
     $('bf-category').textContent = bfCat;
@@ -336,17 +341,17 @@
 
     // What-if
     const wiBmr  = calcBMR(state.whatIfWeight, state.heightCm, state.age, state.gender);
-    const wiTdee = calcTDEE(wiBmr, state.activity);
+    const wiTdee = calcTDEE(wiBmr, state.activity) + state.extraKcal;
     const wiW = state.units === 'metric' ? state.whatIfWeight : kgToLb(state.whatIfWeight);
     $('whatif-weight-out').textContent = `${wiW.toFixed(state.units === 'metric' && state.whatIfWeight % 1 ? 1 : 0)} ${state.units === 'metric' ? 'kg' : 'lb'}`;
     $('whatif-tdee').textContent = `${Math.round(wiTdee).toLocaleString()} kcal`;
-    const diff = Math.round(wiTdee - tdee);
+    const diff = Math.round(wiTdee - tdeeAdjusted);
     $('whatif-delta').textContent = `${diff > 0 ? '+' : ''}${diff} kcal`;
     $('whatif-delta').className = `font-bold tabular-nums ${diff > 0 ? 'text-emerald-500' : diff < 0 ? 'text-rose-500' : ''}`;
 
     // Goal projection (DIFFERENTIATOR #1)
     const goalKg = state.goalWeight > 0 ? state.goalWeight : null;
-    const proj = goalKg ? projectGoal(state.weightKg, goalKg, tdee, target.value) : null;
+    const proj = goalKg ? projectGoal(state.weightKg, goalKg, tdeeAdjusted, target.value) : null;
 
     if (!goalKg) {
       $('projection-headline').textContent = `Set a goal weight to see your timeline`;
@@ -437,6 +442,7 @@
     $('height-ft').addEventListener('input', updateImperialH);
     $('height-in').addEventListener('input', updateImperialH);
     $('bodyfat').addEventListener('input', e => { state.bodyFat = +e.target.value; render(); });
+    $('extra-kcal').addEventListener('input', e => { state.extraKcal = +e.target.value; render(); });
     $('activity').addEventListener('change', e => { state.activity = +e.target.value; render(); });
 
     document.querySelectorAll('.gender-btn').forEach(b => b.addEventListener('click', () => { state.gender = b.dataset.gender; render(); }));
@@ -514,7 +520,7 @@
   async function shareResults() {
     const bmi = calcBMI(state.weightKg, state.heightCm);
     const bmr = calcBMR(state.weightKg, state.heightCm, state.age, state.gender);
-    const tdee = calcTDEE(bmr, state.activity);
+    const tdee = calcTDEE(bmr, state.activity) + state.extraKcal;
     const target = calcTarget(tdee, state.goal);
     const text = `My VitalDash:\nBMI: ${bmi.toFixed(1)} (${bmiCategory(bmi).label})\nBMR: ${Math.round(bmr)} kcal\nTDEE: ${Math.round(tdee)} kcal\nDaily target: ${Math.round(target.value)} kcal (${state.goal})\n\nCalculate yours: https://vitaldash.io`;
     if (navigator.share) { try { await navigator.share({ title:'My VitalDash results', text }); } catch {} }
