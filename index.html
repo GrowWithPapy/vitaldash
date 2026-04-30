@@ -268,7 +268,7 @@
 
         <!-- BMI card with reality check inline -->
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm">
-          <div class="flex items-start justify-between mb-4 gap-4">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4">
             <div class="flex-1 min-w-0">
               <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Body Mass Index</p>
               <div class="flex items-baseline gap-2 mt-1">
@@ -278,28 +278,13 @@
               <p id="bmi-explainer" class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 max-w-md">You're in the healthy range.</p>
             </div>
             <div class="flex items-start gap-2 shrink-0">
-              <svg id="body-silhouette" viewBox="0 0 80 200" class="w-16 h-32 transition-colors" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Body silhouette visual representation" role="img">
-                <g id="silhouette-male" style="transition: opacity 0.3s">
-                  <ellipse cx="40" cy="18" rx="11" ry="13"/>
-                  <path d="M35 30 L35 36 Q40 38 45 36 L45 30"/>
-                  <path id="silhouette-male-body" d="M22 40 Q18 50 21 75 Q23 95 27 115 L29 165 Q35 175 40 175 Q45 175 51 165 L53 115 Q57 95 59 75 Q62 50 58 40 Q50 34 40 34 Q30 34 22 40 Z" fill="currentColor" fill-opacity="0.12"/>
-                  <path d="M22 42 Q15 65 14 95 Q14 110 18 115"/>
-                  <path d="M58 42 Q65 65 66 95 Q66 110 62 115"/>
-                  <path d="M40 165 L40 195" stroke-opacity="0.4"/>
-                  <path d="M30 195 Q35 198 40 195"/>
-                  <path d="M40 195 Q45 198 50 195"/>
-                </g>
-                <g id="silhouette-female" style="transition: opacity 0.3s; opacity: 0">
-                  <ellipse cx="40" cy="18" rx="10" ry="12"/>
-                  <path d="M36 29 L36 35 Q40 37 44 35 L44 29"/>
-                  <path id="silhouette-female-body" d="M26 40 Q23 55 26 70 Q22 80 24 95 Q22 105 25 120 L28 165 Q34 175 40 175 Q46 175 52 165 L55 120 Q58 105 56 95 Q58 80 54 70 Q57 55 54 40 Q47 34 40 34 Q33 34 26 40 Z" fill="currentColor" fill-opacity="0.12"/>
-                  <path d="M26 42 Q19 65 18 95 Q18 108 22 113"/>
-                  <path d="M54 42 Q61 65 62 95 Q62 108 58 113"/>
-                  <path d="M40 165 L40 195" stroke-opacity="0.4"/>
-                  <path d="M30 195 Q35 198 40 195"/>
-                  <path d="M40 195 Q45 198 50 195"/>
-                </g>
-              </svg>
+              <div class="relative w-[100px] h-[100px] shrink-0">
+                <canvas id="composition-ring" aria-label="Body composition ring chart showing fat mass and lean mass percentages"></canvas>
+                <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                  <span id="comp-lean-pct" class="text-lg font-bold tabular-nums leading-none">82%</span>
+                  <span class="text-[9px] uppercase tracking-wider text-slate-500 dark:text-slate-400 leading-none mt-0.5">lean</span>
+                </div>
+              </div>
               <span class="tooltip">
                 <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 <span class="tooltip-content">BMI = weight (kg) ÷ height (m)². WHO standard. Doesn't distinguish muscle from fat.</span>
@@ -316,6 +301,10 @@
             <div class="flex justify-between text-[10px] text-slate-500 mt-1.5 font-medium tabular-nums">
               <span>15</span><span>18.5</span><span>25</span><span>30</span><span>40</span>
             </div>
+            <div class="flex items-center gap-3 mt-2 text-[10px] text-slate-500 dark:text-slate-400">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>Lean <span id="comp-lean-kg" class="tabular-nums font-medium text-slate-700 dark:text-slate-300">57 kg</span></span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500"></span>Fat <span id="comp-fat-kg" class="tabular-nums font-medium text-slate-700 dark:text-slate-300">13 kg</span></span>
+            </div>
           </div>
           <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
             <div class="flex items-center justify-between mb-1.5">
@@ -323,7 +312,7 @@
               <span id="bf-out" class="text-xs font-semibold text-brand-600 dark:text-brand-400">auto</span>
             </div>
             <input type="range" id="bodyfat" min="0" max="50" value="0" step="0.5" />
-            <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Set to 0 for auto-estimate. Knowing your real body fat unlocks the BMI Reality Check and a more accurate silhouette.</p>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Set to 0 for auto-estimate. Knowing your real body fat unlocks the BMI Reality Check and a more accurate composition ring.</p>
           </div>
           <!-- DIFFERENTIATOR #2 — REALITY CHECK -->
           <div id="reality-check" class="mt-5 hidden"></div>
@@ -782,7 +771,7 @@
   }
 
   // ============= CHARTS =============
-  let macroChart, historyChart;
+  let macroChart, historyChart, compositionChart;
   function initCharts() {
     macroChart = new Chart($('macro-chart'), {
       type: 'doughnut',
@@ -793,6 +782,26 @@
       type: 'line',
       data: { labels:[], datasets:[{ data:[], borderColor:'#0ea5e9', backgroundColor:'rgba(14,165,233,0.12)', tension:0.35, fill:true, pointRadius:3, pointBackgroundColor:'#0ea5e9', borderWidth:2 }] },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{ mode:'index', intersect:false } }, scales:{ x:{display:false}, y:{display:false, beginAtZero:false} } },
+    });
+    compositionChart = new Chart($('composition-ring'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Lean mass', 'Fat mass'],
+        datasets: [{
+          data: [82, 18],
+          backgroundColor: ['#10b981', '#f59e0b'],
+          borderWidth: 0,
+          circumference: 270,
+          rotation: 225,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        cutout: '78%',
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        animation: { animateRotate: true, duration: 600 },
+      },
     });
   }
   function updateMacroChart(macros) {
@@ -867,18 +876,6 @@
         </div>
       </a>`;
     }).join('');
-  }
-
-  // ============= BODY SILHOUETTE =============
-  const SILHOUETTE_COLORS = { blue:'#60a5fa', emerald:'#34d399', amber:'#fbbf24', red:'#f87171' };
-
-  // Body fat thresholds differ by sex; 'other' uses male thresholds.
-  function silhouetteScale(bf, gender) {
-    const lowThreshold = gender === 'female' ? 22 : 15;
-    const highThreshold = gender === 'female' ? 32 : 25;
-    if (bf <= lowThreshold) return 0.92;
-    if (bf <= highThreshold) return 1.0;
-    return Math.min(1.25, 1.0 + (bf - highThreshold) * 0.012);
   }
 
   // ============= COMPARE TO PAST SELF =============
@@ -1036,20 +1033,32 @@
 
     renderRealityCheck(bmi, cat, bf, bfCat, state.gender, hasUserBf);
 
-    // Body silhouette (anatomical, gender-aware)
-    const silhouetteEl = $('body-silhouette');
-    const maleG = $('silhouette-male');
-    const femaleG = $('silhouette-female');
-    if (silhouetteEl && maleG && femaleG) {
-      const isMale = state.gender === 'male' || state.gender === 'other';
-      maleG.style.opacity = isMale ? '1' : '0';
-      femaleG.style.opacity = isMale ? '0' : '1';
-      const targetBody = isMale ? $('silhouette-male-body') : $('silhouette-female-body');
-      const scale = silhouetteScale(bf, state.gender);
-      targetBody.style.transformOrigin = '40px 100px';
-      targetBody.style.transition = 'transform 0.4s ease';
-      targetBody.style.transform = `scaleX(${scale})`;
-      silhouetteEl.style.color = SILHOUETTE_COLORS[cat.color] || SILHOUETTE_COLORS.emerald;
+    // Body composition ring
+    const fatKg = state.weightKg * (bf / 100);
+    const leanKg = state.weightKg - fatKg;
+    const leanPct = Math.round((leanKg / state.weightKg) * 100);
+    const fatPct = 100 - leanPct;
+
+    if (compositionChart) {
+      compositionChart.data.datasets[0].data = [leanPct, fatPct];
+      // Fat segment color reflects whether body fat % is athletic, average, or high.
+      let fatColor = '#f59e0b';
+      const lowBf = state.gender === 'female' ? 21 : 14;
+      const highBf = state.gender === 'female' ? 32 : 25;
+      if (bf <= lowBf) fatColor = '#10b981';
+      else if (bf > highBf) fatColor = '#ef4444';
+      compositionChart.data.datasets[0].backgroundColor = ['#10b981', fatColor];
+      compositionChart.update('none');
+    }
+
+    $('comp-lean-pct').textContent = `${leanPct}%`;
+
+    if (state.units === 'metric') {
+      $('comp-lean-kg').textContent = `${leanKg.toFixed(1)} kg`;
+      $('comp-fat-kg').textContent = `${fatKg.toFixed(1)} kg`;
+    } else {
+      $('comp-lean-kg').textContent = `${kgToLb(leanKg).toFixed(1)} lb`;
+      $('comp-fat-kg').textContent = `${kgToLb(fatKg).toFixed(1)} lb`;
     }
 
     // Stat cards

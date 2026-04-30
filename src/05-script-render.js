@@ -12,7 +12,7 @@
   }
 
   // ============= CHARTS =============
-  let macroChart, historyChart;
+  let macroChart, historyChart, compositionChart;
   function initCharts() {
     macroChart = new Chart($('macro-chart'), {
       type: 'doughnut',
@@ -23,6 +23,26 @@
       type: 'line',
       data: { labels:[], datasets:[{ data:[], borderColor:'#0ea5e9', backgroundColor:'rgba(14,165,233,0.12)', tension:0.35, fill:true, pointRadius:3, pointBackgroundColor:'#0ea5e9', borderWidth:2 }] },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{ mode:'index', intersect:false } }, scales:{ x:{display:false}, y:{display:false, beginAtZero:false} } },
+    });
+    compositionChart = new Chart($('composition-ring'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Lean mass', 'Fat mass'],
+        datasets: [{
+          data: [82, 18],
+          backgroundColor: ['#10b981', '#f59e0b'],
+          borderWidth: 0,
+          circumference: 270,
+          rotation: 225,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        cutout: '78%',
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        animation: { animateRotate: true, duration: 600 },
+      },
     });
   }
   function updateMacroChart(macros) {
@@ -97,18 +117,6 @@
         </div>
       </a>`;
     }).join('');
-  }
-
-  // ============= BODY SILHOUETTE =============
-  const SILHOUETTE_COLORS = { blue:'#60a5fa', emerald:'#34d399', amber:'#fbbf24', red:'#f87171' };
-
-  // Body fat thresholds differ by sex; 'other' uses male thresholds.
-  function silhouetteScale(bf, gender) {
-    const lowThreshold = gender === 'female' ? 22 : 15;
-    const highThreshold = gender === 'female' ? 32 : 25;
-    if (bf <= lowThreshold) return 0.92;
-    if (bf <= highThreshold) return 1.0;
-    return Math.min(1.25, 1.0 + (bf - highThreshold) * 0.012);
   }
 
   // ============= COMPARE TO PAST SELF =============
@@ -266,20 +274,32 @@
 
     renderRealityCheck(bmi, cat, bf, bfCat, state.gender, hasUserBf);
 
-    // Body silhouette (anatomical, gender-aware)
-    const silhouetteEl = $('body-silhouette');
-    const maleG = $('silhouette-male');
-    const femaleG = $('silhouette-female');
-    if (silhouetteEl && maleG && femaleG) {
-      const isMale = state.gender === 'male' || state.gender === 'other';
-      maleG.style.opacity = isMale ? '1' : '0';
-      femaleG.style.opacity = isMale ? '0' : '1';
-      const targetBody = isMale ? $('silhouette-male-body') : $('silhouette-female-body');
-      const scale = silhouetteScale(bf, state.gender);
-      targetBody.style.transformOrigin = '40px 100px';
-      targetBody.style.transition = 'transform 0.4s ease';
-      targetBody.style.transform = `scaleX(${scale})`;
-      silhouetteEl.style.color = SILHOUETTE_COLORS[cat.color] || SILHOUETTE_COLORS.emerald;
+    // Body composition ring
+    const fatKg = state.weightKg * (bf / 100);
+    const leanKg = state.weightKg - fatKg;
+    const leanPct = Math.round((leanKg / state.weightKg) * 100);
+    const fatPct = 100 - leanPct;
+
+    if (compositionChart) {
+      compositionChart.data.datasets[0].data = [leanPct, fatPct];
+      // Fat segment color reflects whether body fat % is athletic, average, or high.
+      let fatColor = '#f59e0b';
+      const lowBf = state.gender === 'female' ? 21 : 14;
+      const highBf = state.gender === 'female' ? 32 : 25;
+      if (bf <= lowBf) fatColor = '#10b981';
+      else if (bf > highBf) fatColor = '#ef4444';
+      compositionChart.data.datasets[0].backgroundColor = ['#10b981', fatColor];
+      compositionChart.update('none');
+    }
+
+    $('comp-lean-pct').textContent = `${leanPct}%`;
+
+    if (state.units === 'metric') {
+      $('comp-lean-kg').textContent = `${leanKg.toFixed(1)} kg`;
+      $('comp-fat-kg').textContent = `${fatKg.toFixed(1)} kg`;
+    } else {
+      $('comp-lean-kg').textContent = `${kgToLb(leanKg).toFixed(1)} lb`;
+      $('comp-fat-kg').textContent = `${kgToLb(fatKg).toFixed(1)} lb`;
     }
 
     // Stat cards
