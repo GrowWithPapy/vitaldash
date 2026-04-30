@@ -458,6 +458,13 @@
             </div>
             <div class="relative h-32"><canvas id="history-chart" aria-label="Weight history"></canvas></div>
             <p id="log-empty" class="text-xs text-slate-500 italic mt-2">No entries yet. Log today to start tracking.</p>
+            <div id="compare-section" class="hidden mt-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+              <div class="flex items-center justify-between mb-3">
+                <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Compare to past self</h4>
+                <select id="compare-date" aria-label="Compare to a past log entry" class="text-xs px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none"></select>
+              </div>
+              <div id="compare-stats" class="grid grid-cols-2 gap-2 text-sm"></div>
+            </div>
           </div>
         </div>
 
@@ -833,6 +840,107 @@
     return Math.min(1.5, 1.0 + (bf - highThresh) * 0.025);
   }
 
+  // ============= COMPARE TO PAST SELF =============
+  function renderCompareSection() {
+    const history = loadHistory();
+    const section = $('compare-section');
+    if (!section) return;
+    if (history.length < 2) { section.classList.add('hidden'); return; }
+    section.classList.remove('hidden');
+
+    const select = $('compare-date');
+    const prev = select.value;
+    const isMetric = state.units === 'metric';
+    const unit = isMetric ? 'kg' : 'lb';
+
+    select.innerHTML = history.map(h => {
+      const w = isMetric ? h.weight : kgToLb(h.weight);
+      const dateStr = new Date(h.date).toLocaleDateString(undefined, { month:'short', day:'numeric' });
+      return `<option value="${h.date}">${dateStr} (${w.toFixed(1)} ${unit})</option>`;
+    }).join('');
+
+    select.value = history.some(h => h.date === prev) ? prev : history[0].date;
+    renderComparePanel(select.value);
+  }
+
+  function renderComparePanel(pastDate) {
+    const panel = $('compare-stats');
+    if (!panel) return;
+    const history = loadHistory();
+    const past = history.find(h => h.date === pastDate);
+    if (!past) { panel.innerHTML = ''; return; }
+
+    const today = new Date().toISOString().split('T')[0];
+    if (past.date === today) {
+      panel.innerHTML = `<p class="col-span-2 text-xs text-slate-500 dark:text-slate-400 italic">Logged today, no comparison yet.</p>`;
+      return;
+    }
+
+    const isMetric = state.units === 'metric';
+    const wUnit = isMetric ? 'kg' : 'lb';
+
+    const pastBmi    = calcBMI(past.weight, state.heightCm);
+    const pastBmr    = calcBMR(past.weight, state.heightCm, state.age, state.gender);
+    const pastTdee   = calcTDEE(pastBmr, state.activity);
+    const pastTarget = calcTarget(pastTdee, state.goal).value;
+
+    const curBmi    = calcBMI(state.weightKg, state.heightCm);
+    const curBmr    = calcBMR(state.weightKg, state.heightCm, state.age, state.gender);
+    const curTdee   = calcTDEE(curBmr, state.activity);
+    const curTarget = calcTarget(curTdee, state.goal).value;
+
+    const days = Math.round((new Date(today) - new Date(past.date)) / 86400000);
+    const dayLabel = days === 0 ? 'today' : `${days} day${days !== 1 ? 's' : ''}`;
+
+    // Color reflects whether the weight delta moves toward the user's goal.
+    const wDelta = state.weightKg - past.weight;
+    let dirColor;
+    if (state.goal === 'lose')       dirColor = wDelta < -0.05 ? 'emerald' : wDelta > 0.05 ? 'rose' : 'slate';
+    else if (state.goal === 'build') dirColor = wDelta >  0.05 ? 'emerald' : wDelta < -0.05 ? 'rose' : 'slate';
+    else                             dirColor = Math.abs(wDelta) <= 2 ? 'emerald' : 'rose';
+
+    const wPast      = isMetric ? past.weight     : kgToLb(past.weight);
+    const wCur       = isMetric ? state.weightKg  : kgToLb(state.weightKg);
+    const wDeltaDisp = isMetric ? wDelta          : kgToLb(wDelta);
+
+    panel.innerHTML = [
+      compareStatBlock('Weight',       `${wPast.toFixed(1)} ${wUnit}`,        `${wCur.toFixed(1)} ${wUnit}`,        wDeltaDisp,            wUnit, 1, dayLabel, dirColor),
+      compareStatBlock('BMI',          pastBmi.toFixed(1),                    curBmi.toFixed(1),                    curBmi - pastBmi,      '',    1, dayLabel, dirColor),
+      compareStatBlock('TDEE',         `${Math.round(pastTdee)} kcal`,        `${Math.round(curTdee)} kcal`,        curTdee - pastTdee,    'kcal',0, dayLabel, dirColor),
+      compareStatBlock('Daily target', `${Math.round(pastTarget)} kcal`,      `${Math.round(curTarget)} kcal`,      curTarget - pastTarget,'kcal',0, dayLabel, dirColor),
+    ].join('');
+  }
+
+  function compareStatBlock(label, pastText, curText, delta, unit, decimals, dayLabel, dirColor) {
+    const COLOR = {
+      emerald: 'text-emerald-600 dark:text-emerald-400',
+      rose:    'text-rose-600 dark:text-rose-400',
+      slate:   'text-slate-500 dark:text-slate-400',
+    };
+    const eps = unit === 'kcal' ? 1 : 0.05;
+    const arrow = delta > eps ? 'up' : delta < -eps ? 'down' : 'flat';
+    const arrowColor = arrow === 'flat' ? COLOR.slate : COLOR[dirColor];
+    const c = COLOR[dirColor];
+    const sign = delta > 0 ? '+' : '';
+    const deltaTxt = unit
+      ? `${sign}${delta.toFixed(decimals)} ${unit}`
+      : `${sign}${delta.toFixed(decimals)}`;
+    const arrowSvg = arrow === 'up'
+      ? `<svg class="w-3 h-3 ${arrowColor}" viewBox="0 0 12 12" aria-label="Increase"><path d="M6 2 L10 8 L2 8 Z" fill="currentColor"/></svg>`
+      : arrow === 'down'
+      ? `<svg class="w-3 h-3 ${arrowColor}" viewBox="0 0 12 12" aria-label="Decrease"><path d="M6 10 L2 4 L10 4 Z" fill="currentColor"/></svg>`
+      : `<svg class="w-3 h-3 ${arrowColor}" viewBox="0 0 12 12" aria-label="No change"><rect x="2" y="5" width="8" height="2" fill="currentColor"/></svg>`;
+    return `<div class="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2.5">
+      <p class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">${label}</p>
+      <div class="flex items-center justify-between mt-1 gap-1.5">
+        <span class="text-xs text-slate-500 tabular-nums">${pastText}</span>
+        ${arrowSvg}
+        <span class="text-sm font-bold tabular-nums">${curText}</span>
+      </div>
+      <p class="text-[10px] mt-1 tabular-nums ${c}">${deltaTxt} over ${dayLabel}</p>
+    </div>`;
+  }
+
   // ============= MAIN RENDER =============
   function render() {
     // Slider fills + input displays
@@ -1002,6 +1110,7 @@
       </div>`).join('');
 
     renderAffiliates(state.goal, macros.protein.g);
+    renderCompareSection();
   }
 
   // ============= UNIT TOGGLE =============
@@ -1065,6 +1174,7 @@
     $('save-profile').addEventListener('click', saveCurrentProfile);
     $('log-weight').addEventListener('click', logTodayWeight);
     $('share-btn').addEventListener('click', shareResults);
+    $('compare-date').addEventListener('change', e => renderComparePanel(e.target.value));
   }
 
   // ============= PROFILES =============
@@ -1124,6 +1234,7 @@
     history.sort((a,b) => a.date.localeCompare(b.date));
     while (history.length > 60) history.shift();
     saveHistory(history); updateHistoryChart();
+    renderCompareSection();
     toast(`Logged ${entry.weight} kg`);
   }
   async function shareResults() {
