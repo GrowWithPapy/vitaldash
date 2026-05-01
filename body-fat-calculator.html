@@ -343,6 +343,8 @@
         <span aria-hidden="true">·</span>
         <a href="/calorie-deficit-calculator" class="hover:text-brand-600 dark:hover:text-brand-400">Calorie Deficit</a>
         <span aria-hidden="true">·</span>
+        <a href="/protein-intake-calculator" class="hover:text-brand-600 dark:hover:text-brand-400">Protein Intake</a>
+        <span aria-hidden="true">·</span>
         <a href="/about.html" class="hover:text-brand-600 dark:hover:text-brand-400">About</a>
         <span aria-hidden="true">·</span>
         <a href="/methodology.html" class="hover:text-brand-600 dark:hover:text-brand-400">Methodology</a>
@@ -372,6 +374,57 @@
   const lbToKg = (lb) => lb / 2.20462;
   const cmToIn = (cm) => cm / 2.54;
   const inToCm = (inches) => inches * 2.54;
+
+  // ============= PROTEIN INTAKE (ISSN 2017) =============
+  // status: 'sedentary' | 'active' | 'strength'
+  // goal: 'maintain' | 'cut'
+  // Returns { low, target, high } in grams per day.
+  function proteinIntakeRange(weightKg, status, goal, age) {
+    if (weightKg <= 0) return null;
+
+    let lowMul, highMul;
+    if (status === 'sedentary') { lowMul = 0.8; highMul = 1.0; }
+    else if (status === 'active') { lowMul = 1.2; highMul = 1.6; }
+    else if (status === 'strength' && goal !== 'cut') { lowMul = 1.6; highMul = 2.2; }
+    else if (status === 'strength' && goal === 'cut') { lowMul = 2.0; highMul = 2.6; }
+    else { lowMul = 1.2; highMul = 1.6; }
+
+    // Older adults benefit from extra protein due to anabolic resistance.
+    if (age >= 50) { lowMul += 0.2; highMul += 0.2; }
+
+    const low = weightKg * lowMul;
+    const high = weightKg * highMul;
+    const target = (low + high) / 2;
+    return { low, target, high };
+  }
+
+  function proteinPerMeal(totalGrams, mealsPerDay) {
+    if (mealsPerDay <= 0) return 0;
+    return totalGrams / mealsPerDay;
+  }
+
+  // Grams of protein per common cooked serving.
+  const PROTEIN_PER_SERVING = {
+    chicken_breast_100g: 31,
+    whey_scoop_30g: 24,
+    greek_yogurt_170g: 17,
+    eggs_whole: 6,
+    ground_beef_100g: 26,
+    salmon_100g: 25,
+    tofu_100g: 15,
+    cottage_cheese_100g: 11,
+    lentils_cooked_100g: 9,
+    black_beans_100g: 9,
+  };
+
+  function proteinFoodEquivalents(targetGrams) {
+    return [
+      { food: 'Chicken breast (100g)', servings: targetGrams / PROTEIN_PER_SERVING.chicken_breast_100g, perGrams: PROTEIN_PER_SERVING.chicken_breast_100g },
+      { food: 'Whey scoops (30g)', servings: targetGrams / PROTEIN_PER_SERVING.whey_scoop_30g, perGrams: PROTEIN_PER_SERVING.whey_scoop_30g },
+      { food: 'Greek yogurt (170g)', servings: targetGrams / PROTEIN_PER_SERVING.greek_yogurt_170g, perGrams: PROTEIN_PER_SERVING.greek_yogurt_170g },
+      { food: 'Whole eggs (large)', servings: targetGrams / PROTEIN_PER_SERVING.eggs_whole, perGrams: PROTEIN_PER_SERVING.eggs_whole },
+    ];
+  }
 
   // ============= CALORIE DEFICIT =============
   // 7700 kcal per kg of body fat (refined from Wishnofsky 1958).
