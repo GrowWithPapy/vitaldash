@@ -48,9 +48,42 @@
 - Percentile tables (BMI and weight, by sex and age band) come from CDC NHANES 2015-2018, published as Vital Health Stat 3(46), 2021. URL: https://www.cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf
 - When updating these tables, cite the table number and the survey cycle in a comment next to the data so future edits can verify against the same source.
 
+## Calculator implementation patterns
+
+Lessons learned from building real calculator pages. Apply these to every new calculator under src/calcs/.
+
+### IIFE init pattern
+
+For calculator pages where the page-specific script sits at the end of <body> (which it always does, per the build pipeline), the readyState branching pattern is forbidden:
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+
+This pattern looks defensive but fails silently in two real cases: bfcache restore (back-forward navigation), and slow Tailwind CDN loads that let readyState advance before the inline script reaches the if. In the first case the listener never fires. In the second case the else branch runs but the readyState check is doing nothing useful anyway.
+
+The correct pattern is to call init() directly at the end of the IIFE. The script position guarantees every DOM element it touches is already parsed.
+
+### Defensive event binding
+
+Wrap addEventListener in a small bindOne(id, event, handler) helper. Pseudocode: get the element by id, if null then console.warn the missing id and return, otherwise call addEventListener(event, handler) on the element. This turns a hard crash on a missing ID (which would prevent every later listener from binding) into a single console warning, and saves debugging time when a page is mid-build or being refactored.
+
+### Initial render
+
+At the end of init(), always call recompute() once. This handles autofill, bfcache restore where inputs were already populated, and any hydration scenario where the user lands on the page with values already filled in.
+
+### Try/catch in init
+
+Wrap the body of init() in try/catch with console.error in the catch block. Silent failures are the worst kind to debug. A single thrown TypeError in init now logs a clear error rather than leaving the page apparently functional but inert.
+
+### Number inputs
+
+Use BOTH input and change event listeners on number inputs. Some Android keyboards fire change more reliably than input for type=number fields, especially when the user dismisses the keyboard rather than tabbing out. Bind both, and let recompute() handle being called twice quickly.
+
 ## GEO (Generative Engine Optimization)
 - llms.txt, robots.txt, and sitemap.xml live at project root
 - Update sitemap.xml lastmod dates when content materially changes
 - All FAQ answers must be direct, 2-4 sentences, citation-friendly
 - Don't bury answers in marketing language; LLMs prefer "X is Y because Z" phrasing
 - Whenever a new top-level page is created, add it to sitemap.xml AND llms.txt
+
+## Known issues
+- TODO: Generate proper og.png (1200x630 PNG) externally; SVG is a placeholder. Twitter cards may not render SVG reliably.
