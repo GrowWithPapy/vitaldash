@@ -11,6 +11,50 @@
 
   <script>
   (function () {
+    function initMoreToolsMenu() {
+      var btn = document.getElementById('more-tools-btn');
+      var menu = document.getElementById('more-tools-menu');
+      var chevron = document.getElementById('more-tools-chevron');
+      if (!btn || !menu) return;
+
+      function open() {
+        menu.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+      }
+      function close() {
+        menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+      }
+      function toggle() {
+        if (menu.classList.contains('hidden')) open(); else close();
+      }
+
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        toggle();
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)) close();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') close();
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMoreToolsMenu);
+    } else {
+      initMoreToolsMenu();
+    }
+  })();
+  </script>
+
+  <script>
+  (function () {
     function init() {
       if (localStorage.getItem('vd_consent')) return;
       var banner = document.getElementById('cookie-banner');
