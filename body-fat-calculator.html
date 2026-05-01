@@ -648,14 +648,24 @@
       try { localStorage.setItem('vd_bf_gender', gender); } catch (e) {}
     }
 
+    function bindOne(id, evt, fn) {
+      const el = $(id);
+      if (!el) { console.warn('[body-fat] missing element:', id); return; }
+      el.addEventListener(evt, fn);
+    }
+
     function bind() {
-      $('bf-unit-imperial').addEventListener('click', function () { setUnits('imperial'); });
-      $('bf-unit-metric').addEventListener('click', function () { setUnits('metric'); });
-      document.querySelectorAll('.bf-gender-btn').forEach(function (b) {
+      bindOne('bf-unit-imperial', 'click', function () { setUnits('imperial'); });
+      bindOne('bf-unit-metric', 'click', function () { setUnits('metric'); });
+      const genderBtns = document.querySelectorAll('.bf-gender-btn');
+      if (genderBtns.length === 0) console.warn('[body-fat] no .bf-gender-btn elements');
+      genderBtns.forEach(function (b) {
         b.addEventListener('click', function () { setGender(b.dataset.bfGender); });
       });
       ['bf-height', 'bf-neck', 'bf-waist', 'bf-hip', 'bf-weight'].forEach(function (id) {
-        $(id).addEventListener('input', recompute);
+        // Bind both 'input' and 'change' for max browser coverage on type=number
+        bindOne(id, 'input', recompute);
+        bindOne(id, 'change', recompute);
       });
       const themeBtn = document.getElementById('theme-toggle');
       if (themeBtn) themeBtn.addEventListener('click', function () {
@@ -676,18 +686,25 @@
       } catch (e) {}
       state.units = savedUnits;
       state.gender = savedGender;
-      updateUnitDisplay();
-      updateGenderDisplay();
-      bind();
+      try {
+        updateUnitDisplay();
+        updateGenderDisplay();
+        bind();
+      } catch (e) {
+        console.error('[body-fat] init failed:', e);
+        return;
+      }
       const yearEl = document.getElementById('year');
       if (yearEl) yearEl.textContent = new Date().getFullYear();
+      // Run an initial compute in case the inputs already have values (browser autofill, back-forward cache).
+      recompute();
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
+    // This script sits at the end of <body>, after every element it touches,
+    // so init() can run immediately. Don't wait for DOMContentLoaded: in some
+    // cases (back-forward cache, slow Tailwind CDN load) DCL has already fired
+    // by the time we get here, and the listener never runs.
+    init();
   })();
   </script>
   <div id="cookie-banner" class="hidden fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-md z-50 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-lg">
