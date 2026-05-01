@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0ea5e9" />
+
+  <title>Calorie Deficit Calculator: Lose Weight Safely | VitalDash</title>
+  <meta name="description" content="Calculate your daily calorie deficit to hit your weight loss target. Pick your timeline, see if it's safe, and split the deficit between diet and exercise. Free, accurate, no signup." />
+  <meta name="keywords" content="calorie deficit calculator, weight loss calculator, deficit timeline, safe deficit, diet vs exercise" />
+  <meta name="author" content="Gaston" />
+  <meta name="article:author" content="Gaston" />
+  <meta name="article:published_time" content="2026-05-01T00:00:00+01:00" />
+  <meta name="article:modified_time" content="2026-05-01T00:00:00+01:00" />
+  <link rel="canonical" href="https://vitaldash.io/calorie-deficit-calculator" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Calorie Deficit Calculator: Lose Weight Safely" />
+  <meta property="og:description" content="Find the daily deficit that hits your target without wrecking your metabolism. Safety-checked, with diet vs exercise split." />
+  <meta property="og:url" content="https://vitaldash.io/calorie-deficit-calculator" />
+  <meta property="og:image" content="https://vitaldash.io/og.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a safe daily calorie deficit?","acceptedAnswer":{"@type":"Answer","text":"A safe daily calorie deficit is typically 10-20% of your TDEE (total daily energy expenditure). For most adults, this means 250-500 kcal per day. Going above 25% risks muscle loss, hormonal disruption, and rebound weight gain. The lower end works best for sustainable long-term progress."}},{"@type":"Question","name":"How many calories should I cut to lose 1 pound a week?","acceptedAnswer":{"@type":"Answer","text":"One pound of fat equals approximately 3,500 kcal, so a daily deficit of 500 kcal will produce about one pound of loss per week. For 1 kilogram per week, you need a daily deficit of about 1,100 kcal, which is aggressive for most people. Slower loss is more sustainable and protects muscle."}},{"@type":"Question","name":"Can I lose weight without exercise?","acceptedAnswer":{"@type":"Answer","text":"Yes. Weight loss is primarily about energy balance, so cutting calories alone will produce fat loss. However, exercise preserves lean muscle during a deficit and improves cardiovascular and metabolic health. Combining diet and exercise produces better body composition outcomes than diet alone."}},{"@type":"Question","name":"Is a 1000 calorie deficit too much?","acceptedAnswer":{"@type":"Answer","text":"For most adults with a TDEE under 4000 kcal, a 1000 kcal daily deficit exceeds 25% of total burn and is considered too aggressive. It typically causes muscle loss, hormonal issues, fatigue, and high relapse rates. Athletes and very large individuals may tolerate it short-term, but not as a default approach."}},{"@type":"Question","name":"How long should I stay in a calorie deficit?","acceptedAnswer":{"@type":"Answer","text":"Most evidence supports 8-12 week deficit phases followed by a maintenance break of 2-4 weeks. Continuous deficit beyond 16 weeks causes metabolic adaptation, where your body burns less energy than calculated. Periodic breaks restore hormonal balance and improve long-term adherence."}},{"@type":"Question","name":"Does the 7700 kcal per kg rule actually work?","acceptedAnswer":{"@type":"Answer","text":"It is a useful planning estimate but not a precise rule. The original 1958 Wishnofsky calculation assumed 100% fat loss with no metabolic adaptation, which is unrealistic. Real-world fat loss is closer to 7,000-7,700 kcal per kg, varies between individuals, and slows over time as the body adapts."}},{"@type":"Question","name":"Should I create a deficit through diet or exercise?","acceptedAnswer":{"@type":"Answer","text":"A combination works best. Diet is more reliable because creating a 500 kcal deficit through eating less is easier than burning 500 kcal through exercise. Exercise preserves muscle, improves health, and increases the ceiling of how much you can eat. A 70% diet, 30% exercise split is a common starting point."}},{"@type":"Question","name":"What happens if my deficit is too aggressive?","acceptedAnswer":{"@type":"Answer","text":"An overly aggressive deficit (above 25% of TDEE) typically causes loss of muscle mass alongside fat, lowered testosterone or estrogen, fatigue, hunger that becomes hard to manage, and high relapse rates. The faster you lose weight, the more likely you are to regain it. Slower loss preserves the result."}}]}
+  </script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vitaldash.io/"},{"@type":"ListItem","position":2,"name":"Calorie Deficit Calculator","item":"https://vitaldash.io/calorie-deficit-calculator"}]}
+  </script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Calorie Deficit Calculator","applicationCategory":"HealthApplication","operatingSystem":"Any","description":"Calculate your daily calorie deficit for safe weight loss with timeline projection and diet/exercise split.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Gaston","url":"https://vitaldash.io/about.html"}}
+  </script>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230ea5e9'/%3E%3Cpath d='M30 55 L42 67 L72 37' stroke='white' stroke-width='10' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script>
+    (function () {
+      try {
+        var p = JSON.parse(localStorage.getItem('vd_prefs')) || {};
+        if (p.theme === 'dark') document.documentElement.classList.add('dark');
+        else if (p.theme === 'light') document.documentElement.classList.remove('dark');
+        else if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      safelist: [
+        'bg-blue-100','text-blue-700','dark:bg-blue-900/40','dark:text-blue-300',
+        'bg-emerald-100','text-emerald-700','dark:bg-emerald-900/40','dark:text-emerald-300',
+        'bg-amber-100','text-amber-700','dark:bg-amber-900/40','dark:text-amber-300',
+        'bg-red-100','text-red-700','dark:bg-red-900/40','dark:text-red-300',
+      ],
+      theme: {
+        extend: {
+          colors: { brand: { 50:'#f0f9ff',100:'#e0f2fe',200:'#bae6fd',300:'#7dd3fc',400:'#38bdf8',500:'#0ea5e9',600:'#0284c7',700:'#0369a1',800:'#075985',900:'#0c4a6e' } },
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','Segoe UI','sans-serif'] },
+          animation: { 'fade-in':'fadeIn 0.4s ease-out', 'slide-up':'slideUp 0.5s cubic-bezier(0.16,1,0.3,1)' },
+          keyframes: {
+            fadeIn:{'0%':{opacity:'0'},'100%':{opacity:'1'}},
+            slideUp:{'0%':{opacity:'0',transform:'translateY(12px)'},'100%':{opacity:'1',transform:'translateY(0)'}}
+          }
+        }
+      }
+    };
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
+    input[type="range"] { -webkit-appearance:none; appearance:none; background:transparent; cursor:pointer; width:100%; }
+    input[type="range"]::-webkit-slider-runnable-track { height:6px; background:linear-gradient(to right,var(--pct-bg-1,#0ea5e9) var(--pct,50%),var(--pct-bg-2,#e2e8f0) var(--pct,50%)); border-radius:999px; }
+    .dark input[type="range"]::-webkit-slider-runnable-track { background:linear-gradient(to right,var(--pct-bg-1,#0ea5e9) var(--pct,50%),var(--pct-bg-2,#334155) var(--pct,50%)); }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; height:18px; width:18px; border-radius:50%; background:white; border:2px solid #0ea5e9; margin-top:-6px; box-shadow:0 1px 3px rgba(0,0,0,0.15); transition:transform 0.15s; }
+    input[type="range"]::-webkit-slider-thumb:hover { transform:scale(1.15); }
+    input[type="range"]::-moz-range-track { height:6px; background:#e2e8f0; border-radius:999px; }
+    input[type="range"]::-moz-range-thumb { height:18px; width:18px; border-radius:50%; background:white; border:2px solid #0ea5e9; box-shadow:0 1px 3px rgba(0,0,0,0.15); }
+    input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+    input[type="number"] { -moz-appearance:textfield; }
+
+    ::-webkit-scrollbar { width:8px; height:8px; }
+    ::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:4px; }
+    .dark ::-webkit-scrollbar-thumb { background:#475569; }
+
+    .tooltip { position:relative; display:inline-flex; }
+    .tooltip-content { visibility:hidden; opacity:0; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:#0f172a; color:white; padding:8px 12px; border-radius:8px; font-size:12px; line-height:1.4; font-weight:400; white-space:normal; width:max-content; max-width:240px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:50; transition:opacity 0.15s; pointer-events:none; }
+    .tooltip:hover .tooltip-content, .tooltip:focus-within .tooltip-content { visibility:visible; opacity:1; }
+    .tooltip-content::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:#0f172a; }
+  </style>
+
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-full transition-colors">
+  <header class="sticky top-0 z-40 backdrop-blur-lg bg-white/70 dark:bg-slate-950/70 border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-sm">
+          <svg viewBox="0 0 24 24" class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg leading-none group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">VitalDash</h1>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-none mt-0.5">Beyond the numbers</p>
+        </div>
+      </a>
+      <div class="flex items-center gap-2">
+        <a href="/" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back to calculator
+        </a>
+        <button id="theme-toggle" class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors" aria-label="Toggle dark mode">
+          <svg class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <svg class="w-4 h-4 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+
+    <section class="mb-8 animate-fade-in">
+      <p class="text-xs font-medium uppercase tracking-wider text-brand-600 dark:text-brand-400 mb-2">Calorie Deficit Calculator</p>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3">Calorie Deficit Calculator</h1>
+      <p class="text-slate-600 dark:text-slate-400 max-w-2xl">
+        A calorie deficit is the daily gap between what you burn and what you eat. Pick how much weight you want to lose and how long you've got. We'll tell you the deficit needed, flag whether it's safe, and split it between cutting food and adding exercise.
+      </p>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-3">Last updated: May 1, 2026</p>
+    </section>
+
+    <section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-7 shadow-sm mb-8">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-0.5 text-xs font-medium w-fit">
+            <button id="cd-unit-imperial" class="px-3 py-1.5 rounded-md transition-all" aria-pressed="true">Imperial</button>
+            <button id="cd-unit-metric" class="px-3 py-1.5 rounded-md transition-all" aria-pressed="false">Metric</button>
+          </div>
+
+          <div>
+            <label for="cd-tdee" class="text-sm font-medium mb-1.5 block">Your TDEE <span class="text-slate-500 font-normal">(kcal/day)</span></label>
+            <input type="number" id="cd-tdee" value="2500" min="1000" max="6000" step="10" class="w-full px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none" />
+            <p class="text-[11px] text-slate-500 mt-1">Don't know it? <a href="/" class="text-brand-600 dark:text-brand-400 hover:underline">Calculate TDEE</a> on our homepage.</p>
+          </div>
+
+          <div>
+            <label for="cd-loss" class="text-sm font-medium mb-1.5 block">Target weight loss <span id="cd-loss-unit" class="text-slate-500 font-normal">lb</span></label>
+            <input type="number" id="cd-loss" value="10" min="1" max="200" step="0.5" class="w-full px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none" />
+          </div>
+
+          <div>
+            <label for="cd-timeline" class="text-sm font-medium mb-1.5 block">Timeline <span class="text-slate-500 font-normal">(weeks)</span></label>
+            <input type="number" id="cd-timeline" value="12" min="1" max="104" step="1" class="w-full px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none" />
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="cd-split" class="text-sm font-medium">Diet vs exercise split</label>
+              <span id="cd-split-readout" class="text-xs font-semibold text-brand-600 dark:text-brand-400 tabular-nums">50% from exercise</span>
+            </div>
+            <input type="range" id="cd-split" min="0" max="100" value="50" step="5" />
+            <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+              <span>All from eating less</span>
+              <span>All from exercise</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-brand-500 to-brand-700 dark:from-brand-600 dark:to-brand-800 rounded-xl p-5 text-white relative">
+          <p class="text-xs font-medium uppercase tracking-wider opacity-90">Daily deficit needed</p>
+          <div class="flex items-baseline gap-2 mt-2">
+            <span id="cd-deficit-value" class="text-5xl font-bold tabular-nums">--</span>
+            <span class="text-lg opacity-80">kcal/day</span>
+          </div>
+
+          <div class="mt-3">
+            <span id="cd-safety-badge" class="inline-block px-2 py-0.5 text-xs font-semibold rounded-full bg-white/20 border border-white/30">Set inputs</span>
+            <p id="cd-safety-note" class="text-xs mt-2 opacity-90 leading-relaxed">Enter your TDEE, target loss, and timeline.</p>
+          </div>
+
+          <div class="mt-3">
+            <div class="h-1.5 bg-white/20 rounded-full overflow-hidden">
+              <div id="cd-deficit-bar" class="h-full rounded-full bg-slate-300 transition-all duration-300" style="width:0%"></div>
+            </div>
+            <div class="flex justify-between text-[10px] mt-1 opacity-75">
+              <span>0%</span>
+              <span>10%</span>
+              <span>20%</span>
+              <span>30%+</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-white/20">
+            <div>
+              <p class="text-[10px] uppercase tracking-wider opacity-75">Eat</p>
+              <p id="cd-eat" class="text-sm font-bold tabular-nums">-- kcal/day</p>
+              <p class="text-[10px] opacity-75 mt-0.5">less from food</p>
+            </div>
+            <div>
+              <p class="text-[10px] uppercase tracking-wider opacity-75">Burn</p>
+              <p id="cd-burn" class="text-sm font-bold tabular-nums">-- kcal/day</p>
+              <p class="text-[10px] opacity-75 mt-0.5">more from exercise</p>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-white/20">
+            <p class="text-[10px] uppercase tracking-wider opacity-75">New daily intake target</p>
+            <p id="cd-target-intake" class="text-lg font-bold tabular-nums mt-0.5">-- kcal/day</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-7 shadow-sm mb-8">
+      <h2 class="text-xl font-bold mb-2">Compare deficit levels</h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Three deficit aggressiveness levels for the same target loss. Faster isn't always better.</p>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400">
+              <th class="text-left py-2 font-semibold">Level</th>
+              <th class="text-left py-2 font-semibold">Deficit</th>
+              <th class="text-left py-2 font-semibold">Weekly loss</th>
+              <th class="text-left py-2 font-semibold">Timeline</th>
+              <th class="text-left py-2 font-semibold">Best for</th>
+            </tr>
+          </thead>
+          <tbody class="text-slate-700 dark:text-slate-300">
+            <tr id="cd-row-0" class="border-b border-slate-100 dark:border-slate-800/50">
+              <td class="py-2.5"><span class="inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Mild (10% TDEE)</span></td>
+              <td class="py-2.5 cd-deficit-cell tabular-nums">--</td>
+              <td class="py-2.5 cd-weekly-cell tabular-nums">--</td>
+              <td class="py-2.5 cd-timeline-cell tabular-nums">--</td>
+              <td class="py-2.5 text-slate-500 dark:text-slate-400">Final cut, recomp, easy adherence</td>
+            </tr>
+            <tr id="cd-row-1" class="border-b border-slate-100 dark:border-slate-800/50">
+              <td class="py-2.5"><span class="inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Moderate (20% TDEE)</span></td>
+              <td class="py-2.5 cd-deficit-cell tabular-nums">--</td>
+              <td class="py-2.5 cd-weekly-cell tabular-nums">--</td>
+              <td class="py-2.5 cd-timeline-cell tabular-nums">--</td>
+              <td class="py-2.5 text-slate-500 dark:text-slate-400">Standard fat loss, balanced</td>
+            </tr>
+            <tr id="cd-row-2">
+              <td class="py-2.5"><span class="inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">Aggressive (25% TDEE)</span></td>
+              <td class="py-2.5 cd-deficit-cell tabular-nums">--</td>
+              <td class="py-2.5 cd-weekly-cell tabular-nums">--</td>
+              <td class="py-2.5 cd-timeline-cell tabular-nums">--</td>
+              <td class="py-2.5 text-slate-500 dark:text-slate-400">Deadline-driven cuts, short phases only</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-7 shadow-sm mb-8">
+      <h2 class="text-xl font-bold mb-4">How this calculator works</h2>
+      <div class="text-sm text-slate-600 dark:text-slate-400 space-y-3">
+        <p class="font-semibold text-slate-900 dark:text-slate-200">The 7,700 kcal per kg rule</p>
+        <p>One kilogram of body fat stores roughly 7,700 kcal of energy (about 3,500 kcal per pound). Burn that gap over time and you lose the weight. Wishnofsky proposed this in 1958, and it remains a useful planning estimate even though real fat loss is messier.</p>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">Why percentage of TDEE matters more than absolute kcal</p>
+        <p>A 500 kcal daily deficit is moderate (20%) for someone burning 2,500 kcal per day. The same 500 kcal is aggressive (25%) for someone burning 2,000 kcal. The body's response to a deficit scales with metabolic rate, not absolute calories. We grade safety as a percentage of your TDEE, not as a fixed number.</p>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">Diet vs exercise tradeoffs</p>
+        <p>Diet is more reliable: cutting 500 kcal from food is easier and more predictable than burning 500 kcal through exercise. Exercise, especially resistance training, preserves lean muscle during a deficit and raises your TDEE. A common rule of thumb: 70% of the deficit from food, 30% from added activity.</p>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">Limitations</p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>Linear weight loss is a planning fiction. Real loss includes water, glycogen, and varies week to week.</li>
+          <li>Metabolic adaptation slows fat loss after 8 to 12 weeks of continuous deficit.</li>
+          <li>The 7,700 kcal per kg rule overestimates loss long-term: actual values land closer to 7,000 to 7,500.</li>
+          <li>Hormones, sleep, and stress all affect the result and are not modeled here.</li>
+        </ul>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">Sources</p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>Wishnofsky M. <em>Caloric equivalents of gained or lost weight.</em> American Journal of Clinical Nutrition. 1958;6(5):542-546.</li>
+          <li>Hall KD, et al. <em>Quantification of the effect of energy imbalance on bodyweight.</em> The Lancet. 2011;378(9793):826-837.</li>
+          <li>Helms ER, Aragon AA, Fitschen PJ. <em>Evidence-based recommendations for natural bodybuilding contest preparation.</em> Journal of the International Society of Sports Nutrition. 2014;11:20.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="bg-slate-100 dark:bg-slate-900/50 rounded-2xl p-5 sm:p-7 border border-slate-200 dark:border-slate-800 mb-8">
+      <h2 class="text-base font-bold mb-3">Try our other calculators</h2>
+      <div class="grid sm:grid-cols-3 gap-3">
+        <a href="/" class="block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-sm transition-all">
+          <p class="text-sm font-semibold">VitalDash full dashboard</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">BMI, BMR, TDEE, macros, projection</p>
+        </a>
+        <a href="/body-fat-calculator" class="block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-sm transition-all">
+          <p class="text-sm font-semibold">Body Fat Calculator</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">US Navy method, no calipers needed</p>
+        </a>
+        <a href="/methodology.html" class="block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-sm transition-all">
+          <p class="text-sm font-semibold">All formulas explained</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Methodology page with sources</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h2 class="text-2xl font-bold mb-4">Frequently asked questions</h2>
+      <div class="space-y-3">
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">What is a safe daily calorie deficit?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">A safe daily calorie deficit is typically 10-20% of your TDEE (total daily energy expenditure). For most adults, this means 250-500 kcal per day. Going above 25% risks muscle loss, hormonal disruption, and rebound weight gain. The lower end works best for sustainable long-term progress.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">How many calories should I cut to lose 1 pound a week?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">One pound of fat equals approximately 3,500 kcal, so a daily deficit of 500 kcal will produce about one pound of loss per week. For 1 kilogram per week, you need a daily deficit of about 1,100 kcal, which is aggressive for most people. Slower loss is more sustainable and protects muscle.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">Can I lose weight without exercise?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Yes. Weight loss is primarily about energy balance, so cutting calories alone will produce fat loss. However, exercise preserves lean muscle during a deficit and improves cardiovascular and metabolic health. Combining diet and exercise produces better body composition outcomes than diet alone.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">Is a 1000 calorie deficit too much?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">For most adults with a TDEE under 4000 kcal, a 1000 kcal daily deficit exceeds 25% of total burn and is considered too aggressive. It typically causes muscle loss, hormonal issues, fatigue, and high relapse rates. Athletes and very large individuals may tolerate it short-term, but not as a default approach.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">How long should I stay in a calorie deficit?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Most evidence supports 8-12 week deficit phases followed by a maintenance break of 2-4 weeks. Continuous deficit beyond 16 weeks causes metabolic adaptation, where your body burns less energy than calculated. Periodic breaks restore hormonal balance and improve long-term adherence.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">Does the 7700 kcal per kg rule actually work?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">It is a useful planning estimate but not a precise rule. The original 1958 Wishnofsky calculation assumed 100% fat loss with no metabolic adaptation, which is unrealistic. Real-world fat loss is closer to 7,000-7,700 kcal per kg, varies between individuals, and slows over time as the body adapts.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">Should I create a deficit through diet or exercise?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">A combination works best. Diet is more reliable because creating a 500 kcal deficit through eating less is easier than burning 500 kcal through exercise. Exercise preserves muscle, improves health, and increases the ceiling of how much you can eat. A 70% diet, 30% exercise split is a common starting point.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">What happens if my deficit is too aggressive?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">An overly aggressive deficit (above 25% of TDEE) typically causes loss of muscle mass alongside fat, lowered testosterone or estrogen, fatigue, hunger that becomes hard to manage, and high relapse rates. The faster you lose weight, the more likely you are to regain it. Slower loss preserves the result.</p>
+        </details>
+      </div>
+    </section>
+
+  </main>
+  <footer class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <nav class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-slate-500 dark:text-slate-400 mb-4">
+        <a href="/" class="hover:text-brand-600 dark:hover:text-brand-400">Home</a>
+        <span aria-hidden="true">·</span>
+        <a href="/body-fat-calculator" class="hover:text-brand-600 dark:hover:text-brand-400">Body Fat</a>
+        <span aria-hidden="true">·</span>
+        <a href="/calorie-deficit-calculator" class="hover:text-brand-600 dark:hover:text-brand-400">Calorie Deficit</a>
+        <span aria-hidden="true">·</span>
+        <a href="/about.html" class="hover:text-brand-600 dark:hover:text-brand-400">About</a>
+        <span aria-hidden="true">·</span>
+        <a href="/methodology.html" class="hover:text-brand-600 dark:hover:text-brand-400">Methodology</a>
+        <span aria-hidden="true">·</span>
+        <a href="/contact.html" class="hover:text-brand-600 dark:hover:text-brand-400">Contact</a>
+        <span aria-hidden="true">·</span>
+        <a href="/privacy.html" class="hover:text-brand-600 dark:hover:text-brand-400">Privacy</a>
+        <span aria-hidden="true">·</span>
+        <a href="/terms.html" class="hover:text-brand-600 dark:hover:text-brand-400">Terms</a>
+        <span aria-hidden="true">·</span>
+        <a href="/cookies.html" class="hover:text-brand-600 dark:hover:text-brand-400">Cookies</a>
+      </nav>
+      <p class="text-center text-xs text-slate-500 dark:text-slate-400">VitalDash © <span id="year"></span> · Educational tool, not medical advice</p>
+      <p class="text-center text-xs text-slate-400 dark:text-slate-500 mt-1">Sources: WHO · CDC NHANES · Mifflin-St Jeor (1990) · Deurenberg (1991) · ISSN (2017)</p>
+      <p class="text-center text-[10px] text-slate-400 dark:text-slate-500 mt-2 mb-8">As an Amazon Associate we earn from qualifying purchases.</p>
+    </div>
+  </footer>
+  <script>
+  // Shared formulas for all VitalDash calculators.
+  // Pure functions: no DOM access, no side effects, no state.
+  // Source citations live in /methodology.html.
+
+  // ============= UNIT CONVERSIONS =============
+  const cmToFtIn = (cm) => { const t = cm/2.54; return { ft: Math.floor(t/12), in: Math.round(t%12) }; };
+  const ftInToCm = (ft, inch) => (ft*12 + inch) * 2.54;
+  const kgToLb = (kg) => kg * 2.20462;
+  const lbToKg = (lb) => lb / 2.20462;
+  const cmToIn = (cm) => cm / 2.54;
+  const inToCm = (inches) => inches * 2.54;
+
+  // ============= CALORIE DEFICIT =============
+  // 7700 kcal per kg of body fat (refined from Wishnofsky 1958).
+  function deficitFromTimeline(targetLossKg, timelineWeeks) {
+    if (timelineWeeks <= 0 || targetLossKg <= 0) return null;
+    return (targetLossKg * 7700) / (timelineWeeks * 7);
+  }
+
+  function timelineFromDeficit(targetLossKg, dailyDeficit) {
+    if (dailyDeficit <= 0 || targetLossKg <= 0) return null;
+    return (targetLossKg * 7700) / (dailyDeficit * 7);
+  }
+
+  // Categorize deficit aggressiveness based on percent of TDEE (ISSN, ACSM guidelines).
+  function deficitSafetyLevel(dailyDeficit, tdee) {
+    if (dailyDeficit <= 0) return { level: 'none', label: 'None', color: 'slate', note: 'No deficit set.' };
+    const pct = (dailyDeficit / tdee) * 100;
+    if (pct < 10) return { level: 'mild', label: 'Mild', color: 'emerald', note: 'Sustainable but slow. Best for body recomposition or last few pounds.' };
+    if (pct < 20) return { level: 'moderate', label: 'Moderate', color: 'emerald', note: 'Standard fat loss rate. Safe for most adults.' };
+    if (pct < 25) return { level: 'aggressive', label: 'Aggressive', color: 'amber', note: 'Faster results but harder to sustain. Watch for muscle loss and energy dips.' };
+    return { level: 'dangerous', label: 'Too aggressive', color: 'red', note: 'Above 25% of TDEE risks muscle loss, hormonal disruption, and rebound. Consult a doctor.' };
+  }
+
+  function dietExerciseSplit(totalDeficit, exerciseShare) {
+    return {
+      fromDiet: totalDeficit * (1 - exerciseShare),
+      fromExercise: totalDeficit * exerciseShare,
+    };
+  }
+
+  // ============= NAVY BODY FAT (Hodgdon-Beckett 1984) =============
+  // All measurements in inches. Returns null on invalid input.
+  function navyBodyFatMale(waistIn, neckIn, heightIn) {
+    if (waistIn <= neckIn) return null;
+    return 86.010 * Math.log10(waistIn - neckIn) - 70.041 * Math.log10(heightIn) + 36.76;
+  }
+
+  function navyBodyFatFemale(waistIn, hipIn, neckIn, heightIn) {
+    if ((waistIn + hipIn) <= neckIn) return null;
+    return 163.205 * Math.log10(waistIn + hipIn - neckIn) - 97.684 * Math.log10(heightIn) - 78.387;
+  }
+
+  // ============= BMI =============
+  function calcBMI(kg, cm) { const m = cm / 100; return kg / (m * m); }
+
+  function bmiCategory(bmi) {
+    if (bmi < 18.5) return { label:'Underweight', color:'blue',    note:'Below the healthy range. Consider a balanced caloric surplus and strength training.' };
+    if (bmi < 25)   return { label:'Normal',      color:'emerald', note:"You're in the healthy range. Maintain your current habits." };
+    if (bmi < 30)   return { label:'Overweight',  color:'amber',   note:'Slightly above the healthy range. A modest calorie deficit can help.' };
+    return            { label:'Obese',       color:'red',     note:'Significantly above the healthy range. Consult a doctor for personalised guidance.' };
+  }
+
+  // ============= BMR / TDEE (Mifflin-St Jeor 1990) =============
+  function calcBMR(kg, cm, age, gender) {
+    const base = 10 * kg + 6.25 * cm - 5 * age;
+    if (gender === 'male')   return base + 5;
+    if (gender === 'female') return base - 161;
+    return base + (5 - 161) / 2;
+  }
+  function calcTDEE(bmr, activity) { return bmr * activity; }
+
+  // ============= BODY FAT (Deurenberg 1991) =============
+  function estimateBodyFat(bmi, age, gender) {
+    if (gender === 'other') {
+      const m = 1.20 * bmi + 0.23 * age - 10.8 - 5.4;
+      const f = 1.20 * bmi + 0.23 * age - 5.4;
+      return (m + f) / 2;
+    }
+    const sex = gender === 'male' ? 1 : 0;
+    return 1.20 * bmi + 0.23 * age - 10.8 * sex - 5.4;
+  }
+
+  function bodyFatCategory(bf, gender) {
+    const ranges = gender === 'female'
+      ? [{max:14,label:'Essential'},{max:21,label:'Athletic'},{max:25,label:'Fit'},{max:32,label:'Average'},{max:100,label:'High'}]
+      : [{max:6, label:'Essential'},{max:14,label:'Athletic'},{max:18,label:'Fit'},{max:25,label:'Average'},{max:100,label:'High'}];
+    return ranges.find(r => bf <= r.max).label;
+  }
+
+  // ============= IDEAL WEIGHT (WHO BMI 18.5 to 24.9) =============
+  function idealWeightRange(cm) { const m = cm / 100; return { min: 18.5*m*m, max: 24.9*m*m }; }
+
+  // ============= CALORIE TARGET =============
+  function calcTarget(tdee, goal) {
+    if (goal === 'lose')  return { value:tdee-500, label:'to lose ~0.45 kg / 1 lb per week', detail:'500 kcal deficit. Sustainable rate of fat loss.' };
+    if (goal === 'build') return { value:tdee+300, label:'to build lean muscle',           detail:'300 kcal surplus. Lean bulk minimises fat gain.' };
+    return                  { value:tdee,            label:'to maintain weight',              detail:'Maintenance level, same as TDEE.' };
+  }
+
+  // ============= MACROS (ISSN 2017 protein floor 1.6 g/kg) =============
+  function macroSplit(goal) {
+    if (goal === 'lose')  return { p:0.40, c:0.35, f:0.25 };
+    if (goal === 'build') return { p:0.30, c:0.45, f:0.25 };
+    return                  { p:0.30, c:0.40, f:0.30 };
+  }
+
+  function macroGrams(targetKcal, split, weightKg) {
+    let pPct = split.p, cPct = split.c, fPct = split.f;
+    let pGrams = (targetKcal * pPct) / 4;
+    const proteinFloor = 1.6 * weightKg;
+    if (pGrams < proteinFloor) {
+      pGrams = proteinFloor;
+      const newPctP = (pGrams * 4) / targetKcal;
+      const remaining = 1 - newPctP;
+      const cfTotal = cPct + fPct;
+      cPct = (cPct / cfTotal) * remaining;
+      fPct = (fPct / cfTotal) * remaining;
+      pPct = newPctP;
+    }
+    return {
+      protein: { g: Math.round(pGrams),                  pct: Math.round(pPct * 100) },
+      carbs:   { g: Math.round((targetKcal * cPct) / 4), pct: Math.round(cPct * 100) },
+      fat:     { g: Math.round((targetKcal * fPct) / 9), pct: Math.round(fPct * 100) },
+    };
+  }
+
+  // ============= GOAL PROJECTION (7,700 kcal per kg) =============
+  function projectGoal(currentKg, goalKg, tdee, target) {
+    if (!goalKg || goalKg === currentKg) return null;
+    const dailyDelta = target - tdee;
+    if (dailyDelta === 0) return null;
+    const weeklyKg = (dailyDelta * 7) / 7700;
+    const totalKg = goalKg - currentKg;
+    if (Math.sign(weeklyKg) !== Math.sign(totalKg)) return { possible: false };
+    const weeks = Math.abs(totalKg / weeklyKg);
+    const date = new Date();
+    date.setDate(date.getDate() + Math.round(weeks * 7));
+    return { possible: true, weeklyKg, weeks, date, totalKg };
+  }
+
+  // ============= NHANES PERCENTILES =============
+  // CDC NHANES 2015-2018 reference data (Vital Health Stat 3(46), 2021)
+  // Source: https://www.cdc.gov/nchs/data/series/sr_03/sr03-046-508.pdf
+  const NHANES_2015_2018 = {
+    // BMI percentiles for adult males by age band (Table 15, all race/Hispanic groups)
+    bmi_male: {
+      '20-39': { p5: 20.4, p25: 24.7, p50: 27.7, p75: 32.0, p90: 36.9, p95: 40.4 },
+      '40-59': { p5: 21.7, p25: 26.0, p50: 29.4, p75: 33.4, p90: 38.0, p95: 41.0 },
+      '60+':   { p5: 21.5, p25: 25.4, p50: 28.7, p75: 32.0, p90: 36.1, p95: 39.0 }
+    },
+    bmi_female: {
+      '20-39': { p5: 19.5, p25: 23.6, p50: 27.6, p75: 33.7, p90: 39.7, p95: 44.7 },
+      '40-59': { p5: 20.8, p25: 25.4, p50: 30.0, p75: 35.7, p90: 41.4, p95: 45.4 },
+      '60+':   { p5: 20.4, p25: 25.0, p50: 29.0, p75: 33.4, p90: 37.7, p95: 41.4 }
+    },
+    // Weight in kg, all races (Tables 3 and 5)
+    weight_male: {
+      '20-39': { p5: 61.7, p25: 73.5, p50: 85.5, p75: 101.4, p90: 119.9, p95: 133.6 },
+      '40-59': { p5: 64.8, p25: 78.3, p50: 90.1, p75: 103.0, p90: 121.7, p95: 132.0 },
+      '60+':   { p5: 61.4, p25: 73.5, p50: 87.5, p75: 100.4, p90: 113.8, p95: 124.4 }
+    },
+    weight_female: {
+      '20-39': { p5: 49.4, p25: 60.9, p50: 71.4, p75: 88.9, p90: 109.0, p95: 122.9 },
+      '40-59': { p5: 51.2, p25: 64.2, p50: 74.9, p75: 91.1, p90: 108.5, p95: 122.4 },
+      '60+':   { p5: 49.4, p25: 60.4, p50: 72.5, p75: 85.0, p90: 99.4, p95: 110.1 }
+    }
+  };
+
+  function nhanesPercentile(value, table) {
+    const points = [
+      [table.p5, 5], [table.p25, 25], [table.p50, 50],
+      [table.p75, 75], [table.p90, 90], [table.p95, 95]
+    ];
+    if (value <= points[0][0]) return Math.max(1, Math.round((value / points[0][0]) * 5));
+    if (value >= points[points.length - 1][0]) return Math.min(99, 95 + Math.round(((value - points[points.length-1][0]) / points[points.length-1][0]) * 4));
+    for (let i = 0; i < points.length - 1; i++) {
+      const [v1, p1] = points[i];
+      const [v2, p2] = points[i + 1];
+      if (value >= v1 && value <= v2) {
+        return Math.round(p1 + ((value - v1) / (v2 - v1)) * (p2 - p1));
+      }
+    }
+    return 50;
+  }
+
+  function ageBand(age) {
+    if (age < 40) return '20-39';
+    if (age < 60) return '40-59';
+    return '60+';
+  }
+
+  function bmiPercentile(bmi, age, gender) {
+    if (gender === 'other' || age < 20) return null;
+    const table = gender === 'male' ? NHANES_2015_2018.bmi_male : NHANES_2015_2018.bmi_female;
+    return nhanesPercentile(bmi, table[ageBand(age)]);
+  }
+
+  function weightPercentile(weightKg, age, gender) {
+    if (gender === 'other' || age < 20) return null;
+    const table = gender === 'male' ? NHANES_2015_2018.weight_male : NHANES_2015_2018.weight_female;
+    return nhanesPercentile(weightKg, table[ageBand(age)]);
+  }
+
+  // ============= STATS =============
+  // Abramowitz-Stegun approximation, max error ~1.5e-7. Useful for z-score to percentile.
+  function erf(x) {
+    const sign = x < 0 ? -1 : 1;
+    x = Math.abs(x);
+    const a1 =  0.254829592, a2 = -0.284496736, a3 =  1.421413741;
+    const a4 = -1.453152027, a5 =  1.061405429, p  =  0.3275911;
+    const t = 1 / (1 + p * x);
+    const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+    return sign * y;
+  }
+  </script>
+  <script>
+  (function () {
+    const state = {
+      units: 'imperial',
+      tdee: 2500,
+      targetLossKg: 4.5,
+      timelineWeeks: 12,
+      exerciseShare: 0.5,
+    };
+
+    function $(id) { return document.getElementById(id); }
+
+    function bindOne(id, event, handler) {
+      const el = $(id);
+      if (!el) { console.warn('[calorie-deficit] missing element:', id); return; }
+      el.addEventListener(event, handler);
+    }
+
+    function readInputs() {
+      state.tdee = parseFloat($('cd-tdee').value) || 0;
+      const lossInput = parseFloat($('cd-loss').value) || 0;
+      state.targetLossKg = state.units === 'imperial' ? lossInput / 2.20462 : lossInput;
+      state.timelineWeeks = parseFloat($('cd-timeline').value) || 0;
+      state.exerciseShare = (parseFloat($('cd-split').value) || 0) / 100;
+    }
+
+    function updateUnitDisplay() {
+      const unit = state.units === 'imperial' ? 'lb' : 'kg';
+      $('cd-loss-unit').textContent = unit;
+      $('cd-unit-imperial').className = 'px-3 py-1.5 rounded-md transition-all ' + (state.units === 'imperial' ? 'bg-white dark:bg-slate-700 shadow-sm' : 'text-slate-500');
+      $('cd-unit-metric').className = 'px-3 py-1.5 rounded-md transition-all ' + (state.units === 'metric' ? 'bg-white dark:bg-slate-700 shadow-sm' : 'text-slate-500');
+    }
+
+    const BAR_COLOR = {
+      mild: 'bg-emerald-300',
+      moderate: 'bg-emerald-400',
+      aggressive: 'bg-amber-300',
+      dangerous: 'bg-red-400',
+      none: 'bg-white/30',
+    };
+
+    const BADGE_COLOR = {
+      mild: 'bg-emerald-200/30 border-emerald-200/50 text-emerald-50',
+      moderate: 'bg-emerald-200/30 border-emerald-200/50 text-emerald-50',
+      aggressive: 'bg-amber-200/30 border-amber-200/50 text-amber-50',
+      dangerous: 'bg-red-200/30 border-red-200/50 text-red-50',
+      none: 'bg-white/20 border-white/30 text-white',
+    };
+
+    function compute() {
+      const dailyDeficit = deficitFromTimeline(state.targetLossKg, state.timelineWeeks);
+
+      if (!dailyDeficit || !state.tdee || dailyDeficit > state.tdee) {
+        $('cd-deficit-value').textContent = '--';
+        $('cd-safety-badge').textContent = 'Set inputs';
+        $('cd-safety-badge').className = 'inline-block px-2 py-0.5 text-xs font-semibold rounded-full border ' + BADGE_COLOR.none;
+        $('cd-safety-note').textContent = 'Enter your TDEE, target loss, and timeline.';
+        $('cd-eat').textContent = '-- kcal/day';
+        $('cd-burn').textContent = '-- kcal/day';
+        $('cd-target-intake').textContent = '-- kcal/day';
+        $('cd-deficit-bar').style.width = '0%';
+        $('cd-deficit-bar').className = 'h-full rounded-full transition-all duration-300 ' + BAR_COLOR.none;
+        updateComparisonTable(state.targetLossKg, state.tdee);
+        return;
+      }
+
+      const safety = deficitSafetyLevel(dailyDeficit, state.tdee);
+      const split = dietExerciseSplit(dailyDeficit, state.exerciseShare);
+      const targetIntake = state.tdee - split.fromDiet;
+      const deficitPct = (dailyDeficit / state.tdee) * 100;
+
+      $('cd-deficit-value').textContent = Math.round(dailyDeficit).toLocaleString();
+      $('cd-safety-badge').textContent = safety.label;
+      $('cd-safety-badge').className = 'inline-block px-2 py-0.5 text-xs font-semibold rounded-full border ' + (BADGE_COLOR[safety.level] || BADGE_COLOR.none);
+      $('cd-safety-note').textContent = safety.note;
+      $('cd-eat').textContent = Math.round(split.fromDiet).toLocaleString() + ' kcal/day';
+      $('cd-burn').textContent = Math.round(split.fromExercise).toLocaleString() + ' kcal/day';
+      $('cd-target-intake').textContent = Math.round(targetIntake).toLocaleString() + ' kcal/day';
+
+      // Bar fills 100% width when deficit hits 30% of TDEE.
+      $('cd-deficit-bar').style.width = Math.min(100, (deficitPct / 30) * 100) + '%';
+      $('cd-deficit-bar').className = 'h-full rounded-full transition-all duration-300 ' + (BAR_COLOR[safety.level] || BAR_COLOR.none);
+
+      $('cd-split-readout').textContent = Math.round(state.exerciseShare * 100) + '% from exercise';
+
+      updateComparisonTable(state.targetLossKg, state.tdee);
+    }
+
+    function updateComparisonTable(targetLossKg, tdee) {
+      if (!tdee || !targetLossKg) {
+        for (let i = 0; i < 3; i++) {
+          const row = $('cd-row-' + i);
+          if (!row) continue;
+          row.querySelector('.cd-deficit-cell').textContent = '--';
+          row.querySelector('.cd-weekly-cell').textContent = '--';
+          row.querySelector('.cd-timeline-cell').textContent = '--';
+        }
+        return;
+      }
+      const levels = [0.10, 0.20, 0.25];
+      levels.forEach(function (pct, i) {
+        const deficit = tdee * pct;
+        const weeks = timelineFromDeficit(targetLossKg, deficit);
+        const weeklyKg = (deficit * 7) / 7700;
+        const weeklyDisplay = state.units === 'imperial'
+          ? (weeklyKg * 2.20462).toFixed(2) + ' lb/wk'
+          : weeklyKg.toFixed(2) + ' kg/wk';
+        const row = $('cd-row-' + i);
+        if (!row) return;
+        row.querySelector('.cd-deficit-cell').textContent = Math.round(deficit).toLocaleString() + ' kcal/day';
+        row.querySelector('.cd-weekly-cell').textContent = weeklyDisplay;
+        row.querySelector('.cd-timeline-cell').textContent = weeks ? weeks.toFixed(1) + ' weeks' : '--';
+      });
+    }
+
+    function recompute() {
+      readInputs();
+      compute();
+    }
+
+    function setUnits(units) {
+      if (units === state.units) return;
+      const lossEl = $('cd-loss');
+      const v = parseFloat(lossEl.value);
+      if (!isNaN(v) && v > 0) {
+        lossEl.value = units === 'metric' ? (v / 2.20462).toFixed(1) : (v * 2.20462).toFixed(1);
+      }
+      state.units = units;
+      updateUnitDisplay();
+      recompute();
+      try { localStorage.setItem('vd_cd_units', units); } catch (e) {}
+    }
+
+    function init() {
+      try {
+        let savedUnits = 'imperial';
+        try { savedUnits = localStorage.getItem('vd_cd_units') || 'imperial'; } catch (e) {}
+        state.units = savedUnits;
+        updateUnitDisplay();
+
+        bindOne('cd-unit-imperial', 'click', function () { setUnits('imperial'); });
+        bindOne('cd-unit-metric', 'click', function () { setUnits('metric'); });
+        ['cd-tdee', 'cd-loss', 'cd-timeline', 'cd-split'].forEach(function (id) {
+          bindOne(id, 'input', recompute);
+          bindOne(id, 'change', recompute);
+        });
+
+        const themeBtn = document.getElementById('theme-toggle');
+        if (themeBtn) themeBtn.addEventListener('click', function () {
+          document.documentElement.classList.toggle('dark');
+          try {
+            const p = JSON.parse(localStorage.getItem('vd_prefs')) || {};
+            p.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('vd_prefs', JSON.stringify(p));
+          } catch (e) {}
+        });
+
+        const yearEl = document.getElementById('year');
+        if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+        recompute();
+      } catch (err) {
+        console.error('[calorie-deficit] init failed:', err);
+      }
+    }
+
+    init();
+  })();
+  </script>
+  <div id="cookie-banner" class="hidden fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:max-w-md z-50 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-lg">
+    <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+      We use only essential cookies to remember your theme and unit preferences. No tracking until you accept.
+      <a href="/cookies.html" class="text-brand-600 dark:text-brand-400 hover:underline">Learn more</a>
+    </p>
+    <div class="flex flex-wrap items-center gap-2 mt-3">
+      <button id="consent-essential" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors">Essential only</button>
+      <button id="consent-all" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-brand-500 text-white hover:bg-brand-600 transition-colors">Accept all</button>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    function init() {
+      if (localStorage.getItem('vd_consent')) return;
+      var banner = document.getElementById('cookie-banner');
+      if (!banner) return;
+      banner.classList.remove('hidden');
+      var essential = document.getElementById('consent-essential');
+      var all = document.getElementById('consent-all');
+      if (essential) essential.addEventListener('click', function () {
+        localStorage.setItem('vd_consent', 'essential');
+        banner.classList.add('hidden');
+      });
+      if (all) all.addEventListener('click', function () {
+        localStorage.setItem('vd_consent', 'all');
+        banner.classList.add('hidden');
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
+  </script>
+</body>
+</html>

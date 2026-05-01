@@ -11,6 +11,35 @@
   const cmToIn = (cm) => cm / 2.54;
   const inToCm = (inches) => inches * 2.54;
 
+  // ============= CALORIE DEFICIT =============
+  // 7700 kcal per kg of body fat (refined from Wishnofsky 1958).
+  function deficitFromTimeline(targetLossKg, timelineWeeks) {
+    if (timelineWeeks <= 0 || targetLossKg <= 0) return null;
+    return (targetLossKg * 7700) / (timelineWeeks * 7);
+  }
+
+  function timelineFromDeficit(targetLossKg, dailyDeficit) {
+    if (dailyDeficit <= 0 || targetLossKg <= 0) return null;
+    return (targetLossKg * 7700) / (dailyDeficit * 7);
+  }
+
+  // Categorize deficit aggressiveness based on percent of TDEE (ISSN, ACSM guidelines).
+  function deficitSafetyLevel(dailyDeficit, tdee) {
+    if (dailyDeficit <= 0) return { level: 'none', label: 'None', color: 'slate', note: 'No deficit set.' };
+    const pct = (dailyDeficit / tdee) * 100;
+    if (pct < 10) return { level: 'mild', label: 'Mild', color: 'emerald', note: 'Sustainable but slow. Best for body recomposition or last few pounds.' };
+    if (pct < 20) return { level: 'moderate', label: 'Moderate', color: 'emerald', note: 'Standard fat loss rate. Safe for most adults.' };
+    if (pct < 25) return { level: 'aggressive', label: 'Aggressive', color: 'amber', note: 'Faster results but harder to sustain. Watch for muscle loss and energy dips.' };
+    return { level: 'dangerous', label: 'Too aggressive', color: 'red', note: 'Above 25% of TDEE risks muscle loss, hormonal disruption, and rebound. Consult a doctor.' };
+  }
+
+  function dietExerciseSplit(totalDeficit, exerciseShare) {
+    return {
+      fromDiet: totalDeficit * (1 - exerciseShare),
+      fromExercise: totalDeficit * exerciseShare,
+    };
+  }
+
   // ============= NAVY BODY FAT (Hodgdon-Beckett 1984) =============
   // All measurements in inches. Returns null on invalid input.
   function navyBodyFatMale(waistIn, neckIn, heightIn) {
