@@ -1,4 +1,35 @@
   <script>
+  const AMAZON_TAG_BF = 'growwithpas0e-20';
+  function buildAmazonUrlBF(query) {
+    return 'https://www.amazon.com/s?k=' + encodeURIComponent(query) + '&tag=' + AMAZON_TAG_BF;
+  }
+  const BODY_FAT_AFFILIATES = [
+    {
+      title: 'Flexible measuring tape',
+      desc: 'Self-retracting tape with mm markings. The Navy method only works with consistent technique; a quality tape removes one variable.',
+      query: 'myotape body measuring tape self retracting',
+      image: 'https://images.unsplash.com/photo-1590650153855-d9e808231d41?w=300&q=80',
+    },
+    {
+      title: 'Body fat calipers',
+      desc: 'For higher accuracy than the Navy method. Skinfold calipers used correctly hit ±3% accuracy.',
+      query: 'body fat calipers skinfold accumeasure',
+      image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=300&q=80',
+    },
+    {
+      title: 'Smart bathroom scale with body fat',
+      desc: 'Daily BIA readings. Less accurate than calipers but useful for tracking trends over weeks.',
+      query: 'smart bathroom scale body fat bioimpedance',
+      image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=300&q=80',
+    },
+    {
+      title: 'Full-length mirror',
+      desc: 'Visual progress tracking is the most underrated body fat method. The mirror sees what numbers miss.',
+      query: 'full length floor mirror standing',
+      image: 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=300&q=80',
+    },
+  ];
+
   (function () {
     const state = {
       units: 'imperial',
@@ -92,6 +123,26 @@
       compute();
     }
 
+    function renderAffiliates() {
+      const row = $('bf-affiliate-row');
+      if (!row) return;
+      row.innerHTML = BODY_FAT_AFFILIATES.map(function (item) {
+        const url = buildAmazonUrlBF(item.query);
+        return '<a href="' + url + '" target="_blank" rel="sponsored noopener" class="group block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-sm hover:border-brand-400 transition-colors">' +
+          '<div class="aspect-[4/3] bg-slate-100 dark:bg-slate-800 overflow-hidden">' +
+            '<img src="' + item.image + '" alt="' + item.title + '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />' +
+          '</div>' +
+          '<div class="p-3">' +
+            '<p class="text-sm font-semibold leading-tight group-hover:text-brand-600 dark:group-hover:text-brand-400">' + item.title + '</p>' +
+            '<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">' + item.desc + '</p>' +
+            '<p class="text-[10px] text-slate-400 mt-1.5 inline-flex items-center gap-1">View on Amazon' +
+              '<svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>' +
+            '</p>' +
+          '</div>' +
+        '</a>';
+      }).join('');
+    }
+
     function setUnits(units) {
       if (units === state.units) return;
       // Convert displayed values so the user doesn't retype
@@ -170,6 +221,7 @@
       if (yearEl) yearEl.textContent = new Date().getFullYear();
       // Run an initial compute in case the inputs already have values (browser autofill, back-forward cache).
       recompute();
+      renderAffiliates();
     }
 
     // This script sits at the end of <body>, after every element it touches,

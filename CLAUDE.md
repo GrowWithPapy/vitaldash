@@ -78,6 +78,35 @@ Wrap the body of init() in try/catch with console.error in the catch block. Sile
 
 Use BOTH input and change event listeners on number inputs. Some Android keyboards fire change more reliably than input for type=number fields, especially when the user dismisses the keyboard rather than tabbing out. Bind both, and let recompute() handle being called twice quickly.
 
+## Calculator monetization pattern
+
+Validated on calorie-deficit-calculator and body-fat-calculator. Apply to every new calculator. Three placements per calculator, no more.
+
+### What every calculator gets
+
+1. Affiliate row of 3 to 4 product cards, placed between the primary results and the deeper content sections (methodology, FAQ). Section heading frames the affiliates as helpful tools for that calculator's specific use case. Cards render via a renderAffiliates() function in the calculator's JS, called once inside init's try/catch after recompute(). Use buildAmazonUrl(query) helper that appends the growwithpas0e-20 Amazon tag.
+2. One contextual inline affiliate link inside a single FAQ answer, where the product genuinely helps with the question being asked. Use target="_blank" rel="sponsored noopener".
+3. One reserved AdSense slot below the FAQ, above the closing main tag. Same dashed-border placeholder until AdSense is approved. Markup: my-8 max-w-2xl mx-auto wrapper, slate-100 background, h-24 inner box, real `<ins class="adsbygoogle">` left commented out.
+
+### What every calculator avoids
+
+- No affiliate placement above the fold or above the calculator results
+- No more than one affiliate row per page
+- No more than one inline FAQ affiliate link per page
+- No multiple ad slots on a calculator page (the homepage sidebar ad is the exception)
+- No interrupting the calculator card itself with promotions
+
+### Affiliate selection
+
+Each calculator's affiliate row should match the user's mental state when they reach that page. Build affiliates around what helps execute the goal the calculator supports, not what's loosely related to fitness:
+- body-fat-calculator: measurement tools (tape, calipers, smart scale, mirror)
+- calorie-deficit-calculator: deficit accuracy tools (food scale, protein, meal prep, vitamins)
+- Future calculators: pick products that make the user's specific next action easier
+
+### Schema vs visible content
+
+When an affiliate link sits inside an FAQ answer, the visible HTML carries the link but the FAQPage JSON-LD schema's answer text replaces it with a non-link reference like "see vitaldash.io for recommended X". This keeps the schema a clean factual representation that LLMs ingest without product hyperlinks.
+
 ## GEO (Generative Engine Optimization)
 - llms.txt, robots.txt, and sitemap.xml live at project root
 - Update sitemap.xml lastmod dates when content materially changes
