@@ -1,0 +1,223 @@
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+
+    <section class="mb-8 animate-fade-in">
+      <p class="text-xs font-medium uppercase tracking-wider text-brand-600 dark:text-brand-400 mb-2">Water Intake Calculator</p>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3">Water Intake Calculator</h1>
+      <p class="text-slate-600 dark:text-slate-400 max-w-2xl">
+        Get a personalized daily water target based on your weight, activity, climate, and life stage. Forget the "8 cups a day" myth: that rule has no peer-reviewed origin and undershoots most adults' actual needs.
+      </p>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-3">Last updated: May 1, 2026</p>
+    </section>
+
+    <section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-7 shadow-sm mb-8">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg p-0.5 text-xs font-medium w-fit">
+            <button id="wi-unit-imperial" class="px-3 py-1.5 rounded-md transition-all" aria-pressed="true">Imperial</button>
+            <button id="wi-unit-metric" class="px-3 py-1.5 rounded-md transition-all" aria-pressed="false">Metric</button>
+          </div>
+
+          <div>
+            <label for="wi-weight" class="text-sm font-medium mb-1.5 block">Bodyweight <span id="wi-weight-unit" class="text-slate-500 font-normal">lb</span></label>
+            <input type="number" id="wi-weight" value="176" min="50" max="500" step="1" class="w-full px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none" />
+          </div>
+
+          <div>
+            <label for="wi-activity" class="text-sm font-medium mb-1.5 block">Exercise <span class="text-slate-500 font-normal">(hours/day)</span></label>
+            <input type="number" id="wi-activity" value="0.5" min="0" max="6" step="0.25" class="w-full px-3 py-2 text-sm rounded-lg bg-slate-100 dark:bg-slate-800 border-0 focus:ring-2 focus:ring-brand-500 focus:outline-none" />
+            <p class="text-[11px] text-slate-500 mt-1">Moderate intensity. Each hour adds about 600 mL.</p>
+          </div>
+
+          <div>
+            <label class="text-sm font-medium mb-1.5 block">Climate</label>
+            <div class="grid grid-cols-3 gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg text-xs font-medium">
+              <button data-wi-climate="cold" class="px-3 py-2 rounded-md transition-all">Cold</button>
+              <button data-wi-climate="temperate" class="px-3 py-2 rounded-md transition-all">Temperate</button>
+              <button data-wi-climate="hot" class="px-3 py-2 rounded-md transition-all">Hot</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-sm font-medium mb-1.5 block">Life stage</label>
+            <div class="grid grid-cols-3 gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg text-xs font-medium">
+              <button data-wi-life="normal" class="px-3 py-2 rounded-md transition-all">None</button>
+              <button data-wi-life="pregnant" class="px-3 py-2 rounded-md transition-all">Pregnant</button>
+              <button data-wi-life="breastfeeding" class="px-3 py-2 rounded-md transition-all">Breastfeeding</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-sm font-medium mb-1.5 block">Altitude</label>
+            <div class="grid grid-cols-2 gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg text-xs font-medium">
+              <button data-wi-alt="normal" class="px-3 py-2 rounded-md transition-all">Normal</button>
+              <button data-wi-alt="high" class="px-3 py-2 rounded-md transition-all">High (above 2500m)</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-brand-500 to-brand-700 dark:from-brand-600 dark:to-brand-800 rounded-xl p-5 text-white relative">
+          <p class="text-xs font-medium uppercase tracking-wider opacity-90">Daily target from drinks</p>
+          <div class="flex items-baseline gap-2 mt-2">
+            <span id="wi-target-l" class="text-5xl font-bold tabular-nums">--</span>
+          </div>
+          <p id="wi-target-oz" class="text-base font-semibold mt-1 opacity-90">--</p>
+
+          <div class="mt-4 pt-4 border-t border-white/20">
+            <p id="wi-target-summary" class="text-sm leading-relaxed opacity-90">Enter your details</p>
+          </div>
+
+          <p class="text-[10px] mt-4 pt-4 border-t border-white/20 opacity-75">Based on Institute of Medicine 2005 dietary reference intakes (drinks only; food adds about 20% on top).</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-7 shadow-sm mb-8">
+      <h2 class="text-xl font-bold mb-2">Hit your target in any of these ways</h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">These are equivalents, not additive. Pick whatever you actually drink from.</p>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 text-center">
+          <p class="text-3xl font-bold tabular-nums text-brand-600 dark:text-brand-400"><span id="wi-cups">--</span></p>
+          <p class="text-sm font-semibold mt-1">Cups</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">240 mL each (US measuring cup)</p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 text-center">
+          <p class="text-3xl font-bold tabular-nums text-brand-600 dark:text-brand-400"><span id="wi-bottles-500">--</span></p>
+          <p class="text-sm font-semibold mt-1">Standard bottles</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">500 mL each</p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 text-center">
+          <p class="text-3xl font-bold tabular-nums text-brand-600 dark:text-brand-400"><span id="wi-bottles-750">--</span></p>
+          <p class="text-sm font-semibold mt-1">Large bottles</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">750 mL each</p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 text-center">
+          <p class="text-3xl font-bold tabular-nums text-brand-600 dark:text-brand-400"><span id="wi-floz">--</span></p>
+          <p class="text-sm font-semibold mt-1">Fluid ounces</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">US fl oz</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-slate-100 dark:bg-slate-900/50 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 mb-8">
+      <div class="mb-4">
+        <h2 class="text-base font-bold">Make hitting your hydration target effortless</h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">The cheapest behavior change that actually compounds. <span class="text-slate-400">Affiliate links, we earn a small commission at no cost to you.</span></p>
+      </div>
+      <div id="wi-affiliate-row" class="grid grid-cols-2 lg:grid-cols-4 gap-3"></div>
+    </section>
+
+    <section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-7 shadow-sm mb-8">
+      <h2 class="text-xl font-bold mb-4">How this calculator works</h2>
+      <div class="text-sm text-slate-600 dark:text-slate-400 space-y-3">
+        <p class="font-semibold text-slate-900 dark:text-slate-200">Why bodyweight matters more than fixed cups</p>
+        <p>A 60 kg person and a 110 kg person have very different water turnover. Total body water tracks bodyweight closely (about 60% of mass for adult men, 55% for women), so a per-kilogram formula scales appropriately. We use 30 mL per kg of bodyweight per day from drinks as the baseline, which lands close to the National Academies recommendations for typical adults.</p>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">Total water vs drinks</p>
+        <p>The Institute of Medicine 2005 reference intake (3.7 L for men, 2.7 L for women) covers total water from all sources. About 20% of total water comes from food: fruits, vegetables, soups, even bread contain water. Our calculator outputs the drinks-only target, which is what you actually need to put in a cup.</p>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">Adjustments</p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li><strong>Exercise</strong>: each hour of moderate exercise adds about 600 mL, in line with ACSM and Sawka et al. 2007.</li>
+          <li><strong>Hot climate</strong>: adds 500 mL/day for moderate activity in heat. Outdoor work or exercise needs more.</li>
+          <li><strong>Pregnancy</strong>: adds 300 mL/day per IOM guidance.</li>
+          <li><strong>Breastfeeding</strong>: adds 700 mL/day to support milk production.</li>
+          <li><strong>High altitude</strong>: above 2,500 m, increased respiratory water loss adds about 500 mL/day.</li>
+        </ul>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">Why "8 cups a day" is folk wisdom</p>
+        <p>The 8x8 rule (eight 8-ounce glasses) appeared in popular media in the 1990s and has no peer-reviewed origin. It traces back to a 1945 US Food and Nutrition Board recommendation that included water from food and drinks, but the food portion was dropped in retelling. The actual evidence supports flexible, weight-based targets.</p>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">Limitations</p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>Thirst is the most reliable signal for healthy adults under 65. Use the calculator as a planning estimate, not a hard requirement.</li>
+          <li>Older adults have blunted thirst response and benefit from scheduled drinking.</li>
+          <li>Kidney conditions, heart failure, and certain medications change fluid needs significantly. Talk to a doctor if any apply.</li>
+        </ul>
+
+        <p class="font-semibold text-slate-900 dark:text-slate-200 mt-4">Sources</p>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>Institute of Medicine. <em>Dietary Reference Intakes for Water, Potassium, Sodium, Chloride, and Sulfate.</em> National Academies Press, 2005.</li>
+          <li>Sawka MN, Burke LM, Eichner ER, et al. <em>American College of Sports Medicine position stand: exercise and fluid replacement.</em> Medicine and Science in Sports and Exercise. 2007;39(2):377-390.</li>
+          <li>EFSA Panel on Dietetic Products. <em>Scientific opinion on dietary reference values for water.</em> EFSA Journal. 2010;8(3):1459.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="bg-slate-100 dark:bg-slate-900/50 rounded-2xl p-5 sm:p-7 border border-slate-200 dark:border-slate-800 mb-8">
+      <h2 class="text-base font-bold mb-3">Try our other calculators</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <a href="/" class="block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-sm transition-all">
+          <p class="text-sm font-semibold">VitalDash full dashboard</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">BMI, BMR, TDEE, macros, projection</p>
+        </a>
+        <a href="/body-fat-calculator" class="block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-sm transition-all">
+          <p class="text-sm font-semibold">Body Fat Calculator</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">US Navy method, no calipers needed</p>
+        </a>
+        <a href="/calorie-deficit-calculator" class="block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-sm transition-all">
+          <p class="text-sm font-semibold">Calorie Deficit Calculator</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Daily deficit math with safety levels</p>
+        </a>
+        <a href="/protein-intake-calculator" class="block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-sm transition-all">
+          <p class="text-sm font-semibold">Protein Intake Calculator</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Daily protein targets by weight and goal</p>
+        </a>
+        <a href="/methodology.html" class="block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-sm transition-all">
+          <p class="text-sm font-semibold">All formulas explained</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Methodology page with sources</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="mb-8">
+      <h2 class="text-2xl font-bold mb-4">Frequently asked questions</h2>
+      <div class="space-y-3">
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">How much water should I drink per day?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Adult men need about 3.0 liters per day from drinks (around 100 fl oz), and adult women need about 2.2 liters (around 75 fl oz). These are the National Academies guidelines, with the rest of total water coming from food. Your actual need varies with weight, activity, and climate, which is why we use a personalized formula based on roughly 30 mL per kg of bodyweight.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">Is the 8-cups-a-day rule actually accurate?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">No, the 8-cups rule has no peer-reviewed scientific origin. It first appeared in a 1945 US recommendation that included water from food and beverages, but the food-derived portion was lost in popular retelling. For most adults the rule undershoots actual needs, especially for active people or anyone over 70 kg. Use weight and activity instead.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">Does coffee or tea count toward water intake?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Yes. The mild diuretic effect of caffeine is more than offset by the water content of the drink itself. Coffee, tea, and even moderate alcohol consumption all contribute to total fluid intake. Studies including the EFSA 2010 review confirm this; the old "caffeine dehydrates you" rule is a myth.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">How does exercise change my water needs?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Each hour of moderate exercise adds roughly 500-700 mL to your daily target. For training over 60 minutes or in heat, electrolyte loss matters too: plain water alone won't replenish sodium, potassium, and magnesium lost through sweat. <a href="https://www.amazon.com/s?k=electrolyte+powder+packets&amp;tag=growwithpas0e-20" target="_blank" rel="sponsored noopener" class="text-brand-600 dark:text-brand-400 hover:underline">See electrolyte powders on Amazon</a>.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">Can I drink too much water?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Yes. Drinking more than about 1 liter per hour over an extended period can cause hyponatremia, where blood sodium drops to dangerous levels. This is most common in endurance athletes and people who chug water during intense exercise without electrolytes. For typical adults, drinking when thirsty and spreading intake across the day is safe.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">How much extra water do I need in hot weather?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Hot or humid climates increase water needs by about 500 mL per day for moderate activity, and significantly more for outdoor work or exercise. The body loses water through sweat to maintain temperature, and that loss compounds quickly. Drink before you feel thirsty in heat: thirst lags actual need by 1 to 2% body water loss.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">Should pregnant or breastfeeding women drink more water?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Yes. Pregnancy adds about 300 mL per day to baseline needs, and breastfeeding adds about 700 mL per day to support milk production. These adjustments are on top of normal recommendations. Talk to your doctor for guidance specific to your pregnancy or feeding stage, especially in the third trimester or early postpartum.</p>
+        </details>
+        <details class="border border-slate-200 dark:border-slate-800 rounded-lg p-4 bg-white dark:bg-slate-900">
+          <summary class="font-semibold text-sm cursor-pointer">What are signs I'm not drinking enough water?</summary>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Dark yellow urine, dry mouth, headaches, fatigue, and reduced concentration are early signs of mild dehydration. Severe dehydration causes dizziness, rapid heartbeat, and confusion, and needs medical attention. The most reliable check is urine color: pale straw indicates good hydration, dark amber means drink more.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="my-8 max-w-2xl mx-auto">
+      <div class="bg-slate-100 dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-4 text-center">
+        <p class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">Advertisement</p>
+        <!--
+          GOOGLE ADSENSE: replace data-ad-client and data-ad-slot once approved, then uncomment.
+          <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="0000000000" data-ad-format="auto" data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        -->
+        <div class="h-24 flex items-center justify-center text-slate-400 text-xs">Ad slot 728x90 responsive</div>
+      </div>
+    </section>
+
+  </main>

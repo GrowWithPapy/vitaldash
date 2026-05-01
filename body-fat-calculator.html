@@ -345,6 +345,8 @@
         <span aria-hidden="true">·</span>
         <a href="/protein-intake-calculator" class="hover:text-brand-600 dark:hover:text-brand-400">Protein Intake</a>
         <span aria-hidden="true">·</span>
+        <a href="/water-intake-calculator" class="hover:text-brand-600 dark:hover:text-brand-400">Water Intake</a>
+        <span aria-hidden="true">·</span>
         <a href="/about.html" class="hover:text-brand-600 dark:hover:text-brand-400">About</a>
         <span aria-hidden="true">·</span>
         <a href="/methodology.html" class="hover:text-brand-600 dark:hover:text-brand-400">Methodology</a>
@@ -424,6 +426,43 @@
       { food: 'Greek yogurt (170g)', servings: targetGrams / PROTEIN_PER_SERVING.greek_yogurt_170g, perGrams: PROTEIN_PER_SERVING.greek_yogurt_170g },
       { food: 'Whole eggs (large)', servings: targetGrams / PROTEIN_PER_SERVING.eggs_whole, perGrams: PROTEIN_PER_SERVING.eggs_whole },
     ];
+  }
+
+  // ============= WATER INTAKE =============
+  // Institute of Medicine 2005 / National Academies dietary reference intakes.
+  // Returns drinks-from-cup-or-bottle target and derived total (food adds ~20%).
+  function waterIntakeRecommendation(weightKg, activityHours, climate, lifeStage, altitude) {
+    if (weightKg <= 0) return null;
+    const baseDrinksMl = weightKg * 30;
+    const exerciseMl = (activityHours || 0) * 600;
+    const climateMl = climate === 'hot' ? 500 : 0;
+    const lifeStageMl = lifeStage === 'pregnant' ? 300 : lifeStage === 'breastfeeding' ? 700 : 0;
+    const altitudeMl = altitude === 'high' ? 500 : 0;
+    const drinksMl = baseDrinksMl + exerciseMl + climateMl + lifeStageMl + altitudeMl;
+    const totalMl = drinksMl / 0.8;
+    return {
+      totalLiters: totalMl / 1000,
+      drinksLiters: drinksMl / 1000,
+      breakdown: {
+        base: baseDrinksMl,
+        exercise: exerciseMl,
+        climate: climateMl,
+        lifeStage: lifeStageMl,
+        altitude: altitudeMl,
+      },
+    };
+  }
+
+  function waterInPracticalUnits(liters) {
+    return {
+      liters: liters,
+      milliliters: liters * 1000,
+      fluidOunces: liters * 33.814,
+      cups: liters * 4.227,
+      bottles_500ml: liters / 0.5,
+      bottles_750ml: liters / 0.75,
+      glasses_250ml: liters / 0.25,
+    };
   }
 
   // ============= CALORIE DEFICIT =============
